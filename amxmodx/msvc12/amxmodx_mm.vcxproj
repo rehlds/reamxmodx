@@ -60,7 +60,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\;..\..\public;..\..\public\memtools;..\..\third_party;..\..\third_party\zlib;..\..\third_party\hashing;..\..\public\sdk;..\..\public\amtl;..\..\third_party;..\..\third_party\hashing;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\sdk;..\memtools;..\hashing;..\zlib;..\..\public;..\..\public\amtl;..\..\public\metamod;..\..\public\cssdk\common;..\..\public\cssdk\dlls;..\..\public\cssdk\engine;..\..\public\cssdk\pm_shared;..\..\public\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;_WINDOWS;_USRDLL;amxmodx_EXPORTS;PAWN_CELL_SIZE=32;ASM32;JIT;_CRT_SECURE_NO_DEPRECATE;HAVE_STDINT_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -110,7 +110,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>..\;..\..\public;..\..\public\memtools;..\..\third_party;..\..\third_party\zlib;..\..\third_party\hashing;..\..\third_party;..\..\third_party\hashing;..\..\public\sdk;..\..\public\amtl;..\..\third_party;..\..\third_party\hashing;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\sdk;..\memtools;..\hashing;..\zlib;..\..\public;..\..\public\amtl;..\..\public\metamod;..\..\public\cssdk\common;..\..\public\cssdk\dlls;..\..\public\cssdk\engine;..\..\public\cssdk\pm_shared;..\..\public\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;_WINDOWS;_USRDLL;amxmodx_EXPORTS;JIT;ASM32;PAWN_CELL_SIZE=32;HAVE_STDINT_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <StringPooling>true</StringPooling>
@@ -126,6 +126,7 @@
       <CompileAs>Default</CompileAs>
       <ShowIncludes>false</ShowIncludes>
       <PrecompiledHeaderFile>amxmodx.h</PrecompiledHeaderFile>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -148,94 +149,94 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\public\memtools\CDetour\asm\asm.c" />
-    <ClCompile Include="..\..\public\memtools\CDetour\detours.cpp" />
-    <ClCompile Include="..\..\public\memtools\MemoryUtils.cpp" />
-    <ClCompile Include="..\..\third_party\hashing\hashers\crc32.cpp">
+    <ClCompile Include="..\memtools\CDetour\asm\asm.c" />
+    <ClCompile Include="..\memtools\CDetour\detours.cpp" />
+    <ClCompile Include="..\memtools\MemoryUtils.cpp" />
+    <ClCompile Include="..\hashing\hashers\crc32.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)hashing\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)hashing\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\hashing\hashers\keccak.cpp">
+    <ClCompile Include="..\hashing\hashers\keccak.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)hashing\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)hashing\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\hashing\hashers\md5.cpp">
+    <ClCompile Include="..\hashing\hashers\md5.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)hashing\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)hashing\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\hashing\hashers\sha1.cpp">
+    <ClCompile Include="..\hashing\hashers\sha1.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)hashing\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)hashing\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\hashing\hashers\sha256.cpp">
+    <ClCompile Include="..\hashing\hashers\sha256.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)hashing\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)hashing\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\hashing\hashers\sha3.cpp">
+    <ClCompile Include="..\hashing\hashers\sha3.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)hashing\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)hashing\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\hashing\hashing.cpp">
+    <ClCompile Include="..\hashing\hashing.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)hashing\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)hashing\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\adler32.c">
+    <ClCompile Include="..\zlib_include\adler32.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\compress.c">
+    <ClCompile Include="..\zlib_include\compress.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\crc32.c">
+    <ClCompile Include="..\zlib_include\crc32.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\deflate.c">
+    <ClCompile Include="..\zlib_include\deflate.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\gzclose.c">
+    <ClCompile Include="..\zlib_include\gzclose.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\gzlib.c">
+    <ClCompile Include="..\zlib_include\gzlib.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\gzread.c">
+    <ClCompile Include="..\zlib_include\gzread.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\gzwrite.c">
+    <ClCompile Include="..\zlib_include\gzwrite.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\infback.c">
+    <ClCompile Include="..\zlib_include\infback.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\inffast.c">
+    <ClCompile Include="..\zlib_include\inffast.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\inflate.c">
+    <ClCompile Include="..\zlib_include\inflate.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\inftrees.c">
+    <ClCompile Include="..\zlib_include\inftrees.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\trees.c">
+    <ClCompile Include="..\zlib_include\trees.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\uncompr.c">
+    <ClCompile Include="..\zlib_include\uncompr.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\third_party\zlib\zutil.c">
+    <ClCompile Include="..\zlib_include\zutil.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">$(IntDir)zlib\</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">$(IntDir)zlib\</ObjectFileName>
     </ClCompile>
@@ -281,6 +282,8 @@
     <ClCompile Include="..\gameconfigs.cpp" />
     <ClCompile Include="..\libraries.cpp" />
     <ClCompile Include="..\messages.cpp" />
+    <ClCompile Include="..\sdk\interface.cpp" />
+    <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
     <ClCompile Include="..\meta_api.cpp" />
     <ClCompile Include="..\modules.cpp" />
     <ClCompile Include="..\natives.cpp" />
@@ -301,34 +304,34 @@
     <ClCompile Include="..\vault.cpp" />
     <ClCompile Include="..\vector.cpp" />
     <ClCompile Include="..\datastructs.cpp" />
-    <ClCompile Include="..\..\public\sdk\amxxmodule.cpp">
+    <ClCompile Include="..\sdk\amxxmodule.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">true</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\public\memtools\CDetour\asm\asm.h" />
-    <ClInclude Include="..\..\public\memtools\CDetour\detourhelpers.h" />
-    <ClInclude Include="..\..\public\memtools\CDetour\detours.h" />
-    <ClInclude Include="..\..\public\memtools\MemoryUtils.h" />
-    <ClInclude Include="..\..\third_party\hashing\hashers\crc32.h" />
-    <ClInclude Include="..\..\third_party\hashing\hashers\keccak.h" />
-    <ClInclude Include="..\..\third_party\hashing\hashers\md5.h" />
-    <ClInclude Include="..\..\third_party\hashing\hashers\sha1.h" />
-    <ClInclude Include="..\..\third_party\hashing\hashers\sha256.h" />
-    <ClInclude Include="..\..\third_party\hashing\hashers\sha3.h" />
-    <ClInclude Include="..\..\third_party\hashing\hashing.h" />
-    <ClInclude Include="..\..\third_party\zlib\crc32.h" />
-    <ClInclude Include="..\..\third_party\zlib\deflate.h" />
-    <ClInclude Include="..\..\third_party\zlib\gzguts.h" />
-    <ClInclude Include="..\..\third_party\zlib\inffast.h" />
-    <ClInclude Include="..\..\third_party\zlib\inffixed.h" />
-    <ClInclude Include="..\..\third_party\zlib\inflate.h" />
-    <ClInclude Include="..\..\third_party\zlib\inftrees.h" />
-    <ClInclude Include="..\..\third_party\zlib\trees.h" />
-    <ClInclude Include="..\..\third_party\zlib\zconf.h" />
-    <ClInclude Include="..\..\third_party\zlib\zlib.h" />
-    <ClInclude Include="..\..\third_party\zlib\zutil.h" />
+    <ClInclude Include="..\memtools\CDetour\asm\asm.h" />
+    <ClInclude Include="..\memtools\CDetour\detourhelpers.h" />
+    <ClInclude Include="..\memtools\CDetour\detours.h" />
+    <ClInclude Include="..\memtools\MemoryUtils.h" />
+    <ClInclude Include="..\hashing\hashers\crc32.h" />
+    <ClInclude Include="..\hashing\hashers\keccak.h" />
+    <ClInclude Include="..\hashing\hashers\md5.h" />
+    <ClInclude Include="..\hashing\hashers\sha1.h" />
+    <ClInclude Include="..\hashing\hashers\sha256.h" />
+    <ClInclude Include="..\hashing\hashers\sha3.h" />
+    <ClInclude Include="..\hashing\hashing.h" />
+    <ClInclude Include="..\zlib_include\crc32.h" />
+    <ClInclude Include="..\zlib_include\deflate.h" />
+    <ClInclude Include="..\zlib_include\gzguts.h" />
+    <ClInclude Include="..\zlib_include\inffast.h" />
+    <ClInclude Include="..\zlib_include\inffixed.h" />
+    <ClInclude Include="..\zlib_include\inflate.h" />
+    <ClInclude Include="..\zlib_include\inftrees.h" />
+    <ClInclude Include="..\zlib_include\trees.h" />
+    <ClInclude Include="..\zlib_include\zconf.h" />
+    <ClInclude Include="..\zlib_include\zlib.h" />
+    <ClInclude Include="..\zlib_include\zutil.h" />
     <ClInclude Include="..\amx.h" />
     <ClInclude Include="..\amxdbg.h" />
     <ClInclude Include="..\amxmodx.h" />
@@ -374,8 +377,8 @@
     <ClInclude Include="..\sh_tinyhash.h" />
     <ClInclude Include="..\textparse.h" />
     <ClInclude Include="..\trie_natives.h" />
-    <ClInclude Include="..\..\public\sdk\amxxmodule.h" />
-    <ClInclude Include="..\..\public\sdk\moduleconfig.h" />
+    <ClInclude Include="..\sdk\amxxmodule.h" />
+    <ClInclude Include="..\sdk\moduleconfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\version.rc" />

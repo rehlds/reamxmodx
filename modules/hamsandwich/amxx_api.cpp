@@ -25,6 +25,10 @@
 #include "hook_specialbot.h"
 #include <HLTypeConversion.h>
 
+#include "mod_rehlds_api.h"
+
+bool m_api_rehlds = false;
+
 HLTypeConversion TypeConversion;
 
 extern ke::Vector<Hook*> hooks[HAM_LAST_ENTRY_DONT_USE_ME_LOL];
@@ -41,6 +45,14 @@ int ReadConfig(void);
 
 void OnAmxxAttach(void)
 {
+	m_api_rehlds = RehldsApi_Init();
+
+	if (m_api_rehlds == false)
+	{
+		MF_Log("Error load ReHLDS");
+		return;
+	}
+
 	// Assert that the enum is aligned properly with the table
 
 	assert(strcmp(hooklist[Ham_FVecVisible].name, "fvecvisible")==0);
@@ -117,6 +129,11 @@ void OnPluginsUnloaded(void)
 
 void OnPluginsLoaded(void)
 {
+	if (m_api_rehlds == false)
+	{
+		return;
+	}
+
 	TypeConversion.init();
 }
 

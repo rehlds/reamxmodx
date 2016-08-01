@@ -15,6 +15,10 @@
 #include "fun.h"
 #include <HLTypeConversion.h>
 
+#include "mod_rehlds_api.h"
+
+bool m_api_rehlds = false;
+
 /*
 	JGHG says:
 
@@ -42,6 +46,7 @@
 
 char g_bodyhits[33][33];	// where can the guy in the first dimension hit the people in the 2nd dimension? :-)
 bool g_silent[33];			// used for set_user_footsteps()
+bool SiletActive = false;
 
 HLTypeConversion TypeConversion;
 
@@ -61,6 +66,23 @@ void FUNUTIL_ResetPlayer(int index)
 	}
 	// Reset silent slippers
 	g_silent[index] = false;
+
+	if (SiletActive == true)
+	{
+		bool pfnActive = false;
+		for (int i = 1; i <= gpGlobals->maxClients; i++) {
+			if (g_silent[i] == false)
+			{
+				continue;
+			}
+			pfnActive = true;
+			break;
+		}
+		if (pfnActive == false)
+		{
+			g_pFunctionTable->pfnPlayerPreThink = NULL;
+		}
+	}
 }
 
 // ######## Natives:
@@ -165,8 +187,10 @@ static cell AMX_NATIVE_CALL give_item(AMX *amx, cell *params) // native give_ite
 	//check for valid item
 	if (strncmp(szItem, "weapon_", 7) && 
 		strncmp(szItem, "ammo_", 5) && 
-		strncmp(szItem, "item_", 5) &&
+		strncmp(szItem, "item_", 5)
+		/* &&
 		strncmp(szItem, "tf_weapon_", 10)
+		*/
 	) {
 		return 0;
 	}
@@ -190,7 +214,7 @@ static cell AMX_NATIVE_CALL give_item(AMX *amx, cell *params) // native give_ite
 
 	int save = pItemEntity->v.solid;
 
-	MDLL_Touch(pItemEntity, ENT(pPlayer));
+	MDLL_Touch(pItemEntity, ENT(&pPlayer->v));
 
 	//The problem with the original give_item was the
 	// item was not removed.  I had tried this but it
@@ -496,10 +520,13 @@ static cell AMX_NATIVE_CALL set_user_footsteps(AMX *amx, cell *params) // set_us
 	if (params[2]) {
 		pPlayer->v.flTimeStepSound = 999;
 		g_silent[params[1]] = true;
-	}
-	else {
+		SiletActive = true;
+		g_pFunctionTable->pfnPlayerPreThink = PlayerPreThink;
+	} else {
 		pPlayer->v.flTimeStepSound = STANDARDTIMESTEPSOUND;
 		g_silent[params[1]] = false;
+		SiletActive = false;
+		g_pFunctionTable->pfnPlayerPreThink = NULL;
 	}
 
 	return 1;
@@ -582,14 +609,21 @@ int ClientConnect(edict_t *pPlayer, const char *pszName, const char *pszAddress,
 	RETURN_META_VALUE(MRES_IGNORED, 0);
 }
 
-void TraceLine(const float *v1, const float *v2, int fNoMonsters, edict_t *shooter, TraceResult *ptr) {
+void TraceLine(const float *v1, const float *v2, int fNoMonsters, edict_t *shooter, TraceResult *ptr)
+{
 	TRACE_LINE(v1, v2, fNoMonsters, shooter, ptr);
-	if ( ptr->pHit && (ptr->pHit->v.flags& (FL_CLIENT | FL_FAKECLIENT))
-	&& shooter && (shooter->v.flags & (FL_CLIENT | FL_FAKECLIENT)) ) {
+
+	if (shooter && ptr->pHit && (ptr->pHit->v.flags & (FL_CLIENT | FL_FAKECLIENT))
+		&& (shooter->v.flags & (FL_CLIENT | FL_FAKECLIENT)))
+	{
 		int shooterIndex = ENTINDEX(shooter);
-		if ( !(g_bodyhits[shooterIndex][ENTINDEX(ptr->pHit)] & (1<<ptr->iHitgroup)) )
+
+		if (!(g_bodyhits[shooterIndex][ENTINDEX(ptr->pHit)] & (1 << ptr->iHitgroup)))
+		{
 			ptr->flFraction = 1.0;
+		}
 	}
+
 	RETURN_META(MRES_SUPERCEDE);
 }
 
@@ -627,19 +661,38 @@ void TraceLine(const float *v1, const float *v2, int fNoMonsters, edict_t *shoot
 
 void OnAmxxAttach()
 {
+	m_api_rehlds = RehldsApi_Init();
+
+	if (m_api_rehlds == false)
+	{
+		MF_Log("Error load ReHLDS");
+		return;
+	}
+
 	MF_AddNatives(fun_Exports);
 }
 
 // The content of OnPluginsLoaded() was moved from OnAmxxAttach with AMXx 1.5 because for some reason gpGlobals->maxClients wasn't
 // initialized to its proper value until some time after OnAmxxAttach(). In OnAmxxAttach() it always showed 0. /JGHG
-void OnPluginsLoaded() {
+void OnPluginsLoaded()
+{
+	if (m_api_rehlds == false)
+	{
+		return;
+	}
+
 	// Reset stuff - hopefully this should
-	for (int i = 1; i <= gpGlobals->maxClients; i++) {
+	for (int i = 1; i <= gpGlobals->maxClients; i++)
+	{
 		// Reset all hitzones
 		FUNUTIL_ResetPlayer(i);
 	}
 
 	TypeConversion.init();
+
+	SiletActive = false;
+
+	g_pFunctionTable->pfnPlayerPreThink = NULL;
 }
 /*
 void ClientConnectFakeBot(int index)
@@ -649,3 +702,12 @@ void ClientConnectFakeBot(int index)
 	//CPlayer* player;
 }
 */
+
+void ServerDeactivate()
+{
+	SiletActive = false;
+
+	g_pFunctionTable->pfnPlayerPreThink = NULL;
+
+	RETURN_META(MRES_IGNORED);
+}

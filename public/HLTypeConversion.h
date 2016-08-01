@@ -12,6 +12,7 @@
 #include <stddef.h>   // size_t
 #include <extdll.h>   // edict_t, etc.
 #include <sdk_util.h> // FNullEnt, INDEXENT, etc.
+#include <steamtypes.h>
 
 template <typename T> static inline T& ref_pdata(void *pPrivateData, int offset, int element = 0)
 {
@@ -192,7 +193,7 @@ class HLTypeConversion
 		size_t   m_PevOffset;
 };
 
-class EHANDLE
+class EHANDLE_AMX
 {
 	private:
 

@@ -35,22 +35,6 @@ enum
 	RET_ITEMINFO
 };
 
-typedef struct
-{
-	int iSlot;
-	int iPosition;
-	const char *pszAmmo1;
-	int iMaxAmmo1;
-	const char *pszAmmo2;
-	int iMaxAmmo2;
-	const char *pszName;
-	int iMaxClip;
-	int iId;
-	int iFlags;
-	int iWeight;
-}
-ItemInfo;
-
 enum
 {
 	ItemInfo_iSlot,

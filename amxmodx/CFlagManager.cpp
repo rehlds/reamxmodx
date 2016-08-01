@@ -22,7 +22,7 @@ void CFlagManager::SetFile(const char *Filename)
 	CreateIfNotExist();
 }
 
-const int CFlagManager::LoadFile(const int force)
+int CFlagManager::LoadFile(const int force)
 {
 	CheckIfDisabled();
 	// If we're disabled get the hell out.  now.

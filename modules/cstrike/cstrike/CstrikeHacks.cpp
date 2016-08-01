@@ -24,10 +24,6 @@ bool HasInternalCommandForward;
 bool HasOnBuyAttemptForward;
 bool HasOnBuyForward;
 
-int *UseBotArgs;
-const char **BotArgs;
-
-CDetour *ClientCommandDetour;
 CDetour *GiveShieldDetour;
 CDetour *GiveNamedItemDetour;
 CDetour *AddAccountDetour;
@@ -68,8 +64,8 @@ void **GameRules;
 
 void InitializeHacks()
 {
-	CtrlDetours_ClientCommand(true);
-	CtrlDetours_BuyCommands(true);
+	ToggleDetour_ClientCommands(false);
+	CtrlDetours_BuyCommands(false);
 	CtrlDetours_Natives(true);
 
 	InitFuncsAddresses();
@@ -79,29 +75,12 @@ void InitializeHacks()
 
 void ShutdownHacks()
 {
-	CtrlDetours_ClientCommand(false);
+	ToggleDetour_ClientCommands(false);
 	CtrlDetours_BuyCommands(false);
 	CtrlDetours_Natives(false);
 }
 
-#undef CMD_ARGV
-
-const char *CMD_ARGV(int i)
-{
-	if (*UseBotArgs)
-	{
-		if (i < 4)
-		{
-			return BotArgs[i];
-		}
-
-		return nullptr;
-	}
-
-	return g_engfuncs.pfnCmd_Argv(i);
-}
-
-DETOUR_DECL_STATIC1(C_ClientCommand, void, edict_t*, pEdict) // void ClientCommand(edict_t *pEntity)
+void ClientCommand(edict_t* pEdict)
 {
 	auto command = CMD_ARGV(0);
 	auto client = TypeConversion.edict_to_id(pEdict);
@@ -150,14 +129,14 @@ DETOUR_DECL_STATIC1(C_ClientCommand, void, edict_t*, pEdict) // void ClientComma
 						switch (get_pdata<int>(pEdict, TeamDesc.fieldOffset))
 						{
 							case TEAM_T: CurrentItemId = menuItemsTe[menuId - 4][slot]; break; // -4 because array is zero-based and Menu_Buy* constants starts from 4.
-							case TEAM_CT:CurrentItemId = menuItemsCt[menuId - 4][slot]; break;
+							case TEAM_CT: CurrentItemId = menuItemsCt[menuId - 4][slot]; break;
 						}
 					}
 				}
 			}
 			else // Handling buy via alias
 			{
-				if (get_pdata<CUnifiedSignals>(pEdict, SignalsDesc.fieldOffset).GetState() & SIGNAL_BUY) // Are we inside the buy zone?
+				if (get_pdata<CUnifiedSignals_AMX>(pEdict, SignalsDesc.fieldOffset).GetState() & SIGNAL_BUY) // Are we inside the buy zone?
 				{
 					AliasInfo info;
 					char commandLowered[32];
@@ -172,22 +151,22 @@ DETOUR_DECL_STATIC1(C_ClientCommand, void, edict_t*, pEdict) // void ClientComma
 			}
 		}
 
-		if (HasInternalCommandForward && *UseBotArgs && MF_ExecuteForward(ForwardInternalCommand, client, *BotArgs) > 0)
+		if (HasInternalCommandForward && MF_ExecuteForward(ForwardInternalCommand, client, command) > 0)
 		{
-			return;
+			RETURN_META(MRES_SUPERCEDE);
 		}
 
 		if (HasOnBuyAttemptForward && CurrentItemId && MF_ExecuteForward(ForwardOnBuyAttempt, client, CurrentItemId) > 0)
 		{
-			return;
+			RETURN_META(MRES_SUPERCEDE);
 		}
 	}
 
 	TriggeredFromCommand = CurrentItemId != CSI_NONE;
 
-	DETOUR_STATIC_CALL(C_ClientCommand)(pEdict);
-
 	TriggeredFromCommand = BlockMoneyUpdate = BlockAmmosUpdate = false;
+
+	RETURN_META(MRES_IGNORED);
 }
 
 edict_s* OnCreateNamedEntity(int classname)
@@ -238,7 +217,6 @@ DETOUR_DECL_MEMBER1(CanPlayerBuy, bool, bool, display)  // bool CBasePlayer::Can
 
 	auto allowedToBuy = false;
 	auto itemPrice = ItemsManager.GetItemPrice(CurrentItemId);
-
 	switch (CurrentItemId)
 	{
 		case CSI_NVGS:
@@ -358,60 +336,14 @@ void DestroyDetour(CDetour *&detour)
 	}
 }
 
-
-void CtrlDetours_ClientCommand(bool set)
-{
-	if (set)
-	{
-		auto base = reinterpret_cast<void *>(MDLL_ClientCommand);
-
-#if defined(KE_WINDOWS)
-
-		TypeDescription type;
-
-		if (MainConfig->GetOffset("UseBotArgs", &type))
-		{
-			UseBotArgs = get_pdata<decltype(UseBotArgs)>(base, type.fieldOffset);
-		}
-
-		if (MainConfig->GetOffset("BotArgs", &type))
-		{
-			BotArgs = get_pdata<decltype(BotArgs)>(base, type.fieldOffset);
-		}
-#else
-		void *address = nullptr;
-
-		if (MainConfig->GetMemSig("UseBotArgs", &address))
-		{
-			UseBotArgs = reinterpret_cast<decltype(UseBotArgs)>(address);
-		}
-
-		if (MainConfig->GetMemSig("BotArgs", &address))
-		{
-			BotArgs = reinterpret_cast<decltype(BotArgs)>(address);
-		}
-#endif
-		ClientCommandDetour = DETOUR_CREATE_STATIC_FIXED(C_ClientCommand, base);
-
-		if (!ClientCommandDetour)
-		{
-			MF_Log("ClientCommand is not available - forwards CS_InternalCommand and CS_OnBuy[Attempt] have been disabled");
-			CtrlDetours_ClientCommand(false);
-		}
-		else if (!UseBotArgs || !BotArgs)
-		{
-			MF_Log("UseBotArgs or BotArgs is not available - forward CS_InternalCommand has been disabled");
-		}
-	}
-	else
-	{
-		DestroyDetour(ClientCommandDetour);
-	}
-}
-
 void ToggleDetour_ClientCommands(bool enable)
 {
-	ToggleDetour(ClientCommandDetour, enable);
+	if (enable == true)
+	{
+		g_pFunctionTable->pfnClientCommand = ClientCommand;
+	} else {
+		g_pFunctionTable->pfnClientCommand = NULL;
+	}
 }
 
 

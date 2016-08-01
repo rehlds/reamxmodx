@@ -25,7 +25,6 @@
 
 						"windows"   "2480"
 						"linux"     "2500"
-						"mac"       "2500"
 					}
 
 					"m_id"  // unsigned int
@@ -35,7 +34,6 @@
 
 						"windows"   "2484"
 						"linux"     "2504"
-						"mac"       "2504"
 					}
 
 					"m_flNextBotThink"  // float
@@ -44,7 +42,6 @@
 
 						"windows"   "2488"
 						"linux"     "2508"
-						"mac"       "2508"
 					}
 
 					"m_flNextFullBotThink"  // float
@@ -53,7 +50,6 @@
 
 						"windows"   "2492"
 						"linux"     "2512"
-						"mac"       "2512"
 					}
 
 					"m_flPreviousCommandTime"  // float
@@ -62,7 +58,6 @@
 
 						"windows"   "2496"
 						"linux"     "2516"
-						"mac"       "2516"
 					}
 
 					"m_isRunning"  // bool
@@ -71,7 +66,6 @@
 
 						"windows"   "2500"
 						"linux"     "2520"
-						"mac"       "2520"
 					}
 
 					"m_isCrouching"  // bool
@@ -80,7 +74,6 @@
 
 						"windows"   "2501"
 						"linux"     "2521"
-						"mac"       "2521"
 					}
 
 					"m_forwardSpeed"  // float
@@ -89,7 +82,6 @@
 
 						"windows"   "2504"
 						"linux"     "2524"
-						"mac"       "2524"
 					}
 
 					"m_strafeSpeed"  // float
@@ -98,7 +90,6 @@
 
 						"windows"   "2508"
 						"linux"     "2528"
-						"mac"       "2528"
 					}
 
 					"m_verticalSpeed"  // float
@@ -107,7 +98,6 @@
 
 						"windows"   "2512"
 						"linux"     "2532"
-						"mac"       "2532"
 					}
 
 					"m_buttonFlags"  // short unsigned int
@@ -117,7 +107,6 @@
 
 						"windows"   "2516"
 						"linux"     "2536"
-						"mac"       "2536"
 					}
 
 					"m_jumpTimestamp"  // float
@@ -126,7 +115,6 @@
 
 						"windows"   "2520"
 						"linux"     "2540"
-						"mac"       "2540"
 					}
 
 					"m_postureStack"  // struct PostureContext[8]
@@ -136,7 +124,6 @@
 
 						"windows"   "2524"
 						"linux"     "2544"
-						"mac"       "2544"
 					}
 
 					"m_postureStackIndex"  // int
@@ -145,7 +132,6 @@
 
 						"windows"   "2540"
 						"linux"     "2560"
-						"mac"       "2560"
 					}
 				}
 			}

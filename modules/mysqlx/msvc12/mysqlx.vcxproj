@@ -54,7 +54,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\;..\..\..\public;..\..\..\public\sdk;..\..\..\public\amtl;..\..\third_party;..\..\third_party\hashing;..\..\..\..\mysql-5.0\include;..\mysql;..\sdk;..\thread;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\public;$(MYSQL5)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\sdk;..\mysql;..\thread;..\mysql_win\lib;..\mysql_win\include;..\..\..\public;..\..\..\public\amtl;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\public;$(MYSQL5)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_ITERATOR_DEBUG_LEVEL=0;_DEBUG;_WINDOWS;_USRDLL;MYSQL2_EXPORTS;SM_DEFAULT_THREADER;HAVE_STDINT_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -78,7 +78,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\;..\..\..\public;..\..\..\public\sdk;..\..\..\public\amtl;..\..\third_party;..\..\third_party\hashing;..\..\..\..\mysql-5.0\include;..\mysql;..\sdk;..\thread;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\public;$(MYSQL5)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\sdk;..\mysql;..\thread;..\mysql_win\lib;..\mysql_win\include;..\..\..\public;..\..\..\public\amtl;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\public;$(MYSQL5)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_ITERATOR_DEBUG_LEVEL=0;NDEBUG;_WINDOWS;_USRDLL;MYSQL2_EXPORTS;SM_DEFAULT_THREADER;HAVE_STDINT_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -86,9 +86,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;..\..\..\..\mysql-5.0\lib\opt\mysqlclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;..\mysql_win\lib\mysqlclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -99,65 +100,65 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\third_party\zlib\adler32.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\adler32.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\compress.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\compress.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\crc32.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\crc32.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\deflate.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\deflate.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\gzclose.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\gzclose.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\gzlib.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\gzlib.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\gzread.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\gzread.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\gzwrite.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\gzwrite.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\infback.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\infback.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\inffast.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\inffast.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\inflate.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\inflate.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\inftrees.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\inftrees.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\trees.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\trees.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\uncompr.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\uncompr.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\zlib\zutil.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib\</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib\</ObjectFileName>
+    <ClCompile Include="..\zlib_include\zutil.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)zlib_include\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)zlib_include\</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\basic_sql.cpp" />
     <ClCompile Include="..\handles.cpp" />
@@ -171,20 +172,20 @@
     <ClCompile Include="..\mysql\MysqlDriver.cpp" />
     <ClCompile Include="..\mysql\MysqlQuery.cpp" />
     <ClCompile Include="..\mysql\MysqlResultSet.cpp" />
-    <ClCompile Include="..\..\..\public\sdk\amxxmodule.cpp" />
+    <ClCompile Include="..\sdk\amxxmodule.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\third_party\zlib\crc32.h" />
-    <ClInclude Include="..\..\..\third_party\zlib\deflate.h" />
-    <ClInclude Include="..\..\..\third_party\zlib\gzguts.h" />
-    <ClInclude Include="..\..\..\third_party\zlib\inffast.h" />
-    <ClInclude Include="..\..\..\third_party\zlib\inffixed.h" />
-    <ClInclude Include="..\..\..\third_party\zlib\inflate.h" />
-    <ClInclude Include="..\..\..\third_party\zlib\inftrees.h" />
-    <ClInclude Include="..\..\..\third_party\zlib\trees.h" />
-    <ClInclude Include="..\..\..\third_party\zlib\zconf.h" />
-    <ClInclude Include="..\..\..\third_party\zlib\zlib.h" />
-    <ClInclude Include="..\..\..\third_party\zlib\zutil.h" />
+    <ClInclude Include="..\zlib_include\crc32.h" />
+    <ClInclude Include="..\zlib_include\deflate.h" />
+    <ClInclude Include="..\zlib_include\gzguts.h" />
+    <ClInclude Include="..\zlib_include\inffast.h" />
+    <ClInclude Include="..\zlib_include\inffixed.h" />
+    <ClInclude Include="..\zlib_include\inflate.h" />
+    <ClInclude Include="..\zlib_include\inftrees.h" />
+    <ClInclude Include="..\zlib_include\trees.h" />
+    <ClInclude Include="..\zlib_include\zconf.h" />
+    <ClInclude Include="..\zlib_include\zlib.h" />
+    <ClInclude Include="..\zlib_include\zutil.h" />
     <ClInclude Include="..\mysql2_header.h" />
     <ClInclude Include="..\sqlheaders.h" />
     <ClInclude Include="..\threading.h" />
@@ -200,7 +201,7 @@
     <ClInclude Include="..\mysql\MysqlQuery.h" />
     <ClInclude Include="..\mysql\MysqlResultSet.h" />
     <ClInclude Include="..\moduleconfig.h" />
-    <ClInclude Include="..\..\..\public\sdk\amxxmodule.h" />
+    <ClInclude Include="..\sdk\amxxmodule.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\plugins\include\sqlx.inc" />

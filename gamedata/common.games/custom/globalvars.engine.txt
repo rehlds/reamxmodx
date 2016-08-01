@@ -1,0 +1,31 @@
+
+"Games"
+{
+	"#default"
+	{
+		"Addresses"
+		{
+			"g_pGameRules"
+			{
+				"signature"  "g_pGameRules"
+				
+				"windows"
+				{
+					"read"       "2"
+				}
+				
+				"read"  "0"
+			}
+		}
+
+		"Signatures"
+		{
+			"g_pGameRules"	// CGameRules *g_pGameRules
+			{
+				"library"   	"server"
+				"windows"	"g_pGameRules"
+				"linux"		"@g_pGameRules"
+			}
+		}
+	}
+}

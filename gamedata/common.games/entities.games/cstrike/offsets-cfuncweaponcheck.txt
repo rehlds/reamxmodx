@@ -25,7 +25,6 @@
 
 						"windows"   "136"
 						"linux"     "152"
-						"mac"       "152"
 					}
 
 					"sTriggerNoItems"  // string_t
@@ -34,7 +33,6 @@
 
 						"windows"   "140"
 						"linux"     "156"
-						"mac"       "156"
 					}
 
 					"sMaster"  // string_t
@@ -43,7 +41,6 @@
 
 						"windows"   "144"
 						"linux"     "160"
-						"mac"       "160"
 					}
 
 					"sItemName"  // unsigned int[32]
@@ -54,7 +51,6 @@
 
 						"windows"   "148"
 						"linux"     "164"
-						"mac"       "164"
 					}
 
 					"iItemCount"  // int
@@ -63,7 +59,6 @@
 
 						"windows"   "276"
 						"linux"     "292"
-						"mac"       "292"
 					}
 
 					"iAnyWeapon"  // int
@@ -72,7 +67,6 @@
 
 						"windows"   "280"
 						"linux"     "296"
-						"mac"       "296"
 					}
 				}
 			}

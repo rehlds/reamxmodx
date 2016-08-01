@@ -25,7 +25,6 @@
 
 						"windows"   "136"
 						"linux"     "152"
-						"mac"       "152"
 					}
 
 					"m_flNextAttack"  // float
@@ -34,7 +33,6 @@
 
 						"windows"   "140"
 						"linux"     "156"
-						"mac"       "156"
 					}
 
 					"m_vecControllerUsePos"  // Vector
@@ -43,7 +41,6 @@
 
 						"windows"   "144"
 						"linux"     "160"
-						"mac"       "160"
 					}
 
 					"m_yawCenter"  // float
@@ -52,7 +49,6 @@
 
 						"windows"   "156"
 						"linux"     "172"
-						"mac"       "172"
 					}
 
 					"m_yawRate"  // float
@@ -61,7 +57,6 @@
 
 						"windows"   "160"
 						"linux"     "176"
-						"mac"       "176"
 					}
 
 					"m_yawRange"  // float
@@ -70,7 +65,6 @@
 
 						"windows"   "164"
 						"linux"     "180"
-						"mac"       "180"
 					}
 
 					"m_yawTolerance"  // float
@@ -79,7 +73,6 @@
 
 						"windows"   "168"
 						"linux"     "184"
-						"mac"       "184"
 					}
 
 					"m_pitchCenter"  // float
@@ -88,7 +81,6 @@
 
 						"windows"   "172"
 						"linux"     "188"
-						"mac"       "188"
 					}
 
 					"m_pitchRate"  // float
@@ -97,7 +89,6 @@
 
 						"windows"   "176"
 						"linux"     "192"
-						"mac"       "192"
 					}
 
 					"m_pitchRange"  // float
@@ -106,7 +97,6 @@
 
 						"windows"   "180"
 						"linux"     "196"
-						"mac"       "196"
 					}
 
 					"m_pitchTolerance"  // float
@@ -115,7 +105,6 @@
 
 						"windows"   "184"
 						"linux"     "200"
-						"mac"       "200"
 					}
 
 					"m_fireLast"  // float
@@ -124,7 +113,6 @@
 
 						"windows"   "188"
 						"linux"     "204"
-						"mac"       "204"
 					}
 
 					"m_fireRate"  // float
@@ -133,7 +121,6 @@
 
 						"windows"   "192"
 						"linux"     "208"
-						"mac"       "208"
 					}
 
 					"m_lastSightTime"  // float
@@ -142,7 +129,6 @@
 
 						"windows"   "196"
 						"linux"     "212"
-						"mac"       "212"
 					}
 
 					"m_persist"  // float
@@ -151,7 +137,6 @@
 
 						"windows"   "200"
 						"linux"     "216"
-						"mac"       "216"
 					}
 
 					"m_minRange"  // float
@@ -160,7 +145,6 @@
 
 						"windows"   "204"
 						"linux"     "220"
-						"mac"       "220"
 					}
 
 					"m_maxRange"  // float
@@ -169,7 +153,6 @@
 
 						"windows"   "208"
 						"linux"     "224"
-						"mac"       "224"
 					}
 
 					"m_barrelPos"  // Vector
@@ -178,7 +161,6 @@
 
 						"windows"   "212"
 						"linux"     "228"
-						"mac"       "228"
 					}
 
 					"m_spriteScale"  // float
@@ -187,7 +169,6 @@
 
 						"windows"   "224"
 						"linux"     "240"
-						"mac"       "240"
 					}
 
 					"m_iszSpriteSmoke"  // int
@@ -196,7 +177,6 @@
 
 						"windows"   "228"
 						"linux"     "244"
-						"mac"       "244"
 					}
 
 					"m_iszSpriteFlash"  // int
@@ -205,7 +185,6 @@
 
 						"windows"   "232"
 						"linux"     "248"
-						"mac"       "248"
 					}
 
 					"m_bulletType"  // enum TANKBULLET
@@ -214,7 +193,6 @@
 
 						"windows"   "236"
 						"linux"     "252"
-						"mac"       "252"
 					}
 
 					"m_iBulletDamage"  // int
@@ -223,7 +201,6 @@
 
 						"windows"   "240"
 						"linux"     "256"
-						"mac"       "256"
 					}
 
 					"m_sightOrigin"  // Vector
@@ -232,7 +209,6 @@
 
 						"windows"   "244"
 						"linux"     "260"
-						"mac"       "260"
 					}
 
 					"m_spread"  // int
@@ -241,7 +217,6 @@
 
 						"windows"   "256"
 						"linux"     "272"
-						"mac"       "272"
 					}
 
 					"m_iszMaster"  // int
@@ -250,7 +225,6 @@
 
 						"windows"   "260"
 						"linux"     "276"
-						"mac"       "276"
 					}
 				}
 			}

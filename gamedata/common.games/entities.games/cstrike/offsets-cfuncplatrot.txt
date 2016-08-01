@@ -25,7 +25,6 @@
 
 						"windows"   "300"
 						"linux"     "320"
-						"mac"       "320"
 					}
 
 					"m_start"  // Vector
@@ -34,7 +33,6 @@
 
 						"windows"   "312"
 						"linux"     "332"
-						"mac"       "332"
 					}
 				}
 			}

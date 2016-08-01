@@ -35,13 +35,13 @@
     <ClCompile Include="..\CstrikePlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\public\memtools\MemoryUtils.cpp">
+    <ClCompile Include="..\memtools\MemoryUtils.cpp">
       <Filter>Memtools</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\public\memtools\CDetour\detours.cpp">
+    <ClCompile Include="..\memtools\CDetour\detours.cpp">
       <Filter>Memtools\CDetour</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\public\memtools\CDetour\asm\asm.c">
+    <ClCompile Include="..\memtools\CDetour\asm\asm.c">
       <Filter>Memtools\CDetour\asm</Filter>
     </ClCompile>
     <ClCompile Include="..\CstrikeNatives.cpp">
@@ -50,7 +50,10 @@
     <ClCompile Include="..\CstrikeUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\public\sdk\amxxmodule.cpp">
+    <ClCompile Include="..\sdk\amxxmodule.cpp">
+      <Filter>Module SDK\SDK Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sdk\mod_rehlds_api.cpp">
       <Filter>Module SDK\SDK Base</Filter>
     </ClCompile>
     <ClCompile Include="..\CstrikeUserMessages.cpp">
@@ -62,6 +65,9 @@
     <ClCompile Include="..\CstrikeItemsInfos.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\sdk\interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CstrikePlayer.h">
@@ -70,22 +76,22 @@
     <ClInclude Include="..\CstrikeDatas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\public\memtools\MemoryUtils.h">
+    <ClInclude Include="..\memtools\MemoryUtils.h">
       <Filter>Memtools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\public\memtools\CDetour\detourhelpers.h">
+    <ClInclude Include="..\memtools\CDetour\detourhelpers.h">
       <Filter>Memtools\CDetour</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\public\memtools\CDetour\detours.h">
+    <ClInclude Include="..\memtools\CDetour\detours.h">
       <Filter>Memtools\CDetour</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\public\memtools\CDetour\asm\asm.h">
+    <ClInclude Include="..\memtools\CDetour\asm\asm.h">
       <Filter>Memtools\CDetour\asm</Filter>
     </ClInclude>
     <ClInclude Include="..\CstrikeUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\public\sdk\amxxmodule.h">
+    <ClInclude Include="..\sdk\amxxmodule.h">
       <Filter>Module SDK\SDK Base</Filter>
     </ClInclude>
     <ClInclude Include="..\moduleconfig.h">
@@ -108,5 +114,6 @@
     <None Include="..\..\..\..\plugins\include\cstrike_const.inc">
       <Filter>Pawn Includes</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

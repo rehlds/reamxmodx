@@ -112,7 +112,7 @@ void UTIL_StringToLower(const char *str, char *buffer, size_t maxlength);
 	}
 
 
-class CUnifiedSignals
+class CUnifiedSignals_AMX
 {
 	public:
 

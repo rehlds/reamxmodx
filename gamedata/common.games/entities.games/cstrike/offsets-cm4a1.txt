@@ -25,7 +25,6 @@
 
 						"windows"   "320"
 						"linux"     "336"
-						"mac"       "336"
 					}
 
 					"iShellOn"  // int
@@ -34,7 +33,6 @@
 
 						"windows"   "324"
 						"linux"     "340"
-						"mac"       "340"
 					}
 
 					"m_usFireM4A1"  // short unsigned int
@@ -44,7 +42,6 @@
 
 						"windows"   "328"
 						"linux"     "344"
-						"mac"       "344"
 					}
 				}
 			}

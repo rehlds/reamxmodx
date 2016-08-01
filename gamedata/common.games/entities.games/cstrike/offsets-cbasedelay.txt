@@ -25,7 +25,6 @@
 
 						"windows"   "136"
 						"linux"     "152"
-						"mac"       "152"
 					}
 
 					"m_iszKillTarget"  // int
@@ -34,7 +33,6 @@
 
 						"windows"   "140"
 						"linux"     "156"
-						"mac"       "156"
 					}
 				}
 			}

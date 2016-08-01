@@ -65,8 +65,8 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\;..\..\..\..\public;..\..\..\..\public\sdk;..\..\..\..\public\amtl;..\..\third_party;..\..\third_party\hashing;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;csx_EXPORTS;JIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\;..\sdk;..\..\..\..\public;..\..\..\..\public\amtl;..\..\..\..\public\metamod;..\..\..\..\public\cssdk\common;..\..\..\..\public\cssdk\dlls;..\..\..\..\public\cssdk\engine;..\..\..\..\public\cssdk\pm_shared;..\..\..\..\public\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;csx_EXPORTS;HAVE_STDINT_H;JIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <StructMemberAlignment>Default</StructMemberAlignment>
@@ -79,9 +79,10 @@
       <ObjectFileName>.\Release/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level2</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -145,14 +146,16 @@
     <ClCompile Include="..\meta_api.cpp" />
     <ClCompile Include="..\rank.cpp" />
     <ClCompile Include="..\usermsg.cpp" />
-    <ClCompile Include="..\..\..\..\public\sdk\amxxmodule.cpp" />
+    <ClCompile Include="..\sdk\amxxmodule.cpp" />
+    <ClCompile Include="..\sdk\interface.cpp" />
+    <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CMisc.h" />
     <ClInclude Include="..\CRank.h" />
     <ClInclude Include="..\rank.h" />
     <ClInclude Include="..\moduleconfig.h" />
-    <ClInclude Include="..\..\..\..\public\sdk\amxxmodule.h" />
+    <ClInclude Include="..\sdk\amxxmodule.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\plugins\include\csstats.inc" />

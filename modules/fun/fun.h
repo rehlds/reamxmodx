@@ -13,6 +13,8 @@
 
 #include "amxxmodule.h"
 
+extern DLL_FUNCTIONS *g_pFunctionTable;
+
 // Fun-specific defines below
 #define GETCLIENTLISTENING		(*g_engfuncs.pfnVoice_GetClientListening)
 #define SETCLIENTLISTENING		(*g_engfuncs.pfnVoice_SetClientListening)

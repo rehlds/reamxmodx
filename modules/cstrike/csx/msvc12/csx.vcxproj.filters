@@ -35,7 +35,13 @@
     <ClCompile Include="..\usermsg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\public\sdk\amxxmodule.cpp">
+    <ClCompile Include="..\sdk\amxxmodule.cpp">
+      <Filter>SDK\SDK Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sdk\interface.cpp">
+      <Filter>SDK\SDK Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sdk\mod_rehlds_api.cpp">
       <Filter>SDK\SDK Base</Filter>
     </ClCompile>
   </ItemGroup>
@@ -52,7 +58,7 @@
     <ClInclude Include="..\moduleconfig.h">
       <Filter>SDK</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\public\sdk\amxxmodule.h">
+    <ClInclude Include="..\sdk\amxxmodule.h">
       <Filter>SDK\SDK Base</Filter>
     </ClInclude>
   </ItemGroup>

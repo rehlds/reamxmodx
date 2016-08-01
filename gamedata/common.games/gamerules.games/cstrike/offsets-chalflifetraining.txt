@@ -25,7 +25,6 @@
 
 						"windows"   "708"
 						"linux"     "708"
-						"mac"       "708"
 					}
 
 					"ServerRestartTime"  // float
@@ -34,7 +33,6 @@
 
 						"windows"   "712"
 						"linux"     "712"
-						"mac"       "712"
 					}
 
 					"fInBuyArea"  // BOOL
@@ -43,7 +41,6 @@
 
 						"windows"   "716"
 						"linux"     "716"
-						"mac"       "716"
 					}
 
 					"fVisitedBuyArea"  // BOOL
@@ -52,7 +49,6 @@
 
 						"windows"   "720"
 						"linux"     "720"
-						"mac"       "720"
 					}
 
 					"fVGUIMenus"  // bool
@@ -61,7 +57,6 @@
 
 						"windows"   "724"
 						"linux"     "724"
-						"mac"       "724"
 					}
 				}
 			}

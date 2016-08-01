@@ -25,7 +25,6 @@
 
 						"windows"   "4"
 						"linux"     "4"
-						"mac"       "4"
 					}
 
 					"m_bBombDropped"  // BOOL
@@ -34,7 +33,6 @@
 
 						"windows"   "8"
 						"linux"     "8"
-						"mac"       "8"
 					}
 				}
 			}

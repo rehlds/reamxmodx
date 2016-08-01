@@ -65,8 +65,8 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\;..\..\..\public;..\..\..\public\sdk;..\..\..\public\amtl;..\..\third_party;..\..\third_party\hashing;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FUN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\;..\sdk;..\..\..\public;..\..\..\public\amtl;..\..\..\public\metamod;..\..\..\public\cssdk\common;..\..\..\public\cssdk\dlls;..\..\..\public\cssdk\engine;..\..\..\public\cssdk\pm_shared;..\..\..\public\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FUN_EXPORTS;HAVE_STDINT_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -78,8 +78,9 @@
       <ObjectFileName>.\Release/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level2</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -107,7 +108,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\;..\..\..\public;..\..\..\public\sdk;..\..\..\public\amtl;..\..\third_party;..\..\third_party\hashing;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\sdk;..\..\..\public;..\..\..\public\amtl;..\..\..\public\metamod;..\..\..\public\cssdk\common;..\..\..\public\cssdk\dlls;..\..\..\public\cssdk\engine;..\..\..\public\cssdk\pm_shared;..\..\..\public\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FUN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -141,16 +142,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\public\memtools\MemoryUtils.cpp" />
+    <ClCompile Include="..\memtools\MemoryUtils.cpp" />
     <ClCompile Include="..\fun.cpp" />
-    <ClCompile Include="..\..\..\public\sdk\amxxmodule.cpp" />
+    <ClCompile Include="..\sdk\amxxmodule.cpp" />
+    <ClCompile Include="..\sdk\interface.cpp" />
+    <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\public\HLTypeConversion.h" />
-    <ClInclude Include="..\..\..\public\memtools\MemoryUtils.h" />
+    <ClInclude Include="..\memtools\MemoryUtils.h" />
     <ClInclude Include="..\fun.h" />
     <ClInclude Include="..\moduleconfig.h" />
-    <ClInclude Include="..\..\..\public\sdk\amxxmodule.h" />
+    <ClInclude Include="..\sdk\amxxmodule.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\plugins\include\fun.inc" />

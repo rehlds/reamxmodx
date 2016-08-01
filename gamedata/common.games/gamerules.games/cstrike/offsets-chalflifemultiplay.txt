@@ -25,7 +25,6 @@
 
 						"windows"   "16"
 						"linux"     "12"
-						"mac"       "12"
 					}
 
 					"m_fTeamCount"  // float
@@ -34,7 +33,6 @@
 
 						"windows"   "48"
 						"linux"     "40"
-						"mac"       "40"
 					}
 
 					"m_flCheckWinConditions"  // float
@@ -43,7 +41,6 @@
 
 						"windows"   "52"
 						"linux"     "44"
-						"mac"       "44"
 					}
 
 					"m_fRoundCount"  // float
@@ -52,7 +49,6 @@
 
 						"windows"   "56"
 						"linux"     "48"
-						"mac"       "48"
 					}
 
 					"m_iRoundTime"  // int
@@ -61,7 +57,6 @@
 
 						"windows"   "60"
 						"linux"     "52"
-						"mac"       "52"
 					}
 
 					"m_iRoundTimeSecs"  // int
@@ -70,7 +65,6 @@
 
 						"windows"   "64"
 						"linux"     "56"
-						"mac"       "56"
 					}
 
 					"m_iIntroRoundTime"  // int
@@ -79,7 +73,6 @@
 
 						"windows"   "68"
 						"linux"     "60"
-						"mac"       "60"
 					}
 
 					"m_fIntroRoundCount"  // float
@@ -88,7 +81,6 @@
 
 						"windows"   "72"
 						"linux"     "64"
-						"mac"       "64"
 					}
 
 					"m_iAccountTerrorist"  // int
@@ -97,7 +89,6 @@
 
 						"windows"   "76"
 						"linux"     "68"
-						"mac"       "68"
 					}
 
 					"m_iAccountCT"  // int
@@ -106,7 +97,6 @@
 
 						"windows"   "80"
 						"linux"     "72"
-						"mac"       "72"
 					}
 
 					"m_iNumTerrorist"  // int
@@ -115,7 +105,6 @@
 
 						"windows"   "84"
 						"linux"     "76"
-						"mac"       "76"
 					}
 
 					"m_iNumCT"  // int
@@ -124,7 +113,6 @@
 
 						"windows"   "88"
 						"linux"     "80"
-						"mac"       "80"
 					}
 
 					"m_iNumSpawnableTerrorist"  // int
@@ -133,7 +121,6 @@
 
 						"windows"   "92"
 						"linux"     "84"
-						"mac"       "84"
 					}
 
 					"m_iNumSpawnableCT"  // int
@@ -142,7 +129,6 @@
 
 						"windows"   "96"
 						"linux"     "88"
-						"mac"       "88"
 					}
 
 					"m_iSpawnPointCount_Terrorist"  // int
@@ -151,7 +137,6 @@
 
 						"windows"   "100"
 						"linux"     "92"
-						"mac"       "92"
 					}
 
 					"m_iSpawnPointCount_CT"  // int
@@ -160,7 +145,6 @@
 
 						"windows"   "104"
 						"linux"     "96"
-						"mac"       "96"
 					}
 
 					"m_iHostagesRescued"  // int
@@ -169,7 +153,6 @@
 
 						"windows"   "108"
 						"linux"     "100"
-						"mac"       "100"
 					}
 
 					"m_iHostagesTouched"  // int
@@ -178,7 +161,6 @@
 
 						"windows"   "112"
 						"linux"     "104"
-						"mac"       "104"
 					}
 
 					"m_iRoundWinStatus"  // int
@@ -187,7 +169,6 @@
 
 						"windows"   "116"
 						"linux"     "108"
-						"mac"       "108"
 					}
 
 					"m_iNumCTWins"  // short int
@@ -196,7 +177,6 @@
 
 						"windows"   "120"
 						"linux"     "112"
-						"mac"       "112"
 					}
 
 					"m_iNumTerroristWins"  // short int
@@ -205,7 +185,6 @@
 
 						"windows"   "122"
 						"linux"     "114"
-						"mac"       "114"
 					}
 
 					"m_bTargetBombed"  // bool
@@ -214,7 +193,6 @@
 
 						"windows"   "124"
 						"linux"     "116"
-						"mac"       "116"
 					}
 
 					"m_bBombDefused"  // bool
@@ -223,7 +201,6 @@
 
 						"windows"   "125"
 						"linux"     "117"
-						"mac"       "117"
 					}
 
 					"m_bMapHasBombTarget"  // bool
@@ -232,7 +209,6 @@
 
 						"windows"   "126"
 						"linux"     "118"
-						"mac"       "118"
 					}
 
 					"m_bMapHasBombZone"  // bool
@@ -241,7 +217,6 @@
 
 						"windows"   "127"
 						"linux"     "119"
-						"mac"       "119"
 					}
 
 					"m_bMapHasBuyZone"  // bool
@@ -250,7 +225,6 @@
 
 						"windows"   "128"
 						"linux"     "120"
-						"mac"       "120"
 					}
 
 					"m_bMapHasRescueZone"  // bool
@@ -259,7 +233,6 @@
 
 						"windows"   "129"
 						"linux"     "121"
-						"mac"       "121"
 					}
 
 					"m_bMapHasEscapeZone"  // bool
@@ -268,7 +241,6 @@
 
 						"windows"   "130"
 						"linux"     "122"
-						"mac"       "122"
 					}
 
 					"m_iMapHasVIPSafetyZone"  // int
@@ -277,7 +249,6 @@
 
 						"windows"   "132"
 						"linux"     "124"
-						"mac"       "124"
 					}
 
 					"m_bMapHasCameras"  // int
@@ -286,7 +257,6 @@
 
 						"windows"   "136"
 						"linux"     "128"
-						"mac"       "128"
 					}
 
 					"m_iC4Timer"  // int
@@ -295,7 +265,6 @@
 
 						"windows"   "140"
 						"linux"     "132"
-						"mac"       "132"
 					}
 
 					"m_iC4Guy"  // int
@@ -304,7 +273,6 @@
 
 						"windows"   "144"
 						"linux"     "136"
-						"mac"       "136"
 					}
 
 					"m_iLoserBonus"  // int
@@ -313,7 +281,6 @@
 
 						"windows"   "148"
 						"linux"     "140"
-						"mac"       "140"
 					}
 
 					"m_iNumConsecutiveCTLoses"  // int
@@ -322,7 +289,6 @@
 
 						"windows"   "152"
 						"linux"     "144"
-						"mac"       "144"
 					}
 
 					"m_iNumConsecutiveTerroristLoses"  // int
@@ -331,7 +297,6 @@
 
 						"windows"   "156"
 						"linux"     "148"
-						"mac"       "148"
 					}
 
 					"m_fMaxIdlePeriod"  // float
@@ -340,7 +305,6 @@
 
 						"windows"   "160"
 						"linux"     "152"
-						"mac"       "152"
 					}
 
 					"m_iLimitTeams"  // int
@@ -349,7 +313,6 @@
 
 						"windows"   "164"
 						"linux"     "156"
-						"mac"       "156"
 					}
 
 					"m_bLevelInitialized"  // bool
@@ -358,7 +321,6 @@
 
 						"windows"   "168"
 						"linux"     "160"
-						"mac"       "160"
 					}
 
 					"m_bRoundTerminating"  // bool
@@ -367,7 +329,6 @@
 
 						"windows"   "169"
 						"linux"     "161"
-						"mac"       "161"
 					}
 
 					"m_bCompleteReset"  // bool
@@ -376,7 +337,6 @@
 
 						"windows"   "170"
 						"linux"     "162"
-						"mac"       "162"
 					}
 
 					"m_flRequiredEscapeRatio"  // float
@@ -385,7 +345,6 @@
 
 						"windows"   "172"
 						"linux"     "164"
-						"mac"       "164"
 					}
 
 					"m_iNumEscapers"  // int
@@ -394,7 +353,6 @@
 
 						"windows"   "176"
 						"linux"     "168"
-						"mac"       "168"
 					}
 
 					"m_iHaveEscaped"  // int
@@ -403,7 +361,6 @@
 
 						"windows"   "180"
 						"linux"     "172"
-						"mac"       "172"
 					}
 
 					"m_bCTCantBuy"  // bool
@@ -412,7 +369,6 @@
 
 						"windows"   "184"
 						"linux"     "176"
-						"mac"       "176"
 					}
 
 					"m_bTCantBuy"  // bool
@@ -421,7 +377,6 @@
 
 						"windows"   "185"
 						"linux"     "177"
-						"mac"       "177"
 					}
 
 					"m_flBombRadius"  // float
@@ -430,7 +385,6 @@
 
 						"windows"   "188"
 						"linux"     "180"
-						"mac"       "180"
 					}
 
 					"m_iConsecutiveVIP"  // int
@@ -439,7 +393,6 @@
 
 						"windows"   "192"
 						"linux"     "184"
-						"mac"       "184"
 					}
 
 					"m_iTotalGunCount"  // int
@@ -448,7 +401,6 @@
 
 						"windows"   "196"
 						"linux"     "188"
-						"mac"       "188"
 					}
 
 					"m_iTotalGrenadeCount"  // int
@@ -457,7 +409,6 @@
 
 						"windows"   "200"
 						"linux"     "192"
-						"mac"       "192"
 					}
 
 					"m_iTotalArmourCount"  // int
@@ -466,7 +417,6 @@
 
 						"windows"   "204"
 						"linux"     "196"
-						"mac"       "196"
 					}
 
 					"m_iUnBalancedRounds"  // int
@@ -475,7 +425,6 @@
 
 						"windows"   "208"
 						"linux"     "200"
-						"mac"       "200"
 					}
 
 					"m_iNumEscapeRounds"  // int
@@ -484,7 +433,6 @@
 
 						"windows"   "212"
 						"linux"     "204"
-						"mac"       "204"
 					}
 
 					"m_iMapVotes"  // int[100]
@@ -494,7 +442,6 @@
 
 						"windows"   "216"
 						"linux"     "208"
-						"mac"       "208"
 					}
 
 					"m_iLastPick"  // int
@@ -503,7 +450,6 @@
 
 						"windows"   "616"
 						"linux"     "608"
-						"mac"       "608"
 					}
 
 					"m_iMaxMapTime"  // int
@@ -512,7 +458,6 @@
 
 						"windows"   "620"
 						"linux"     "612"
-						"mac"       "612"
 					}
 
 					"m_iMaxRounds"  // int
@@ -521,7 +466,6 @@
 
 						"windows"   "624"
 						"linux"     "616"
-						"mac"       "616"
 					}
 
 					"m_iTotalRoundsPlayed"  // int
@@ -530,7 +474,6 @@
 
 						"windows"   "628"
 						"linux"     "620"
-						"mac"       "620"
 					}
 
 					"m_iMaxRoundsWon"  // int
@@ -539,7 +482,6 @@
 
 						"windows"   "632"
 						"linux"     "624"
-						"mac"       "624"
 					}
 
 					"m_iStoredSpectValue"  // int
@@ -548,7 +490,6 @@
 
 						"windows"   "636"
 						"linux"     "628"
-						"mac"       "628"
 					}
 
 					"m_flForceCameraValue"  // float
@@ -557,7 +498,6 @@
 
 						"windows"   "640"
 						"linux"     "632"
-						"mac"       "632"
 					}
 
 					"m_flForceChaseCamValue"  // float
@@ -566,7 +506,6 @@
 
 						"windows"   "644"
 						"linux"     "636"
-						"mac"       "636"
 					}
 
 					"m_flFadeToBlackValue"  // float
@@ -575,7 +514,6 @@
 
 						"windows"   "648"
 						"linux"     "640"
-						"mac"       "640"
 					}
 
 					"m_pVIP"  // CBasePlayer*
@@ -584,7 +522,6 @@
 
 						"windows"   "652"
 						"linux"     "644"
-						"mac"       "644"
 					}
 
 					"VIPQueue"  // CBasePlayer*[5]
@@ -594,7 +531,6 @@
 
 						"windows"   "656"
 						"linux"     "648"
-						"mac"       "648"
 					}
 
 					"m_flIntermissionEndTime"  // float
@@ -603,7 +539,6 @@
 
 						"windows"   "676"
 						"linux"     "668"
-						"mac"       "668"
 					}
 
 					"m_flIntermissionStartTime"  // float
@@ -612,7 +547,6 @@
 
 						"windows"   "680"
 						"linux"     "672"
-						"mac"       "672"
 					}
 
 					"m_iEndIntermissionButtonHit"  // BOOL
@@ -621,7 +555,6 @@
 
 						"windows"   "684"
 						"linux"     "676"
-						"mac"       "676"
 					}
 
 					"m_tmNextPeriodicThink"  // float
@@ -630,7 +563,6 @@
 
 						"windows"   "688"
 						"linux"     "680"
-						"mac"       "680"
 					}
 
 					"m_bFirstConnected"  // bool
@@ -639,7 +571,6 @@
 
 						"windows"   "692"
 						"linux"     "684"
-						"mac"       "684"
 					}
 
 					"m_bInCareerGame"  // bool
@@ -648,7 +579,6 @@
 
 						"windows"   "693"
 						"linux"     "685"
-						"mac"       "685"
 					}
 
 					"m_fCareerRoundMenuTime"  // float
@@ -657,7 +587,6 @@
 
 						"windows"   "696"
 						"linux"     "688"
-						"mac"       "688"
 					}
 
 					"m_iCareerMatchWins"  // int
@@ -666,7 +595,6 @@
 
 						"windows"   "700"
 						"linux"     "692"
-						"mac"       "692"
 					}
 
 					"m_iRoundWinDifference"  // int
@@ -675,7 +603,6 @@
 
 						"windows"   "704"
 						"linux"     "696"
-						"mac"       "696"
 					}
 
 					"m_fCareerMatchMenuTime"  // float
@@ -684,7 +611,6 @@
 
 						"windows"   "708"
 						"linux"     "700"
-						"mac"       "700"
 					}
 
 					"m_bSkipSpawn"  // bool
@@ -693,7 +619,6 @@
 
 						"windows"   "712"
 						"linux"     "704"
-						"mac"       "704"
 					}
 				}
 			}

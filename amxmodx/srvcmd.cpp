@@ -170,6 +170,7 @@ void amx_command()
 		print_srvconsole("Built from: https://github.com/alliedmodders/amxmodx/commit/%s\n", AMXX_SHA);
 		print_srvconsole("Build ID: %s:%s\n", AMXX_LOCAL_REV, AMXX_SHA);
 #endif
+		print_srvconsole("Build ID: %s\n", AMXX_BUILD_LOCAL_REV);
 #if defined JIT && !defined ASM32
 		print_srvconsole("Core mode: JIT Only\n");
 #elif !defined JIT && defined ASM32

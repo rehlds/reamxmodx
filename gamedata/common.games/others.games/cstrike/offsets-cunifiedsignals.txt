@@ -23,14 +23,12 @@
 					{
 						"windows"   "0"
 						"linux"     "0"
-						"mac"       "0"
 					}
 
 					"m_flState"  // int
 					{
 						"windows"   "4"
 						"linux"     "4"
-						"mac"       "4"
 					}
 				}
 			}

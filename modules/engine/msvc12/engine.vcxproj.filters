@@ -44,16 +44,22 @@
     <ClCompile Include="..\globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\public\sdk\amxxmodule.cpp">
+    <ClCompile Include="..\sdk\amxxmodule.cpp">
       <Filter>Module SDK\SDK Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\public\memtools\MemoryUtils.cpp">
+    <ClCompile Include="..\sdk\interface.cpp">
+      <Filter>Module SDK\SDK Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sdk\mod_rehlds_api.cpp">
+      <Filter>Module SDK\SDK Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\memtools\MemoryUtils.cpp">
       <Filter>Memtools</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\public\memtools\CDetour\detours.cpp">
+    <ClCompile Include="..\memtools\CDetour\detours.cpp">
       <Filter>Memtools\CDetour</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\public\memtools\CDetour\asm\asm.c">
+    <ClCompile Include="..\memtools\CDetour\asm\asm.c">
       <Filter>Memtools\CDetour\asm</Filter>
     </ClCompile>
   </ItemGroup>
@@ -70,19 +76,19 @@
     <ClInclude Include="..\moduleconfig.h">
       <Filter>Module SDK</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\public\sdk\amxxmodule.h">
+    <ClInclude Include="..\sdk\amxxmodule.h">
       <Filter>Module SDK\SDK Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\public\memtools\MemoryUtils.h">
+    <ClInclude Include="..\memtools\MemoryUtils.h">
       <Filter>Memtools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\public\memtools\CDetour\detourhelpers.h">
+    <ClInclude Include="..\memtools\CDetour\detourhelpers.h">
       <Filter>Memtools\CDetour</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\public\memtools\CDetour\detours.h">
+    <ClInclude Include="..\memtools\CDetour\detours.h">
       <Filter>Memtools\CDetour</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\public\memtools\CDetour\asm\asm.h">
+    <ClInclude Include="..\memtools\CDetour\asm\asm.h">
       <Filter>Memtools\CDetour\asm</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\public\HLTypeConversion.h">

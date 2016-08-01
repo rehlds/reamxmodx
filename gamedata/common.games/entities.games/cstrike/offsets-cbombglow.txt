@@ -25,7 +25,6 @@
 
 						"windows"   "144"
 						"linux"     "160"
-						"mac"       "160"
 					}
 
 					"m_tmBeepPeriod"  // float
@@ -34,7 +33,6 @@
 
 						"windows"   "148"
 						"linux"     "164"
-						"mac"       "164"
 					}
 
 					"m_bSetModel"  // bool
@@ -43,7 +41,6 @@
 
 						"windows"   "152"
 						"linux"     "168"
-						"mac"       "168"
 					}
 				}
 			}

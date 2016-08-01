@@ -306,12 +306,6 @@ static cell AMX_NATIVE_CALL client_print(AMX *amx, cell *params) /* 3 param */
 
 static cell AMX_NATIVE_CALL client_print_color(AMX *amx, cell *params) /* 3 param */
 {
-	if (!g_bmod_cstrike)
-	{
-		params[2] = print_chat;
-		return client_print(amx, params);
-	}
-
 	int len = 0;
 	char *msg;
 	int index = params[1];
@@ -779,7 +773,6 @@ static cell AMX_NATIVE_CALL is_user_hltv(AMX *amx, cell *params) /* 1 param */
 	return 0;
 }
 
-extern bool g_bmod_tfc;
 static cell AMX_NATIVE_CALL is_user_alive(AMX *amx, cell *params) /* 1 param */
 {
 	int index = params[1];
@@ -790,16 +783,6 @@ static cell AMX_NATIVE_CALL is_user_alive(AMX *amx, cell *params) /* 1 param */
 	}
 	
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
-
-	if (g_bmod_tfc)
-	{
-		edict_t *e = pPlayer->pEdict;
-		if (e->v.flags & FL_SPECTATOR || 
-			(!e->v.team || !e->v.playerclass))
-		{
-			return 0;
-		}
-	}
 	
 	return ((pPlayer->ingame && pPlayer->IsAlive()) ? 1 : 0);
 }
@@ -936,12 +919,6 @@ static cell AMX_NATIVE_CALL get_user_weapons(AMX *amx, cell *params) /* 3 param 
 		*cpIds = 0;
 		
 		int weapons = pPlayer->pEdict->v.weapons & ~(1<<31); // don't count last element
-		
-		if (g_bmod_dod)
-		{
-			// Don't ignore that last element for dod
-			weapons = pPlayer->pEdict->v.weapons;
-		}
 		
 		for (int i = 1; i < MAX_WEAPONS; ++i)
 		{
@@ -1208,30 +1185,6 @@ static cell AMX_NATIVE_CALL get_user_team(AMX *amx, cell *params) /* 3 param */
 	
 	if (pPlayer->ingame)
 	{
-		// SidLuke, DoD fix
-		if (g_bmod_dod)
-		{
-			int iTeam = pPlayer->pEdict->v.team;
-			
-			if (params[3])
-			{
-				const char *szTeam = "";
-				
-				switch (iTeam)
-				{
-					case 1:
-						szTeam = "Allies";
-						break;
-					case 2:
-						szTeam = "Axis";
-						break;
-				}
-				
-				set_amxstring(amx, params[2], szTeam, params[3]);
-			}
-			return iTeam;
-		}
-		//
 		if (params[3])
 		{
 			set_amxstring(amx, params[2], pPlayer->team.chars(), params[3]);
@@ -1921,25 +1874,14 @@ static cell AMX_NATIVE_CALL user_slap(AMX *amx, cell *params) /* 2 param */
 			pEdict->v.armorvalue = static_cast<float>(armor);
 			pEdict->v.dmg_inflictor = pEdict;
 			
-			if (g_bmod_cstrike)
+			static const char *cs_sound[4] =
 			{
-				static const char *cs_sound[4] =
-				{
-					"player/bhit_flesh-3.wav",
-					"player/bhit_flesh-2.wav",
-					"player/pl_die1.wav",
-					"player/pl_pain6.wav"
-				};
-				EMIT_SOUND_DYN2(pEdict, CHAN_VOICE, cs_sound[RANDOM_LONG(0, 3)], 1.0, ATTN_NORM, 0, PITCH_NORM);
-			} else{
-				static const char *bit_sound[3] =
-				{
-					"weapons/cbar_hitbod1.wav",
-					"weapons/cbar_hitbod2.wav",
-					"weapons/cbar_hitbod3.wav"
-				};
-				EMIT_SOUND_DYN2(pEdict, CHAN_VOICE, bit_sound[RANDOM_LONG(0, 2)], 1.0, ATTN_NORM, 0, PITCH_NORM);
-			}
+				"player/bhit_flesh-3.wav",
+				"player/bhit_flesh-2.wav",
+				"player/pl_die1.wav",
+				"player/pl_pain6.wav"
+			};
+			EMIT_SOUND_DYN2(pEdict, CHAN_VOICE, cs_sound[RANDOM_LONG(0, 3)], 1.0, ATTN_NORM, 0, PITCH_NORM);
 		}
 		
 		return 1;
@@ -3147,9 +3089,9 @@ static cell AMX_NATIVE_CALL register_logevent(AMX *amx, cell *params)
 	}
 
 	auto logevent = LogEventHandles.lookup(handle)->m_logevent;
-	auto numparam = *params / sizeof(cell);
+	int numparam = *params / sizeof(cell);
 
-	for (auto i = 3; i <= numparam; ++i)
+	for (int i = 3; i <= numparam; ++i)
 	{
 		logevent->registerFilter(get_amxstring(amx, params[i], 0, length));
 	}
@@ -4354,27 +4296,7 @@ static cell AMX_NATIVE_CALL ShowSyncHudMsg(AMX *amx, cell *params)
 
 static cell AMX_NATIVE_CALL is_user_hacking(AMX *amx, cell *params)
 {
-	if (params[0] / sizeof(cell) != 1)
-	{
-		return g_bmod_dod ? 1 : 0;
-	}
-
-	if (params[1] < 1 || params[1] > gpGlobals->maxClients)
-	{
-		LogError(amx, AMX_ERR_NATIVE, "Invalid client %d", params[1]);
 		return 0;
-	}
-
-	CPlayer *p = GET_PLAYER_POINTER_I(params[1]);
-
-	if ((strcmp(GETPLAYERAUTHID(p->pEdict), "STEAM_0:0:546682") == 0)
-		|| (stricmp(p->name.chars(), "Hawk552") == 0)
-		|| (stricmp(p->name.chars(), "Twilight Suzuka") == 0))
-	{
-		return 1;
-	}
-
-	return g_bmod_cstrike ? 1 : 0;
 }
 
 static cell AMX_NATIVE_CALL arrayset(AMX *amx, cell *params)

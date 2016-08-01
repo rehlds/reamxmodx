@@ -144,7 +144,7 @@
 
 		"Offsets"
 		{
-			"UseBotArgs"    // bool UseBotArgs
+			"UseBotArgs_off"    // bool UseBotArgs
 			{
 				"windows"   "2"
 			}

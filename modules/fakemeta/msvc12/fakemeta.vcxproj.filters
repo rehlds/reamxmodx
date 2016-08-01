@@ -68,10 +68,16 @@
     <ClCompile Include="..\glb.cpp">
       <Filter>Globals</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\public\sdk\amxxmodule.cpp">
+    <ClCompile Include="..\sdk\amxxmodule.cpp">
       <Filter>Module SDK\SDK Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\public\memtools\MemoryUtils.cpp">
+    <ClCompile Include="..\sdk\interface.cpp">
+      <Filter>Module SDK\SDK Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sdk\mod_rehlds_api.cpp">
+      <Filter>Module SDK\SDK Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\memtools\MemoryUtils.cpp">
       <Filter>Memtools</Filter>
     </ClCompile>
     <ClCompile Include="..\pdata_entities.cpp">
@@ -103,22 +109,16 @@
     <ClInclude Include="..\glb.h">
       <Filter>Globals</Filter>
     </ClInclude>
-    <ClInclude Include="..\sdk\CString.h">
-      <Filter>Module SDK\AMXX STL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sdk\CVector.h">
-      <Filter>Module SDK\AMXX STL</Filter>
-    </ClInclude>
     <ClInclude Include="..\moduleconfig.h">
       <Filter>Module SDK</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\public\sdk\amxxmodule.h">
+    <ClInclude Include="..\sdk\amxxmodule.h">
       <Filter>Module SDK\SDK Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\public\HLTypeConversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\public\memtools\MemoryUtils.h">
+    <ClInclude Include="..\memtools\MemoryUtils.h">
       <Filter>Memtools</Filter>
     </ClInclude>
     <ClInclude Include="..\pdata_shared.h">

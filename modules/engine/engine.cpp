@@ -25,7 +25,7 @@ char g_buffer[1024];
 
 void UTIL_SetSize(edict_t *pev, const Vector &vecMin, const Vector &vecMax)
 {
-	SET_SIZE(ENT(pev), vecMin, vecMax);
+	SET_SIZE(ENT(&pev->v), vecMin, vecMax);
 }
 
 edict_t *UTIL_FindEntityInSphere(edict_t *pStart, const Vector &vecCenter, float flRadius) {
@@ -438,7 +438,7 @@ static cell AMX_NATIVE_CALL set_view(AMX *amx, cell *params) {
 				if (g_CameraCount < 0)
 					g_CameraCount=0;
 				if (g_CameraCount==0) // Reset the AddToFullPack pointer if there's no more cameras in use...
-					g_pFunctionTable->pfnAddToFullPack=NULL;
+					g_pFunctionTable_Post->pfnAddToFullPack = NULL;
 			}
 
 			plinfo[iIndex].iViewType = CAMERA_NONE;

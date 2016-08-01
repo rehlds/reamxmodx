@@ -25,7 +25,6 @@
 
 						"windows"   "384"
 						"linux"     "404"
-						"mac"       "404"
 					}
 
 					"m_spriteScale"  // int
@@ -34,7 +33,6 @@
 
 						"windows"   "388"
 						"linux"     "408"
-						"mac"       "408"
 					}
 				}
 			}

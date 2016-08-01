@@ -19,7 +19,16 @@
 #include <amtl/am-vector.h>
 #include <amtl/am-string.h>
 
-#define ALIGN(ar) ((intptr_t)ar & ~(sysconf(_SC_PAGESIZE)-1))
+
+///#define ALIGN(ar) ((intptr_t)ar & ~(sysconf(_SC_PAGESIZE)-1))
+
+#ifndef PAGESIZE
+	#define	PAGESIZE	4096
+#endif
+
+#undef ALIGN
+#define ALIGN(addr) (size_t)((size_t)addr & ~(PAGESIZE-1))
+
 
 // This is just a simple container for data so I only have to add 1 extra 
 // parameter to calls that get trampolined

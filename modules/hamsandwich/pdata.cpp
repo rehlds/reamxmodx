@@ -15,7 +15,6 @@
 #include "offsets.h"
 #include "ham_utils.h"
 
-#ifdef DONT_TOUCH_THIS_AGAIN_BAIL
 #define FM_CHECK_ENTITY(x) \
 	if (x < 0 || x > gpGlobals->maxEntities) { \
 		MF_LogError(amx, AMX_ERR_NATIVE, "Entity out of range (%d)", x); \
@@ -33,8 +32,8 @@
 			} \
 		} \
 	}
-#endif
 
+/*
 #define FM_CHECK_ENTITY(x) \
 	if (x < 0 || x > gpGlobals->maxEntities) { \
 		MF_LogError(amx, AMX_ERR_NATIVE, "Entity out of range (%d)", x); \
@@ -43,6 +42,7 @@
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid entity %d", x); \
 		return 0; \
 	}
+*/
 
 // Return -1 on null, -2 on invalid, and the the index of any other.
 static cell AMX_NATIVE_CALL get_pdata_cbase_safe(AMX *amx, cell *params)

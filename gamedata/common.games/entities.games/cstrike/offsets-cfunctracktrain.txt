@@ -25,7 +25,6 @@
 
 						"windows"   "136"
 						"linux"     "152"
-						"mac"       "152"
 					}
 
 					"m_length"  // float
@@ -34,7 +33,6 @@
 
 						"windows"   "140"
 						"linux"     "156"
-						"mac"       "156"
 					}
 
 					"m_height"  // float
@@ -43,7 +41,6 @@
 
 						"windows"   "144"
 						"linux"     "160"
-						"mac"       "160"
 					}
 
 					"m_speed"  // float
@@ -52,7 +49,6 @@
 
 						"windows"   "148"
 						"linux"     "164"
-						"mac"       "164"
 					}
 
 					"m_dir"  // float
@@ -61,7 +57,6 @@
 
 						"windows"   "152"
 						"linux"     "168"
-						"mac"       "168"
 					}
 
 					"m_startSpeed"  // float
@@ -70,7 +65,6 @@
 
 						"windows"   "156"
 						"linux"     "172"
-						"mac"       "172"
 					}
 
 					"m_controlMins"  // Vector
@@ -79,7 +73,6 @@
 
 						"windows"   "160"
 						"linux"     "176"
-						"mac"       "176"
 					}
 
 					"m_controlMaxs"  // Vector
@@ -88,7 +81,6 @@
 
 						"windows"   "172"
 						"linux"     "188"
-						"mac"       "188"
 					}
 
 					"m_soundPlaying"  // int
@@ -97,7 +89,6 @@
 
 						"windows"   "184"
 						"linux"     "200"
-						"mac"       "200"
 					}
 
 					"m_sounds"  // int
@@ -106,7 +97,6 @@
 
 						"windows"   "188"
 						"linux"     "204"
-						"mac"       "204"
 					}
 
 					"m_flVolume"  // float
@@ -115,7 +105,6 @@
 
 						"windows"   "192"
 						"linux"     "208"
-						"mac"       "208"
 					}
 
 					"m_flBank"  // float
@@ -124,7 +113,6 @@
 
 						"windows"   "196"
 						"linux"     "212"
-						"mac"       "212"
 					}
 
 					"m_oldSpeed"  // float
@@ -133,7 +121,6 @@
 
 						"windows"   "200"
 						"linux"     "216"
-						"mac"       "216"
 					}
 
 					"m_fTurnAngle"  // float
@@ -142,7 +129,6 @@
 
 						"windows"   "204"
 						"linux"     "220"
-						"mac"       "220"
 					}
 
 					"m_flSteeringWheelDecay"  // float
@@ -151,7 +137,6 @@
 
 						"windows"   "208"
 						"linux"     "224"
-						"mac"       "224"
 					}
 
 					"m_flAcceleratorDecay"  // float
@@ -160,7 +145,6 @@
 
 						"windows"   "212"
 						"linux"     "228"
-						"mac"       "228"
 					}
 
 					"m_usAdjustPitch"  // short unsigned int
@@ -170,7 +154,6 @@
 
 						"windows"   "216"
 						"linux"     "232"
-						"mac"       "232"
 					}
 				}
 			}

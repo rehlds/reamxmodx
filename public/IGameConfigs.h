@@ -44,7 +44,7 @@ enum class FieldType
 	FIELD_CLASSPTR,     // Classes pointer derived of CBaseEntity
 	FIELD_CLASS,        // Arbitrary classes, direct
 	FIELD_STRUCTURE,    // Arbitrary structures, direct
-	FIELD_EHANDLE,      // Entity handle
+	FIELD_EHANDLE,  // Entity handle
 	FIELD_ENTVARS,      // entvars_t*
 	FIELD_EDICT,        // edict_t*
 	FIELD_VECTOR,       // Vector

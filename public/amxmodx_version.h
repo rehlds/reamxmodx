@@ -17,8 +17,8 @@
 		#include <amxmodx_version_auto.h>
 	#endif
 #else
-	#define AMXX_BUILD_TAG        "manual"
-	#define AMXX_BUILD_LOCAL_REV  "0"
+	#define AMXX_BUILD_TAG        "Re"
+	#define AMXX_BUILD_LOCAL_REV  "1"
 	#define AMXX_BUILD_CSET       "0"
 	#define AMXX_BUILD_MAJOR      "1"
 	#define AMXX_BUILD_MINOR      "8"

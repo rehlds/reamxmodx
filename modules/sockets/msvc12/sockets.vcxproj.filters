@@ -23,12 +23,12 @@
     <ClCompile Include="..\sockets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\public\sdk\amxxmodule.cpp">
+    <ClCompile Include="..\sdk\amxxmodule.cpp">
       <Filter>Module SDK\SDK Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\public\sdk\amxxmodule.h">
+    <ClInclude Include="..\sdk\amxxmodule.h">
       <Filter>Module SDK\SDK Base</Filter>
     </ClInclude>
     <ClInclude Include="..\moduleconfig.h">

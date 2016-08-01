@@ -409,7 +409,7 @@ SIMPLE_VOID_HOOK_EDICT_FLOAT_VECT(GetAimVector);
 SIMPLE_VOID_HOOK_CONSTVECT_CONSTVECT_FLOAT_FLOAT(ParticleEffect);
 
 // pfnLightStyle
-SIMPLE_VOID_HOOK_INT_CONSTSTRING(LightStyle);
+SIMPLE_VOID_HOOK_INT_CONSTSTRING2(LightStyle);
 
 // pfnDecalIndex
 SIMPLE_INT_HOOK_CONSTSTRING(DecalIndex);
@@ -513,10 +513,10 @@ SIMPLE_VOID_HOOK_CONSTEDICT_FLOAT_FLOAT(CrosshairAngle);
 SIMPLE_VOID_HOOK_CONSTEDICT_INT_INT_INT_INT(FadeClientVolume);
 
 // pfnSetClientMaxspeed
-SIMPLE_VOID_HOOK_CONSTEDICT_FLOAT(SetClientMaxspeed);
+SIMPLE_VOID_HOOK_CONSTEDICT_FLOAT2(SetClientMaxspeed);
 
 // pfnPrecacheGeneric
-SIMPLE_INT_HOOK_CONSTSTRING(PrecacheGeneric);
+SIMPLE_INT_HOOK_CONSTSTRING2(PrecacheGeneric);
 
 // pfnPrecacheEvent
 SIMPLE_USHORT_HOOK_INT_CONSTSTRING(PrecacheEvent);
@@ -581,13 +581,13 @@ void BuildSoundMsg_post(edict_t *entity, int channel, const char *sample, float 
 	RETURN_META(MRES_IGNORED);
 }
 
-int CheckVisibility(const edict_t *entity, unsigned char *pset)
+int CheckVisibility(edict_t *entity, unsigned char *pset)
 {
 	FM_ENG_HANDLE(FM_CheckVisibility, (Engine[FM_CheckVisibility].at(i), (cell)ENTINDEX(entity), (cell)pset));
 	RETURN_META_VALUE(mswi(lastFmRes), (int)mlCellResult);
 }
 
-int CheckVisibility_post(const edict_t *entity, unsigned char *pset)
+int CheckVisibility_post(edict_t *entity, unsigned char *pset)
 {
 	origCellRet = META_RESULT_ORIG_RET(int);
 	FM_ENG_HANDLE(FM_CheckVisibility, (Engine[FM_CheckVisibility].at(i), (cell)ENTINDEX(entity), (cell)pset));
@@ -619,7 +619,7 @@ SIMPLE_CONSTSTRING_HOOK_EDICT(GetPlayerAuthId);
 
 SIMPLE_UINT_HOOK_EDICT(GetPlayerWONId);
 
-SIMPLE_INT_HOOK_CONSTSTRING(IsMapValid);
+SIMPLE_INT_HOOK_CONSTSTRING2(IsMapValid);
 
 int CreateInstancedBaseline(int classname, struct entity_state_s *baseline)
 {
@@ -734,7 +734,7 @@ SIMPLE_VOID_HOOK_EDICT(SpectatorThink);
 SIMPLE_VOID_HOOK_CONSTSTRING(Sys_Error);
 
 // pfnPM_FindTextureType
-SIMPLE_CHAR_HOOK_CONSTSTRING(PM_FindTextureType);
+SIMPLE_CHAR_HOOK_CONSTSTRING2(PM_FindTextureType);
 
 // pfnRegisterEncoders
 SIMPLE_VOID_HOOK_VOID(RegisterEncoders);

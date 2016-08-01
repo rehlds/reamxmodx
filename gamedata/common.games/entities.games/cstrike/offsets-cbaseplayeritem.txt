@@ -25,7 +25,6 @@
 
 						"windows"   "164"
 						"linux"     "180"
-						"mac"       "180"
 					}
 
 					"m_pNext"  // CBasePlayerItem*
@@ -34,7 +33,6 @@
 
 						"windows"   "168"
 						"linux"     "184"
-						"mac"       "184"
 					}
 
 					"m_iId"  // int
@@ -43,7 +41,6 @@
 
 						"windows"   "172"
 						"linux"     "188"
-						"mac"       "188"
 					}
 				}
 			}

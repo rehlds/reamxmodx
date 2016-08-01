@@ -15,7 +15,7 @@
 #include "CstrikeHacks.h"
 
 CsItemInfo ItemsManager;
-ItemInfo WeaponsList[MAX_WEAPONS];
+ItemInfo_AMX WeaponsList[MAX_WEAPONS];
 
 #define PSTATE_ALIASES_TYPE       0
 #define PSTATE_ALIASES_ALIAS      1

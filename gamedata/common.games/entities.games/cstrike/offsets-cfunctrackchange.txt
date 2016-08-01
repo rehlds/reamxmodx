@@ -25,7 +25,6 @@
 
 						"windows"   "324"
 						"linux"     "344"
-						"mac"       "344"
 					}
 
 					"m_trackBottom"  // CPathTrack*
@@ -34,7 +33,6 @@
 
 						"windows"   "328"
 						"linux"     "348"
-						"mac"       "348"
 					}
 
 					"m_train"  // CFuncTrackTrain*
@@ -43,7 +41,6 @@
 
 						"windows"   "332"
 						"linux"     "352"
-						"mac"       "352"
 					}
 
 					"m_trackTopName"  // int
@@ -52,7 +49,6 @@
 
 						"windows"   "336"
 						"linux"     "356"
-						"mac"       "356"
 					}
 
 					"m_trackBottomName"  // int
@@ -61,7 +57,6 @@
 
 						"windows"   "340"
 						"linux"     "360"
-						"mac"       "360"
 					}
 
 					"m_trainName"  // int
@@ -70,7 +65,6 @@
 
 						"windows"   "344"
 						"linux"     "364"
-						"mac"       "364"
 					}
 
 					"m_code"  // TRAIN_CODE
@@ -79,7 +73,6 @@
 
 						"windows"   "348"
 						"linux"     "368"
-						"mac"       "368"
 					}
 
 					"m_targetState"  // int
@@ -88,7 +81,6 @@
 
 						"windows"   "352"
 						"linux"     "372"
-						"mac"       "372"
 					}
 
 					"m_use"  // int
@@ -97,7 +89,6 @@
 
 						"windows"   "356"
 						"linux"     "376"
-						"mac"       "376"
 					}
 				}
 			}

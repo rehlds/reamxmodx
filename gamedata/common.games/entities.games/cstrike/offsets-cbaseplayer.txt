@@ -25,7 +25,6 @@
 
 						"windows"   "384"
 						"linux"     "404"
-						"mac"       "404"
 					}
 
 					"m_usPlayerBleed"  // short unsigned int
@@ -35,7 +34,6 @@
 
 						"windows"   "388"
 						"linux"     "408"
-						"mac"       "408"
 					}
 
 					"m_hObserverTarget"  // EHANDLE
@@ -44,7 +42,6 @@
 
 						"windows"   "392"
 						"linux"     "412"
-						"mac"       "412"
 					}
 
 					"m_flNextObserverInput"  // float
@@ -53,7 +50,6 @@
 
 						"windows"   "400"
 						"linux"     "420"
-						"mac"       "420"
 					}
 
 					"m_iObserverWeapon"  // int
@@ -62,7 +58,6 @@
 
 						"windows"   "404"
 						"linux"     "424"
-						"mac"       "424"
 					}
 
 					"m_iObserverC4State"  // int
@@ -71,7 +66,6 @@
 
 						"windows"   "408"
 						"linux"     "428"
-						"mac"       "428"
 					}
 
 					"m_bObserverHasDefuser"  // bool
@@ -80,7 +74,6 @@
 
 						"windows"   "412"
 						"linux"     "432"
-						"mac"       "432"
 					}
 
 					"m_iObserverLastMode"  // int
@@ -89,7 +82,6 @@
 
 						"windows"   "416"
 						"linux"     "436"
-						"mac"       "436"
 					}
 
 					"m_flFlinchTime"  // float
@@ -98,7 +90,6 @@
 
 						"windows"   "420"
 						"linux"     "440"
-						"mac"       "440"
 					}
 
 					"m_flAnimTime"  // float
@@ -107,7 +98,6 @@
 
 						"windows"   "424"
 						"linux"     "444"
-						"mac"       "444"
 					}
 
 					"m_bHighDamage"  // bool
@@ -116,7 +106,6 @@
 
 						"windows"   "428"
 						"linux"     "448"
-						"mac"       "448"
 					}
 
 					"m_flVelocityModifier"  // float
@@ -125,7 +114,6 @@
 
 						"windows"   "432"
 						"linux"     "452"
-						"mac"       "452"
 					}
 
 					"m_iLastZoom"  // int
@@ -134,7 +122,6 @@
 
 						"windows"   "436"
 						"linux"     "456"
-						"mac"       "456"
 					}
 
 					"m_bResumeZoom"  // bool
@@ -143,7 +130,6 @@
 
 						"windows"   "440"
 						"linux"     "460"
-						"mac"       "460"
 					}
 
 					"m_flEjectBrass"  // float
@@ -152,7 +138,6 @@
 
 						"windows"   "444"
 						"linux"     "464"
-						"mac"       "464"
 					}
 
 					"m_iKevlar"  // int
@@ -161,7 +146,6 @@
 
 						"windows"   "448"
 						"linux"     "468"
-						"mac"       "468"
 					}
 
 					"m_bNotKilled"  // bool
@@ -170,7 +154,6 @@
 
 						"windows"   "452"
 						"linux"     "472"
-						"mac"       "472"
 					}
 
 					"m_iTeam"  // enum TeamName
@@ -179,7 +162,6 @@
 
 						"windows"   "456"
 						"linux"     "476"
-						"mac"       "476"
 					}
 
 					"m_iAccount"  // int
@@ -188,7 +170,6 @@
 
 						"windows"   "460"
 						"linux"     "480"
-						"mac"       "480"
 					}
 
 					"m_bHasPrimary"  // bool
@@ -197,7 +178,6 @@
 
 						"windows"   "464"
 						"linux"     "484"
-						"mac"       "484"
 					}
 
 					"m_flDeathThrowTime"  // float
@@ -206,7 +186,6 @@
 
 						"windows"   "468"
 						"linux"     "488"
-						"mac"       "488"
 					}
 
 					"m_iThrowDirection"  // int
@@ -215,7 +194,6 @@
 
 						"windows"   "472"
 						"linux"     "492"
-						"mac"       "492"
 					}
 
 					"m_flLastTalk"  // float
@@ -224,7 +202,6 @@
 
 						"windows"   "476"
 						"linux"     "496"
-						"mac"       "496"
 					}
 
 					"m_bJustConnected"  // bool
@@ -233,7 +210,6 @@
 
 						"windows"   "480"
 						"linux"     "500"
-						"mac"       "500"
 					}
 
 					"m_bContextHelp"  // bool
@@ -242,7 +218,6 @@
 
 						"windows"   "481"
 						"linux"     "501"
-						"mac"       "501"
 					}
 
 					"m_iJoiningState"  // enum JoinState
@@ -251,7 +226,6 @@
 
 						"windows"   "484"
 						"linux"     "504"
-						"mac"       "504"
 					}
 
 					"m_pIntroCamera"  // CBaseEntity*
@@ -260,7 +234,6 @@
 
 						"windows"   "488"
 						"linux"     "508"
-						"mac"       "508"
 					}
 
 					"m_fIntroCamTime"  // float
@@ -269,7 +242,6 @@
 
 						"windows"   "492"
 						"linux"     "512"
-						"mac"       "512"
 					}
 
 					"m_fLastMovement"  // float
@@ -278,7 +250,6 @@
 
 						"windows"   "496"
 						"linux"     "516"
-						"mac"       "516"
 					}
 
 					"m_bMissionBriefing"  // bool
@@ -287,7 +258,6 @@
 
 						"windows"   "500"
 						"linux"     "520"
-						"mac"       "520"
 					}
 
 					"m_bTeamChanged"  // bool
@@ -296,7 +266,6 @@
 
 						"windows"   "501"
 						"linux"     "521"
-						"mac"       "521"
 					}
 
 					"m_iModelName"  // enum ModelName
@@ -305,7 +274,6 @@
 
 						"windows"   "504"
 						"linux"     "524"
-						"mac"       "524"
 					}
 
 					"m_iTeamKills"  // int
@@ -314,7 +282,6 @@
 
 						"windows"   "508"
 						"linux"     "528"
-						"mac"       "528"
 					}
 
 					"m_iIgnoreGlobalChat"  // int
@@ -323,7 +290,6 @@
 
 						"windows"   "512"
 						"linux"     "532"
-						"mac"       "532"
 					}
 
 					"m_bHasNightVision"  // bool
@@ -332,7 +298,6 @@
 
 						"windows"   "516"
 						"linux"     "536"
-						"mac"       "536"
 					}
 
 					"m_bNightVisionOn"  // bool
@@ -341,7 +306,6 @@
 
 						"windows"   "517"
 						"linux"     "537"
-						"mac"       "537"
 					}
 
 					"m_vRecentPath"  // Vector[20]
@@ -351,7 +315,6 @@
 
 						"windows"   "520"
 						"linux"     "540"
-						"mac"       "540"
 					}
 
 					"m_flIdleCheckTime"  // float
@@ -360,7 +323,6 @@
 
 						"windows"   "760"
 						"linux"     "780"
-						"mac"       "780"
 					}
 
 					"m_flRadioTime"  // float
@@ -369,7 +331,6 @@
 
 						"windows"   "764"
 						"linux"     "784"
-						"mac"       "784"
 					}
 
 					"m_iRadioMessages"  // int
@@ -378,7 +339,6 @@
 
 						"windows"   "768"
 						"linux"     "788"
-						"mac"       "788"
 					}
 
 					"m_bIgnoreRadio"  // bool
@@ -387,7 +347,6 @@
 
 						"windows"   "772"
 						"linux"     "792"
-						"mac"       "792"
 					}
 
 					"m_bHasC4"  // bool
@@ -396,7 +355,6 @@
 
 						"windows"   "773"
 						"linux"     "793"
-						"mac"       "793"
 					}
 
 					"m_bHasDefuser"  // bool
@@ -405,7 +363,6 @@
 
 						"windows"   "774"
 						"linux"     "794"
-						"mac"       "794"
 					}
 
 					"m_bKilledByBomb"  // bool
@@ -414,7 +371,6 @@
 
 						"windows"   "775"
 						"linux"     "795"
-						"mac"       "795"
 					}
 
 					"m_vBlastVector"  // Vector
@@ -423,7 +379,6 @@
 
 						"windows"   "776"
 						"linux"     "796"
-						"mac"       "796"
 					}
 
 					"m_bKilledByGrenade"  // bool
@@ -432,7 +387,6 @@
 
 						"windows"   "788"
 						"linux"     "808"
-						"mac"       "808"
 					}
 
 					"m_hintMessageQueue"  // class CHintMessageQueue
@@ -441,7 +395,6 @@
 
 						"windows"   "792"
 						"linux"     "812"
-						"mac"       "812"
 					}
 
 					"m_flDisplayHistory"  // int32
@@ -450,7 +403,6 @@
 
 						"windows"   "816"
 						"linux"     "836"
-						"mac"       "836"
 					}
 
 					"m_iMenu"  // enum _Menu
@@ -459,7 +411,6 @@
 
 						"windows"   "820"
 						"linux"     "840"
-						"mac"       "840"
 					}
 
 					"m_iChaseTarget"  // int
@@ -468,7 +419,6 @@
 
 						"windows"   "824"
 						"linux"     "844"
-						"mac"       "844"
 					}
 
 					"m_pChaseTarget"  // CBaseEntity*
@@ -477,7 +427,6 @@
 
 						"windows"   "828"
 						"linux"     "848"
-						"mac"       "848"
 					}
 
 					"m_fCamSwitch"  // float
@@ -486,7 +435,6 @@
 
 						"windows"   "832"
 						"linux"     "852"
-						"mac"       "852"
 					}
 
 					"m_bEscaped"  // bool
@@ -495,7 +443,6 @@
 
 						"windows"   "836"
 						"linux"     "856"
-						"mac"       "856"
 					}
 
 					"m_bIsVIP"  // bool
@@ -504,7 +451,6 @@
 
 						"windows"   "837"
 						"linux"     "857"
-						"mac"       "857"
 					}
 
 					"m_tmNextRadarUpdate"  // float
@@ -513,7 +459,6 @@
 
 						"windows"   "840"
 						"linux"     "860"
-						"mac"       "860"
 					}
 
 					"m_vLastOrigin"  // Vector
@@ -522,7 +467,6 @@
 
 						"windows"   "844"
 						"linux"     "864"
-						"mac"       "864"
 					}
 
 					"m_iCurrentKickVote"  // int
@@ -531,7 +475,6 @@
 
 						"windows"   "856"
 						"linux"     "876"
-						"mac"       "876"
 					}
 
 					"m_flNextVoteTime"  // float
@@ -540,7 +483,6 @@
 
 						"windows"   "860"
 						"linux"     "880"
-						"mac"       "880"
 					}
 
 					"m_bJustKilledTeammate"  // bool
@@ -549,7 +491,6 @@
 
 						"windows"   "864"
 						"linux"     "884"
-						"mac"       "884"
 					}
 
 					"m_iHostagesKilled"  // int
@@ -558,7 +499,6 @@
 
 						"windows"   "868"
 						"linux"     "888"
-						"mac"       "888"
 					}
 
 					"m_iMapVote"  // int
@@ -567,7 +507,6 @@
 
 						"windows"   "872"
 						"linux"     "892"
-						"mac"       "892"
 					}
 
 					"m_bCanShoot"  // bool
@@ -576,7 +515,6 @@
 
 						"windows"   "876"
 						"linux"     "896"
-						"mac"       "896"
 					}
 
 					"m_flLastFired"  // float
@@ -585,7 +523,6 @@
 
 						"windows"   "880"
 						"linux"     "900"
-						"mac"       "900"
 					}
 
 					"m_flLastAttackedTeammate"  // float
@@ -594,7 +531,6 @@
 
 						"windows"   "884"
 						"linux"     "904"
-						"mac"       "904"
 					}
 
 					"m_bHeadshotKilled"  // bool
@@ -603,7 +539,6 @@
 
 						"windows"   "888"
 						"linux"     "908"
-						"mac"       "908"
 					}
 
 					"m_bPunishedForTK"  // bool
@@ -612,7 +547,6 @@
 
 						"windows"   "889"
 						"linux"     "909"
-						"mac"       "909"
 					}
 
 					"m_bReceivesNoMoneyNextRound"  // bool
@@ -621,7 +555,6 @@
 
 						"windows"   "890"
 						"linux"     "910"
-						"mac"       "910"
 					}
 
 					"m_iTimeCheckAllowed"  // int
@@ -630,7 +563,6 @@
 
 						"windows"   "892"
 						"linux"     "912"
-						"mac"       "912"
 					}
 
 					"m_bHasChangedName"  // bool
@@ -639,7 +571,6 @@
 
 						"windows"   "896"
 						"linux"     "916"
-						"mac"       "916"
 					}
 
 					"m_szNewName"  // char[32]
@@ -649,7 +580,6 @@
 
 						"windows"   "897"
 						"linux"     "917"
-						"mac"       "917"
 					}
 
 					"m_bIsDefusing"  // bool
@@ -658,7 +588,6 @@
 
 						"windows"   "929"
 						"linux"     "949"
-						"mac"       "949"
 					}
 
 					"m_tmHandleSignals"  // float
@@ -667,7 +596,6 @@
 
 						"windows"   "932"
 						"linux"     "952"
-						"mac"       "952"
 					}
 
 					"m_signals"  // class CUnifiedSignals
@@ -676,7 +604,6 @@
 
 						"windows"   "936"
 						"linux"     "956"
-						"mac"       "956"
 					}
 
 					"m_pentCurBombTarget"  // edict_t*
@@ -685,7 +612,6 @@
 
 						"windows"   "944"
 						"linux"     "964"
-						"mac"       "964"
 					}
 
 					"m_iPlayerSound"  // int
@@ -694,7 +620,6 @@
 
 						"windows"   "948"
 						"linux"     "968"
-						"mac"       "968"
 					}
 
 					"m_iTargetVolume"  // int
@@ -703,7 +628,6 @@
 
 						"windows"   "952"
 						"linux"     "972"
-						"mac"       "972"
 					}
 
 					"m_iWeaponVolume"  // int
@@ -712,7 +636,6 @@
 
 						"windows"   "956"
 						"linux"     "976"
-						"mac"       "976"
 					}
 
 					"m_iExtraSoundTypes"  // int
@@ -721,7 +644,6 @@
 
 						"windows"   "960"
 						"linux"     "980"
-						"mac"       "980"
 					}
 
 					"m_iWeaponFlash"  // int
@@ -730,7 +652,6 @@
 
 						"windows"   "964"
 						"linux"     "984"
-						"mac"       "984"
 					}
 
 					"m_flStopExtraSoundTime"  // float
@@ -739,7 +660,6 @@
 
 						"windows"   "968"
 						"linux"     "988"
-						"mac"       "988"
 					}
 
 					"m_flFlashLightTime"  // float
@@ -748,7 +668,6 @@
 
 						"windows"   "972"
 						"linux"     "992"
-						"mac"       "992"
 					}
 
 					"m_iFlashBattery"  // int
@@ -757,7 +676,6 @@
 
 						"windows"   "976"
 						"linux"     "996"
-						"mac"       "996"
 					}
 
 					"m_afButtonLast"  // int
@@ -766,7 +684,6 @@
 
 						"windows"   "980"
 						"linux"     "1000"
-						"mac"       "1000"
 					}
 
 					"m_afButtonPressed"  // int
@@ -775,7 +692,6 @@
 
 						"windows"   "984"
 						"linux"     "1004"
-						"mac"       "1004"
 					}
 
 					"m_afButtonReleased"  // int
@@ -784,7 +700,6 @@
 
 						"windows"   "988"
 						"linux"     "1008"
-						"mac"       "1008"
 					}
 
 					"m_pentSndLast"  // edict_t*
@@ -793,7 +708,6 @@
 
 						"windows"   "992"
 						"linux"     "1012"
-						"mac"       "1012"
 					}
 
 					"m_flSndRoomtype"  // float
@@ -802,7 +716,6 @@
 
 						"windows"   "996"
 						"linux"     "1016"
-						"mac"       "1016"
 					}
 
 					"m_flSndRange"  // float
@@ -811,7 +724,6 @@
 
 						"windows"   "1000"
 						"linux"     "1020"
-						"mac"       "1020"
 					}
 
 					"m_flFallVelocity"  // float
@@ -820,7 +732,6 @@
 
 						"windows"   "1004"
 						"linux"     "1024"
-						"mac"       "1024"
 					}
 
 					"m_rgItems"  // int[4]
@@ -830,7 +741,6 @@
 
 						"windows"   "1008"
 						"linux"     "1028"
-						"mac"       "1028"
 					}
 
 					"m_fNewAmmo"  // int
@@ -839,7 +749,6 @@
 
 						"windows"   "1024"
 						"linux"     "1044"
-						"mac"       "1044"
 					}
 
 					"m_afPhysicsFlags"  // unsigned int
@@ -849,7 +758,6 @@
 
 						"windows"   "1028"
 						"linux"     "1048"
-						"mac"       "1048"
 					}
 
 					"m_fNextSuicideTime"  // float
@@ -858,7 +766,6 @@
 
 						"windows"   "1032"
 						"linux"     "1052"
-						"mac"       "1052"
 					}
 
 					"m_flTimeStepSound"  // float
@@ -867,7 +774,6 @@
 
 						"windows"   "1036"
 						"linux"     "1056"
-						"mac"       "1056"
 					}
 
 					"m_flTimeWeaponIdle"  // float
@@ -876,7 +782,6 @@
 
 						"windows"   "1040"
 						"linux"     "1060"
-						"mac"       "1060"
 					}
 
 					"m_flSwimTime"  // float
@@ -885,7 +790,6 @@
 
 						"windows"   "1044"
 						"linux"     "1064"
-						"mac"       "1064"
 					}
 
 					"m_flDuckTime"  // float
@@ -894,7 +798,6 @@
 
 						"windows"   "1048"
 						"linux"     "1068"
-						"mac"       "1068"
 					}
 
 					"m_flWallJumpTime"  // float
@@ -903,7 +806,6 @@
 
 						"windows"   "1052"
 						"linux"     "1072"
-						"mac"       "1072"
 					}
 
 					"m_flSuitUpdate"  // float
@@ -912,7 +814,6 @@
 
 						"windows"   "1056"
 						"linux"     "1076"
-						"mac"       "1076"
 					}
 
 					"m_rgSuitPlayList"  // int[4]
@@ -922,7 +823,6 @@
 
 						"windows"   "1060"
 						"linux"     "1080"
-						"mac"       "1080"
 					}
 
 					"m_iSuitPlayNext"  // int
@@ -931,7 +831,6 @@
 
 						"windows"   "1076"
 						"linux"     "1096"
-						"mac"       "1096"
 					}
 
 					"m_rgiSuitNoRepeat"  // int[32]
@@ -941,7 +840,6 @@
 
 						"windows"   "1080"
 						"linux"     "1100"
-						"mac"       "1100"
 					}
 
 					"m_rgflSuitNoRepeatTime"  // float[32]
@@ -951,7 +849,6 @@
 
 						"windows"   "1208"
 						"linux"     "1228"
-						"mac"       "1228"
 					}
 
 					"m_lastDamageAmount"  // int
@@ -960,7 +857,6 @@
 
 						"windows"   "1336"
 						"linux"     "1356"
-						"mac"       "1356"
 					}
 
 					"m_tbdPrev"  // float
@@ -969,7 +865,6 @@
 
 						"windows"   "1340"
 						"linux"     "1360"
-						"mac"       "1360"
 					}
 
 					"m_flgeigerRange"  // float
@@ -978,7 +873,6 @@
 
 						"windows"   "1344"
 						"linux"     "1364"
-						"mac"       "1364"
 					}
 
 					"m_flgeigerDelay"  // float
@@ -987,7 +881,6 @@
 
 						"windows"   "1348"
 						"linux"     "1368"
-						"mac"       "1368"
 					}
 
 					"m_igeigerRangePrev"  // int
@@ -996,7 +889,6 @@
 
 						"windows"   "1352"
 						"linux"     "1372"
-						"mac"       "1372"
 					}
 
 					"m_iStepLeft"  // int
@@ -1005,7 +897,6 @@
 
 						"windows"   "1356"
 						"linux"     "1376"
-						"mac"       "1376"
 					}
 
 					"m_szTextureName"  // char[17]
@@ -1015,7 +906,6 @@
 
 						"windows"   "1360"
 						"linux"     "1380"
-						"mac"       "1380"
 					}
 
 					"m_chTextureType"  // char
@@ -1024,7 +914,6 @@
 
 						"windows"   "1377"
 						"linux"     "1397"
-						"mac"       "1397"
 					}
 
 					"m_idrowndmg"  // int
@@ -1033,7 +922,6 @@
 
 						"windows"   "1380"
 						"linux"     "1400"
-						"mac"       "1400"
 					}
 
 					"m_idrownrestored"  // int
@@ -1042,7 +930,6 @@
 
 						"windows"   "1384"
 						"linux"     "1404"
-						"mac"       "1404"
 					}
 
 					"m_bitsHUDDamage"  // int
@@ -1051,7 +938,6 @@
 
 						"windows"   "1388"
 						"linux"     "1408"
-						"mac"       "1408"
 					}
 
 					"m_fInitHUD"  // BOOL
@@ -1060,7 +946,6 @@
 
 						"windows"   "1392"
 						"linux"     "1412"
-						"mac"       "1412"
 					}
 
 					"m_fGameHUDInitialized"  // BOOL
@@ -1069,7 +954,6 @@
 
 						"windows"   "1396"
 						"linux"     "1416"
-						"mac"       "1416"
 					}
 
 					"m_iTrain"  // int
@@ -1078,7 +962,6 @@
 
 						"windows"   "1400"
 						"linux"     "1420"
-						"mac"       "1420"
 					}
 
 					"m_fWeapon"  // BOOL
@@ -1087,7 +970,6 @@
 
 						"windows"   "1404"
 						"linux"     "1424"
-						"mac"       "1424"
 					}
 
 					"m_pTank"  // EHANDLE
@@ -1096,7 +978,6 @@
 
 						"windows"   "1408"
 						"linux"     "1428"
-						"mac"       "1428"
 					}
 
 					"m_fDeadTime"  // float
@@ -1105,7 +986,6 @@
 
 						"windows"   "1416"
 						"linux"     "1436"
-						"mac"       "1436"
 					}
 
 					"m_fNoPlayerSound"  // BOOL
@@ -1114,7 +994,6 @@
 
 						"windows"   "1420"
 						"linux"     "1440"
-						"mac"       "1440"
 					}
 
 					"m_fLongJump"  // BOOL
@@ -1123,7 +1002,6 @@
 
 						"windows"   "1424"
 						"linux"     "1444"
-						"mac"       "1444"
 					}
 
 					"m_tSneaking"  // float
@@ -1132,7 +1010,6 @@
 
 						"windows"   "1428"
 						"linux"     "1448"
-						"mac"       "1448"
 					}
 
 					"m_iUpdateTime"  // int
@@ -1141,7 +1018,6 @@
 
 						"windows"   "1432"
 						"linux"     "1452"
-						"mac"       "1452"
 					}
 
 					"m_iClientHealth"  // int
@@ -1150,7 +1026,6 @@
 
 						"windows"   "1436"
 						"linux"     "1456"
-						"mac"       "1456"
 					}
 
 					"m_iClientBattery"  // int
@@ -1159,7 +1034,6 @@
 
 						"windows"   "1440"
 						"linux"     "1460"
-						"mac"       "1460"
 					}
 
 					"m_iHideHUD"  // int
@@ -1168,7 +1042,6 @@
 
 						"windows"   "1444"
 						"linux"     "1464"
-						"mac"       "1464"
 					}
 
 					"m_iClientHideHUD"  // int
@@ -1177,7 +1050,6 @@
 
 						"windows"   "1448"
 						"linux"     "1468"
-						"mac"       "1468"
 					}
 
 					"m_iFOV"  // int
@@ -1186,7 +1058,6 @@
 
 						"windows"   "1452"
 						"linux"     "1472"
-						"mac"       "1472"
 					}
 
 					"m_iClientFOV"  // int
@@ -1195,7 +1066,6 @@
 
 						"windows"   "1456"
 						"linux"     "1476"
-						"mac"       "1476"
 					}
 
 					"m_iNumSpawns"  // int
@@ -1204,7 +1074,6 @@
 
 						"windows"   "1460"
 						"linux"     "1480"
-						"mac"       "1480"
 					}
 
 					"m_pObserver"  // CBaseEntity*
@@ -1213,7 +1082,6 @@
 
 						"windows"   "1464"
 						"linux"     "1484"
-						"mac"       "1484"
 					}
 
 					"m_rgpPlayerItems"  // CBasePlayerItem*[6]
@@ -1223,7 +1091,6 @@
 
 						"windows"   "1468"
 						"linux"     "1488"
-						"mac"       "1488"
 					}
 
 					"m_pActiveItem"  // CBasePlayerItem*
@@ -1232,7 +1099,6 @@
 
 						"windows"   "1492"
 						"linux"     "1512"
-						"mac"       "1512"
 					}
 
 					"m_pClientActiveItem"  // CBasePlayerItem*
@@ -1241,7 +1107,6 @@
 
 						"windows"   "1496"
 						"linux"     "1516"
-						"mac"       "1516"
 					}
 
 					"m_pLastItem"  // CBasePlayerItem*
@@ -1250,7 +1115,6 @@
 
 						"windows"   "1500"
 						"linux"     "1520"
-						"mac"       "1520"
 					}
 
 					"m_rgAmmo"  // int[32]
@@ -1260,7 +1124,6 @@
 
 						"windows"   "1504"
 						"linux"     "1524"
-						"mac"       "1524"
 					}
 
 					"m_rgAmmoLast"  // int[32]
@@ -1270,7 +1133,6 @@
 
 						"windows"   "1632"
 						"linux"     "1652"
-						"mac"       "1652"
 					}
 
 					"m_vecAutoAim"  // Vector
@@ -1279,7 +1141,6 @@
 
 						"windows"   "1760"
 						"linux"     "1780"
-						"mac"       "1780"
 					}
 
 					"m_fOnTarget"  // BOOL
@@ -1288,7 +1149,6 @@
 
 						"windows"   "1772"
 						"linux"     "1792"
-						"mac"       "1792"
 					}
 
 					"m_iDeaths"  // int
@@ -1297,7 +1157,6 @@
 
 						"windows"   "1776"
 						"linux"     "1796"
-						"mac"       "1796"
 					}
 
 					"m_izSBarState"  // int[4]
@@ -1307,7 +1166,6 @@
 
 						"windows"   "1780"
 						"linux"     "1800"
-						"mac"       "1800"
 					}
 
 					"m_flNextSBarUpdateTime"  // float
@@ -1316,7 +1174,6 @@
 
 						"windows"   "1796"
 						"linux"     "1816"
-						"mac"       "1816"
 					}
 
 					"m_flStatusBarDisappearDelay"  // float
@@ -1325,7 +1182,6 @@
 
 						"windows"   "1800"
 						"linux"     "1820"
-						"mac"       "1820"
 					}
 
 					"m_SbarString0"  // char[128]
@@ -1335,7 +1191,6 @@
 
 						"windows"   "1804"
 						"linux"     "1824"
-						"mac"       "1824"
 					}
 
 					"m_lastx"  // int
@@ -1344,7 +1199,6 @@
 
 						"windows"   "1932"
 						"linux"     "1952"
-						"mac"       "1952"
 					}
 
 					"m_lasty"  // int
@@ -1353,7 +1207,6 @@
 
 						"windows"   "1936"
 						"linux"     "1956"
-						"mac"       "1956"
 					}
 
 					"m_nCustomSprayFrames"  // int
@@ -1362,7 +1215,6 @@
 
 						"windows"   "1940"
 						"linux"     "1960"
-						"mac"       "1960"
 					}
 
 					"m_flNextDecalTime"  // float
@@ -1371,7 +1223,6 @@
 
 						"windows"   "1944"
 						"linux"     "1964"
-						"mac"       "1964"
 					}
 
 					"m_szTeamName"  // char[16]
@@ -1381,7 +1232,6 @@
 
 						"windows"   "1948"
 						"linux"     "1968"
-						"mac"       "1968"
 					}
 
 					"m_modelIndexPlayer"  // int
@@ -1390,7 +1240,6 @@
 
 						"windows"   "1964"
 						"linux"     "1984"
-						"mac"       "1984"
 					}
 
 					"m_szAnimExtention"  // char[32]
@@ -1400,7 +1249,6 @@
 
 						"windows"   "1968"
 						"linux"     "1988"
-						"mac"       "1988"
 					}
 
 					"m_iGaitsequence"  // int
@@ -1409,7 +1257,6 @@
 
 						"windows"   "2000"
 						"linux"     "2020"
-						"mac"       "2020"
 					}
 
 					"m_flGaitframe"  // float
@@ -1418,7 +1265,6 @@
 
 						"windows"   "2004"
 						"linux"     "2024"
-						"mac"       "2024"
 					}
 
 					"m_flGaityaw"  // float
@@ -1427,7 +1273,6 @@
 
 						"windows"   "2008"
 						"linux"     "2028"
-						"mac"       "2028"
 					}
 
 					"m_prevgaitorigin"  // Vector
@@ -1436,7 +1281,6 @@
 
 						"windows"   "2012"
 						"linux"     "2032"
-						"mac"       "2032"
 					}
 
 					"m_flPitch"  // float
@@ -1445,7 +1289,6 @@
 
 						"windows"   "2024"
 						"linux"     "2044"
-						"mac"       "2044"
 					}
 
 					"m_flYaw"  // float
@@ -1454,7 +1297,6 @@
 
 						"windows"   "2028"
 						"linux"     "2048"
-						"mac"       "2048"
 					}
 
 					"m_flGaitMovement"  // float
@@ -1463,7 +1305,6 @@
 
 						"windows"   "2032"
 						"linux"     "2052"
-						"mac"       "2052"
 					}
 
 					"m_iAutoWepSwitch"  // int
@@ -1472,7 +1313,6 @@
 
 						"windows"   "2036"
 						"linux"     "2056"
-						"mac"       "2056"
 					}
 
 					"m_bVGUIMenus"  // bool
@@ -1481,7 +1321,6 @@
 
 						"windows"   "2040"
 						"linux"     "2060"
-						"mac"       "2060"
 					}
 
 					"m_bShowHints"  // bool
@@ -1490,7 +1329,6 @@
 
 						"windows"   "2041"
 						"linux"     "2061"
-						"mac"       "2061"
 					}
 
 					"m_bShieldDrawn"  // bool
@@ -1499,7 +1337,6 @@
 
 						"windows"   "2042"
 						"linux"     "2062"
-						"mac"       "2062"
 					}
 
 					"m_bOwnsShield"  // bool
@@ -1508,7 +1345,6 @@
 
 						"windows"   "2043"
 						"linux"     "2063"
-						"mac"       "2063"
 					}
 
 					"m_bWasFollowing"  // bool
@@ -1517,7 +1353,6 @@
 
 						"windows"   "2044"
 						"linux"     "2064"
-						"mac"       "2064"
 					}
 
 					"m_flNextFollowTime"  // float
@@ -1526,7 +1361,6 @@
 
 						"windows"   "2048"
 						"linux"     "2068"
-						"mac"       "2068"
 					}
 
 					"m_flYawModifier"  // float
@@ -1535,7 +1369,6 @@
 
 						"windows"   "2052"
 						"linux"     "2072"
-						"mac"       "2072"
 					}
 
 					"m_blindUntilTime"  // float
@@ -1544,7 +1377,6 @@
 
 						"windows"   "2056"
 						"linux"     "2076"
-						"mac"       "2076"
 					}
 
 					"m_blindStartTime"  // float
@@ -1553,7 +1385,6 @@
 
 						"windows"   "2060"
 						"linux"     "2080"
-						"mac"       "2080"
 					}
 
 					"m_blindHoldTime"  // float
@@ -1562,7 +1393,6 @@
 
 						"windows"   "2064"
 						"linux"     "2084"
-						"mac"       "2084"
 					}
 
 					"m_blindFadeTime"  // float
@@ -1571,7 +1401,6 @@
 
 						"windows"   "2068"
 						"linux"     "2088"
-						"mac"       "2088"
 					}
 
 					"m_blindAlpha"  // int
@@ -1580,7 +1409,6 @@
 
 						"windows"   "2072"
 						"linux"     "2092"
-						"mac"       "2092"
 					}
 
 					"m_allowAutoFollowTime"  // float
@@ -1589,7 +1417,6 @@
 
 						"windows"   "2076"
 						"linux"     "2096"
-						"mac"       "2096"
 					}
 
 					"m_autoBuyString"  // char[256]
@@ -1599,7 +1426,6 @@
 
 						"windows"   "2080"
 						"linux"     "2100"
-						"mac"       "2100"
 					}
 
 					"m_rebuyString"  // char*
@@ -1608,7 +1434,6 @@
 
 						"windows"   "2336"
 						"linux"     "2356"
-						"mac"       "2356"
 					}
 
 					"m_rebuyStruct"  // struct RebuyStruct
@@ -1617,7 +1442,6 @@
 
 						"windows"   "2340"
 						"linux"     "2360"
-						"mac"       "2360"
 					}
 
 					"m_bIsInRebuy"  // bool
@@ -1626,7 +1450,6 @@
 
 						"windows"   "2380"
 						"linux"     "2400"
-						"mac"       "2400"
 					}
 
 					"m_flLastUpdateTime"  // float
@@ -1635,7 +1458,6 @@
 
 						"windows"   "2384"
 						"linux"     "2404"
-						"mac"       "2404"
 					}
 
 					"m_lastLocation"  // char[32]
@@ -1645,7 +1467,6 @@
 
 						"windows"   "2388"
 						"linux"     "2408"
-						"mac"       "2408"
 					}
 
 					"m_progressStart"  // float
@@ -1654,7 +1475,6 @@
 
 						"windows"   "2420"
 						"linux"     "2440"
-						"mac"       "2440"
 					}
 
 					"m_progressEnd"  // float
@@ -1663,7 +1483,6 @@
 
 						"windows"   "2424"
 						"linux"     "2444"
-						"mac"       "2444"
 					}
 
 					"m_bObserverAutoDirector"  // bool
@@ -1672,7 +1491,6 @@
 
 						"windows"   "2428"
 						"linux"     "2448"
-						"mac"       "2448"
 					}
 
 					"m_canSwitchObserverModes"  // bool
@@ -1681,7 +1499,6 @@
 
 						"windows"   "2429"
 						"linux"     "2449"
-						"mac"       "2449"
 					}
 
 					"m_heartBeatTime"  // float
@@ -1690,7 +1507,6 @@
 
 						"windows"   "2432"
 						"linux"     "2452"
-						"mac"       "2452"
 					}
 
 					"m_intenseTimestamp"  // float
@@ -1699,7 +1515,6 @@
 
 						"windows"   "2436"
 						"linux"     "2456"
-						"mac"       "2456"
 					}
 
 					"m_silentTimestamp"  // float
@@ -1708,7 +1523,6 @@
 
 						"windows"   "2440"
 						"linux"     "2460"
-						"mac"       "2460"
 					}
 
 					"m_musicState"  // enum MusicState
@@ -1717,7 +1531,6 @@
 
 						"windows"   "2444"
 						"linux"     "2464"
-						"mac"       "2464"
 					}
 
 					"m_flLastCommandTime"  // float[8]
@@ -1727,7 +1540,6 @@
 
 						"windows"   "2448"
 						"linux"     "2468"
-						"mac"       "2468"
 					}
 				}
 			}

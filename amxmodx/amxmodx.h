@@ -20,6 +20,8 @@
 #include <extdll.h>
 #include <meta_api.h>
 
+#include <cbase.h>
+
 #ifdef _MSC_VER
 	// MSVC8 - replace POSIX functions with ISO C++ conformant ones as they are deprecated
 	#if _MSC_VER >= 1400
@@ -186,8 +188,6 @@ extern Vault g_vault;
 extern CForwardMngr g_forwards;
 extern WeaponsVault g_weaponsData[MAX_WEAPONS];
 extern XVars g_xvars;
-extern bool g_bmod_cstrike;
-extern bool g_bmod_dod;
 extern bool g_dontprecache;
 extern int g_srvindex;
 extern cvar_t* amxmodx_version;

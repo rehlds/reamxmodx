@@ -27,7 +27,6 @@
 
 						"windows"   "140"
 						"linux"     "156"
-						"mac"       "156"
 					}
 
 					"m_weaponCount"  // int[32]
@@ -37,7 +36,6 @@
 
 						"windows"   "268"
 						"linux"     "284"
-						"mac"       "284"
 					}
 				}
 			}

@@ -28,8 +28,8 @@ void initialize_glb_offsets()
 	g_glob_offset_table[gl_time] = offsetof(globalvars_t, time);
 	DO_OFFSET_GLB(frametime);
 	DO_OFFSET_GLB(force_retouch);
-	DO_OFFSET_GLB(deathmatch);
-	DO_OFFSET_GLB(coop);
+	DO_OFFSET_GLB(deathmatch_);
+	DO_OFFSET_GLB(coop_);
 	DO_OFFSET_GLB(teamplay);
 	DO_OFFSET_GLB(serverflags);
 	DO_OFFSET_GLB(found_secrets);

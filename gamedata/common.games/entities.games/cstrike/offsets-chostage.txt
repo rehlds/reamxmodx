@@ -25,7 +25,6 @@
 
 						"windows"   "384"
 						"linux"     "404"
-						"mac"       "404"
 					}
 
 					"m_bTouched"  // BOOL
@@ -34,7 +33,6 @@
 
 						"windows"   "388"
 						"linux"     "408"
-						"mac"       "408"
 					}
 
 					"m_bRescueMe"  // BOOL
@@ -43,7 +41,6 @@
 
 						"windows"   "392"
 						"linux"     "412"
-						"mac"       "412"
 					}
 
 					"m_flFlinchTime"  // float
@@ -52,7 +49,6 @@
 
 						"windows"   "396"
 						"linux"     "416"
-						"mac"       "416"
 					}
 
 					"m_flNextChange"  // float
@@ -61,7 +57,6 @@
 
 						"windows"   "400"
 						"linux"     "420"
-						"mac"       "420"
 					}
 
 					"m_flMarkPosition"  // float
@@ -70,7 +65,6 @@
 
 						"windows"   "404"
 						"linux"     "424"
-						"mac"       "424"
 					}
 
 					"m_iModel"  // int
@@ -79,7 +73,6 @@
 
 						"windows"   "408"
 						"linux"     "428"
-						"mac"       "428"
 					}
 
 					"m_iSkin"  // int
@@ -88,7 +81,6 @@
 
 						"windows"   "412"
 						"linux"     "432"
-						"mac"       "432"
 					}
 
 					"m_flNextRadarTime"  // float
@@ -97,7 +89,6 @@
 
 						"windows"   "416"
 						"linux"     "436"
-						"mac"       "436"
 					}
 
 					"m_State"  // enum state
@@ -106,7 +97,6 @@
 
 						"windows"   "420"
 						"linux"     "440"
-						"mac"       "440"
 					}
 
 					"m_vStart"  // Vector
@@ -115,7 +105,6 @@
 
 						"windows"   "424"
 						"linux"     "444"
-						"mac"       "444"
 					}
 
 					"m_vStartAngles"  // Vector
@@ -124,7 +113,6 @@
 
 						"windows"   "436"
 						"linux"     "456"
-						"mac"       "456"
 					}
 
 					"m_vPathToFollow"  // Vector[20]
@@ -134,7 +122,6 @@
 
 						"windows"   "448"
 						"linux"     "468"
-						"mac"       "468"
 					}
 
 					"m_iWaypoint"  // int
@@ -143,7 +130,6 @@
 
 						"windows"   "688"
 						"linux"     "708"
-						"mac"       "708"
 					}
 
 					"m_target"  // CBasePlayer*
@@ -152,7 +138,6 @@
 
 						"windows"   "692"
 						"linux"     "712"
-						"mac"       "712"
 					}
 
 					"m_LocalNav"  // class CLocalNav*
@@ -161,7 +146,6 @@
 
 						"windows"   "696"
 						"linux"     "716"
-						"mac"       "716"
 					}
 
 					"nTargetNode"  // int
@@ -170,7 +154,6 @@
 
 						"windows"   "700"
 						"linux"     "720"
-						"mac"       "720"
 					}
 
 					"vecNodes"  // Vector[100]
@@ -180,7 +163,6 @@
 
 						"windows"   "704"
 						"linux"     "724"
-						"mac"       "724"
 					}
 
 					"m_hStoppedTargetEnt"  // EHANDLE
@@ -189,7 +171,6 @@
 
 						"windows"   "1904"
 						"linux"     "1924"
-						"mac"       "1924"
 					}
 
 					"m_flNextFullThink"  // float
@@ -198,7 +179,6 @@
 
 						"windows"   "1912"
 						"linux"     "1932"
-						"mac"       "1932"
 					}
 
 					"m_flPathCheckInterval"  // float
@@ -207,7 +187,6 @@
 
 						"windows"   "1916"
 						"linux"     "1936"
-						"mac"       "1936"
 					}
 
 					"m_flLastPathCheck"  // float
@@ -216,7 +195,6 @@
 
 						"windows"   "1920"
 						"linux"     "1940"
-						"mac"       "1940"
 					}
 
 					"m_nPathNodes"  // int
@@ -225,7 +203,6 @@
 
 						"windows"   "1924"
 						"linux"     "1944"
-						"mac"       "1944"
 					}
 
 					"m_fHasPath"  // BOOL
@@ -234,7 +211,6 @@
 
 						"windows"   "1928"
 						"linux"     "1948"
-						"mac"       "1948"
 					}
 
 					"m_flPathAcquired"  // float
@@ -243,7 +219,6 @@
 
 						"windows"   "1932"
 						"linux"     "1952"
-						"mac"       "1952"
 					}
 
 					"m_vOldPos"  // Vector
@@ -252,7 +227,6 @@
 
 						"windows"   "1936"
 						"linux"     "1956"
-						"mac"       "1956"
 					}
 
 					"m_iHostageIndex"  // int
@@ -261,7 +235,6 @@
 
 						"windows"   "1948"
 						"linux"     "1968"
-						"mac"       "1968"
 					}
 
 					"m_bStuck"  // BOOL
@@ -270,7 +243,6 @@
 
 						"windows"   "1952"
 						"linux"     "1972"
-						"mac"       "1972"
 					}
 
 					"m_flStuckTime"  // float
@@ -279,7 +251,6 @@
 
 						"windows"   "1956"
 						"linux"     "1976"
-						"mac"       "1976"
 					}
 
 					"m_improv"  // class CHostageImprov*
@@ -288,7 +259,6 @@
 
 						"windows"   "1960"
 						"linux"     "1980"
-						"mac"       "1980"
 					}
 
 					"m_whichModel"  // enum ModelType
@@ -297,7 +267,6 @@
 
 						"windows"   "1964"
 						"linux"     "1984"
-						"mac"       "1984"
 					}
 				}
 			}

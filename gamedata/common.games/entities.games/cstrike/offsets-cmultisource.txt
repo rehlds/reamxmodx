@@ -26,7 +26,6 @@
 
 						"windows"   "136"
 						"linux"     "152"
-						"mac"       "152"
 					}
 
 					"m_rgTriggered"  // int[32]
@@ -36,7 +35,6 @@
 
 						"windows"   "392"
 						"linux"     "408"
-						"mac"       "408"
 					}
 
 					"m_iTotal"  // int
@@ -45,7 +43,6 @@
 
 						"windows"   "520"
 						"linux"     "536"
-						"mac"       "536"
 					}
 
 					"m_globalstate"  // string_t
@@ -54,7 +51,6 @@
 
 						"windows"   "524"
 						"linux"     "540"
-						"mac"       "540"
 					}
 				}
 			}

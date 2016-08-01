@@ -25,7 +25,6 @@
 
 						"windows"   "292"
 						"linux"     "312"
-						"mac"       "312"
 					}
 
 					"m_index"  // int
@@ -34,7 +33,6 @@
 
 						"windows"   "296"
 						"linux"     "316"
-						"mac"       "316"
 					}
 
 					"m_startTime"  // float
@@ -43,7 +41,6 @@
 
 						"windows"   "300"
 						"linux"     "320"
-						"mac"       "320"
 					}
 
 					"m_iTargetName"  // int[16]
@@ -53,7 +50,6 @@
 
 						"windows"   "304"
 						"linux"     "324"
-						"mac"       "324"
 					}
 
 					"m_flTargetDelay"  // float[16]
@@ -63,7 +59,6 @@
 
 						"windows"   "368"
 						"linux"     "388"
-						"mac"       "388"
 					}
 				}
 			}

@@ -77,10 +77,10 @@
     <ClCompile Include="..\thread\WinThreads.cpp">
       <Filter>Threader\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\public\sdk\amxxmodule.cpp">
+    <ClCompile Include="..\sdk\amxxmodule.cpp">
       <Filter>Module SDK\SDK Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\third_party\sqlite\sqlite3.c">
+    <ClCompile Include="..\sqlite\sqlite3.c">
       <Filter>SQLite Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -130,13 +130,13 @@
     <ClInclude Include="..\thread\WinThreads.h">
       <Filter>Threader\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\public\sdk\amxxmodule.h">
+    <ClInclude Include="..\sdk\amxxmodule.h">
       <Filter>Module SDK\SDK Base</Filter>
     </ClInclude>
     <ClInclude Include="..\moduleconfig.h">
       <Filter>Module SDK</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\third_party\sqlite\sqlite3.h">
+    <ClInclude Include="..\sqlite\sqlite3.h">
       <Filter>SQLite Source</Filter>
     </ClInclude>
   </ItemGroup>

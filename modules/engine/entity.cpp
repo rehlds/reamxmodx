@@ -1425,7 +1425,7 @@ static cell AMX_NATIVE_CALL find_ent_by_target(AMX *amx, cell *params)
 
 	auto pStart = TypeConversion.id_to_edict(iStart);
 
-	if (!FNullEnt(pStart = FIND_ENTITY_BY_TARGET(pStart, szValue)))
+	if (!FNullEnt(pStart = FIND_ENTITY_BY_TARGETNAME(pStart, szValue)))
 	{
 		return TypeConversion.edict_to_id(pStart);
 	}

@@ -580,7 +580,7 @@ static cell AMX_NATIVE_CALL cs_get_user_inside_buyzone(AMX *amx, cell *params)
 	CHECK_PLAYER(index);
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	if (get_pdata<CUnifiedSignals>(pPlayer, m_signals).GetState() & SIGNAL_BUY)
+	if (get_pdata<CUnifiedSignals_AMX>(pPlayer, m_signals).GetState() & SIGNAL_BUY)
 	{
 		return 1;
 	}
@@ -598,7 +598,7 @@ static cell AMX_NATIVE_CALL cs_get_user_mapzones(AMX *amx, cell *params)
 	CHECK_PLAYER(index);
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	return get_pdata<CUnifiedSignals>(pPlayer, m_signals).GetSignal();
+	return get_pdata<CUnifiedSignals_AMX>(pPlayer, m_signals).GetSignal();
 }
 
 // native cs_get_user_plant(index);

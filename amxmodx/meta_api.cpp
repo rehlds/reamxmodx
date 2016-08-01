@@ -29,9 +29,16 @@
 #include "CFileSystem.h"
 #include "gameconfigs.h"
 #include "CGameConfigs.h"
-#include <engine_strucs.h>
 #include <CDetour/detours.h>
 #include "CoreConfig.h"
+
+
+#include "mod_rehlds_api.h"
+
+#include "entity_state.h"
+#include "usercmd.h"
+#include "struct.h"
+
 
 plugin_info_t Plugin_info = 
 {
@@ -82,9 +89,6 @@ ke::AString g_log_dir;
 ke::AString g_mod_name;
 XVars g_xvars;
 
-bool g_bmod_tfc;
-bool g_bmod_cstrike;
-bool g_bmod_dod;
 bool g_dontprecache;
 bool g_forcedmodules;
 bool g_forcedsounds;
@@ -122,7 +126,7 @@ cvar_t init_amxmodx_version = {"amxmodx_version", "", FCVAR_SERVER | FCVAR_SPONL
 cvar_t init_amxmodx_modules = {"amxmodx_modules", "", FCVAR_SPONLY};
 cvar_t init_amxmodx_debug = {"amx_debug", "1", FCVAR_SPONLY};
 cvar_t init_amxmodx_mldebug = {"amx_mldebug", "", FCVAR_SPONLY};
-cvar_t init_amxmodx_language = {"amx_language", "en", FCVAR_SERVER};
+cvar_t init_amxmodx_language = {"amx_language", "ru", FCVAR_SERVER};
 cvar_t init_amxmodx_cl_langs = {"amx_client_languages", "1", FCVAR_SERVER};
 cvar_t* amxmodx_version = NULL;
 cvar_t* amxmodx_modules = NULL;
@@ -152,7 +156,7 @@ HLTypeConversion TypeConversion;
 
 bool ColoredMenus(const char *ModName)
 {
-	const char * pModNames[] = { "cstrike", "czero", "dmc", "dod", "tfc", "valve" };
+	const char * pModNames[] = { "cstrike", "czero" };
 	const size_t ModsCount = sizeof(pModNames) / sizeof(const char *);
 
 	for (size_t i = 0; i < ModsCount; ++i)
@@ -280,13 +284,6 @@ int	C_PrecacheSound(const char *s)
 		{
 			PRECACHE_SOUND((char*)(*a).getFilename());
 			ENGINE_FORCE_UNMODIFIED((*a).getForceType(), (*a).getMin(), (*a).getMax(), (*a).getFilename());
-		}
-	
-		if (!g_bmod_cstrike)
-		{
-			PRECACHE_SOUND("weapons/cbar_hitbod1.wav");
-			PRECACHE_SOUND("weapons/cbar_hitbod2.wav");
-			PRECACHE_SOUND("weapons/cbar_hitbod3.wav");
 		}
 	}
 
@@ -464,7 +461,7 @@ int	C_Spawn(edict_t *pent)
 	g_vault.loadVault();
 
 	// ###### Init time and freeze tasks
-	g_game_timeleft = g_bmod_dod ? 1.0f : 0.0f;
+	g_game_timeleft = 0.0f;
 	g_task_time = gpGlobals->time + 99999.0f;
 	g_auth_time = gpGlobals->time + 99999.0f;
 #ifdef MEMORY_TEST
@@ -580,7 +577,7 @@ int	C_RegUserMsg_Post(const char *pszName, int iSize)
 			int id = META_RESULT_ORIG_RET(int);
 			*g_user_msg[i].id =	id;
 
-			if (!g_user_msg[i].cstrike || g_bmod_cstrike)
+			if (!g_user_msg[i].cstrike)
 			{
 				if (g_user_msg[i].endmsg)
 					modMsgsEnd[id] = g_user_msg[i].func;
@@ -609,7 +606,7 @@ void C_ServerActivate(edict_t *pEdictList, int edictCount, int clientMax)
 		{
 			*g_user_msg[i].id =	id;
 			
-			if (!g_user_msg[i].cstrike || g_bmod_cstrike)
+			if (!g_user_msg[i].cstrike)
 			{
 				if (g_user_msg[i].endmsg)
 					modMsgsEnd[id] = g_user_msg[i].func;
@@ -646,9 +643,7 @@ void C_ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
 	CoreCfg.SetMapConfigTimer(6.1); // Prepare per-map configs to be executed 6.1 seconds later.
 	                                // Original value which was used in admin.sma.
 
-	// Correct time in Counter-Strike and other mods (except DOD)
-	if (!g_bmod_dod)
-		g_game_timeleft = 0;
+	g_game_timeleft = 0;
 
 	g_task_time = gpGlobals->time;
 	g_auth_time = gpGlobals->time;
@@ -897,9 +892,9 @@ DETOUR_DECL_STATIC3_VAR(SV_DropClient, void, client_t*, cl, qboolean, crash, con
 
 	CPlayer *pPlayer;
 
-	if (cl->edict)
+	if (cl->pEdict)
 	{
-		pPlayer = GET_PLAYER_POINTER(cl->edict);
+		pPlayer = GET_PLAYER_POINTER(cl->pEdict);
 
 		if (pPlayer->initialized)
 		{
@@ -910,7 +905,7 @@ DETOUR_DECL_STATIC3_VAR(SV_DropClient, void, client_t*, cl, qboolean, crash, con
 
 	DETOUR_STATIC_CALL(SV_DropClient)(cl, crash, "%s", buffer);
 
-	if (cl->edict)
+	if (cl->pEdict)
 	{
 		pPlayer->Disconnect();
 	}
@@ -977,6 +972,7 @@ void C_ClientCommand(edict_t *pEntity)
 	const char* cmd = CMD_ARGV(0);
 	const char* arg = CMD_ARGV(1);
 
+	/*
 	// Handle "amxx" if not on listenserver
 	if (IS_DEDICATED_SERVER())
 	{
@@ -1008,6 +1004,7 @@ void C_ClientCommand(edict_t *pEntity)
 			RETURN_META(MRES_SUPERCEDE);
 		}
 	}
+	*/
 
 	if (executeForwards(FF_ClientCommand, static_cast<cell>(pPlayer->index)) > 0)
 		RETURN_META(MRES_SUPERCEDE);
@@ -1357,9 +1354,13 @@ int	C_Cmd_Argc(void)
 // Only	here we	may	find out who is	an owner.
 void C_SetModel(edict_t *e, const char *m)
 {
-	if (e->v.owner && m[7]=='w' && m[8]=='_' && m[9]=='h')
-		g_grenades.put(e, 1.75, 4, GET_PLAYER_POINTER(e->v.owner));
-	
+	if (m[9] == 'h')
+	{
+		if (e->v.owner && m[7] == 'w' && m[8] == '_')
+		{
+			g_grenades.put(e, 1.75, 4, GET_PLAYER_POINTER(e->v.owner));
+		}
+	}
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -1371,8 +1372,10 @@ void C_TraceLine_Post(const float *v1, const float *v2, int fNoMonsters, edict_t
 		CPlayer* pPlayer = GET_PLAYER_POINTER(e);
 		
 		if (ptr->pHit && (ptr->pHit->v.flags & (FL_CLIENT | FL_FAKECLIENT)))
+		{
 			pPlayer->aiming = ptr->iHitgroup;
-			
+		}
+
 		pPlayer->lastTrace = ptr->vecEndPos;
 	}
 
@@ -1465,7 +1468,7 @@ void C_CvarValue2(const edict_t *pEdict, int requestId, const char *cvar, const 
 	RETURN_META(MRES_HANDLED);
 }
 
-C_DLLEXPORT	int	Meta_Query(const char	*ifvers, plugin_info_t **pPlugInfo,	mutil_funcs_t *pMetaUtilFuncs)
+C_DLLEXPORT	int	Meta_Query(char	*ifvers, plugin_info_t **pPlugInfo,	mutil_funcs_t *pMetaUtilFuncs)
 {
 	gpMetaUtilFuncs = pMetaUtilFuncs;
 	*pPlugInfo = &Plugin_info;
@@ -1500,12 +1503,22 @@ C_DLLEXPORT	int	Meta_Query(const char	*ifvers, plugin_info_t **pPlugInfo,	mutil_
 	return (TRUE);
 }
 
+bool m_api_rehlds = false;
 static META_FUNCTIONS gMetaFunctionTable;
+
 C_DLLEXPORT	int	Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, meta_globals_t *pMGlobals, gamedll_funcs_t *pGamedllFuncs)
 {
 	if (now > Plugin_info.loadable)
 	{
 		LOG_ERROR(PLID,	"Can't load	plugin right now");
+		return (FALSE);
+	}
+
+	m_api_rehlds = RehldsApi_Init();
+
+	if (m_api_rehlds == false)
+	{
+		LOG_ERROR(PLID, "Can't load	ReHLDS");
 		return (FALSE);
 	}
 
@@ -1770,11 +1783,6 @@ C_DLLEXPORT	int	GetEngineFunctions(enginefuncs_t *pengfuncsFromEngine, int *inte
 	if (stricmp(g_mod_name.chars(), "cstrike") == 0 || stricmp(g_mod_name.chars(), "czero") == 0)
 	{
 		meta_engfuncs.pfnSetModel =	C_SetModel;
-		g_bmod_cstrike = true;
-	} else {
-		g_bmod_cstrike = false;
-		g_bmod_dod = !stricmp(g_mod_name.chars(), "dod");
-		g_bmod_tfc = !stricmp(g_mod_name.chars(), "tfc");
 	}
 
 	meta_engfuncs.pfnCmd_Argc = C_Cmd_Argc;

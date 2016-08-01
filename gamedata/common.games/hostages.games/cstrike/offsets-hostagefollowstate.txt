@@ -23,63 +23,54 @@
 					{
 						"windows"   "12"
 						"linux"     "12"
-						"mac"       "12"
 					}
 
 					"m_lastLeaderPos"  // Vector
 					{
 						"windows"   "20"
 						"linux"     "20"
-						"mac"       "20"
 					}
 
 					"m_isWaiting"  // bool
 					{
 						"windows"   "32"
 						"linux"     "32"
-						"mac"       "32"
 					}
 
 					"m_stopRange"  // float
 					{
 						"windows"   "36"
 						"linux"     "36"
-						"mac"       "36"
 					}
 
 					"m_makeWayTimer"  // CountdownTimer
 					{
 						"windows"   "40"
 						"linux"     "40"
-						"mac"       "40"
 					}
 
 					"m_impatientTimer"  // CountdownTimer
 					{
 						"windows"   "48"
 						"linux"     "48"
-						"mac"       "48"
 					}
 
 					"m_repathTimer"  // CountdownTimer
 					{
 						"windows"   "56"
 						"linux"     "56"
-						"mac"       "56"
 					}
 
 					"m_isWaitingForFriend"  // bool
 					{
 						"windows"   "64"
 						"linux"     "64"
-						"mac"       "64"
 					}
 
 					"m_waitForFriendTimer"  // CountdownTimer
 					{
 						"windows"   "68"
 						"linux"     "68"
-						"mac"       "68"
 					}
 				}
 			}

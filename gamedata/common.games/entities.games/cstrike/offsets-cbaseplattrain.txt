@@ -26,7 +26,6 @@
 
 						"windows"   "292"
 						"linux"     "312"
-						"mac"       "312"
 					}
 
 					"m_bStopSnd"  // BYTE
@@ -36,7 +35,6 @@
 
 						"windows"   "293"
 						"linux"     "313"
-						"mac"       "313"
 					}
 
 					"m_volume"  // float
@@ -45,7 +43,6 @@
 
 						"windows"   "296"
 						"linux"     "316"
-						"mac"       "316"
 					}
 				}
 			}

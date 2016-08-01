@@ -112,7 +112,7 @@ void CLog::UseFile(const ke::AString &fileName)
 	m_LogFile = build_pathname_r(file, sizeof(file) - 1, "%s/%s", g_log_dir.chars(), fileName.chars());
 }
 
-void CLog::SetLogType(const char* localInfo)
+void CLog::SetLogType(char* localInfo)
 {
 	m_LogType = atoi(get_localinfo(localInfo, "1"));
 

@@ -26,7 +26,6 @@
 
 						"windows"   "292"
 						"linux"     "312"
-						"mac"       "312"
 					}
 
 					"m_szLandmarkName"  // char[32]
@@ -36,7 +35,6 @@
 
 						"windows"   "324"
 						"linux"     "344"
-						"mac"       "344"
 					}
 
 					"m_changeTarget"  // int
@@ -45,7 +43,6 @@
 
 						"windows"   "356"
 						"linux"     "376"
-						"mac"       "376"
 					}
 
 					"m_changeTargetDelay"  // float
@@ -54,7 +51,6 @@
 
 						"windows"   "360"
 						"linux"     "380"
-						"mac"       "380"
 					}
 				}
 			}

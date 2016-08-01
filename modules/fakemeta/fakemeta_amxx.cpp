@@ -14,6 +14,10 @@
 #include "fakemeta_amxx.h"
 #include "sh_stack.h"
 
+#include "mod_rehlds_api.h"
+
+bool m_api_rehlds = false;
+
 IGameConfig *CommonConfig;
 IGameConfig *GamerulesConfig;
 IGameConfigManager *ConfigManager;
@@ -23,6 +27,14 @@ void **GameRulesAddress;
 
 void OnAmxxAttach()
 {
+	m_api_rehlds = RehldsApi_Init();
+
+	if (m_api_rehlds == false)
+	{
+		MF_Log("Error load ReHLDS");
+		return;
+	}
+
 	initialze_offsets();
 	initialize_glb_offsets();
 

@@ -25,7 +25,6 @@
 
 						"windows"   "136"
 						"linux"     "152"
-						"mac"       "152"
 					}
 
 					"m_cBloodDecals"  // int
@@ -34,7 +33,6 @@
 
 						"windows"   "140"
 						"linux"     "156"
-						"mac"       "156"
 					}
 
 					"m_material"  // int
@@ -43,7 +41,6 @@
 
 						"windows"   "144"
 						"linux"     "160"
-						"mac"       "160"
 					}
 
 					"m_lifeTime"  // float
@@ -52,7 +49,6 @@
 
 						"windows"   "148"
 						"linux"     "164"
-						"mac"       "164"
 					}
 				}
 			}

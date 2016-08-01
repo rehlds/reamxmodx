@@ -19,10 +19,10 @@ static cell AMX_NATIVE_CALL get_global_float(AMX *amx, cell *params)
 
 	switch (params[1]) {
 		case GL_coop:
-			returnValue = gpGlobals->coop;
+			returnValue = gpGlobals->coop_;
 			break;
 		case GL_deathmatch:
-			returnValue = gpGlobals->deathmatch;
+			returnValue = gpGlobals->deathmatch_;
 			break;
 		case GL_force_retouch:
 			returnValue = gpGlobals->force_retouch;

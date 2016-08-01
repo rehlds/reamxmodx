@@ -205,19 +205,19 @@ void PlayerPostThink_Post(edict_t *pEntity)
 
 		switch(plinfo[index].iViewType) {
 			case CAMERA_3RDPERSON:
-				TRACE_LINE(vecSrc, vecSrc - (vecAiming * 128), ignore_monsters, ENT(pEntity), &tr);
+				TRACE_LINE(vecSrc, vecSrc - (vecAiming * 128), ignore_monsters, ENT(&pEntity->v), &tr);
 				SET_VIEW(pEntity, pCamEnt);
 				pCamEnt->v.origin = tr.vecEndPos;
 				pCamEnt->v.angles = pEntity->v.v_angle;
 				break;
 			case CAMERA_UPLEFT:
-				TRACE_LINE(vecSrc, vecSrc - ((vecAiming * 32) - ((gpGlobals->v_right * 15) + (gpGlobals->v_up * 15))), ignore_monsters, ENT(pEntity), &tr);
+				TRACE_LINE(vecSrc, vecSrc - ((vecAiming * 32) - ((gpGlobals->v_right * 15) + (gpGlobals->v_up * 15))), ignore_monsters, ENT(&pEntity->v), &tr);
 				SET_VIEW(pEntity, pCamEnt);
 				pCamEnt->v.origin = tr.vecEndPos;
 				pCamEnt->v.angles = pEntity->v.v_angle;
 				break;
 			case CAMERA_TOPDOWN:
-				TRACE_LINE(vecSrc, vecSrc + Vector(0,0,2048), dont_ignore_monsters, ENT(pEntity), &tr);
+				TRACE_LINE(vecSrc, vecSrc + Vector(0,0,2048), dont_ignore_monsters, ENT(&pEntity->v), &tr);
 				SET_VIEW(pEntity, pCamEnt);
 				pCamEnt->v.origin = tr.vecEndPos;
 				pCamEnt->v.origin.z -= 40;

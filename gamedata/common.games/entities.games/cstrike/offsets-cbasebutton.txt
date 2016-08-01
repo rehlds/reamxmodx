@@ -25,7 +25,6 @@
 
 						"windows"   "292"
 						"linux"     "312"
-						"mac"       "312"
 					}
 
 					"m_fRotating"  // BOOL
@@ -34,7 +33,6 @@
 
 						"windows"   "296"
 						"linux"     "316"
-						"mac"       "316"
 					}
 
 					"m_strChangeTarget"  // string_t
@@ -43,7 +41,6 @@
 
 						"windows"   "300"
 						"linux"     "320"
-						"mac"       "320"
 					}
 
 					"m_ls"  // locksound_t
@@ -52,7 +49,6 @@
 
 						"windows"   "304"
 						"linux"     "324"
-						"mac"       "324"
 					}
 
 					"m_bLockedSound"  // BYTE
@@ -62,7 +58,6 @@
 
 						"windows"   "340"
 						"linux"     "360"
-						"mac"       "360"
 					}
 
 					"m_bLockedSentence"  // BYTE
@@ -72,7 +67,6 @@
 
 						"windows"   "341"
 						"linux"     "361"
-						"mac"       "361"
 					}
 
 					"m_bUnlockedSound"  // BYTE
@@ -82,7 +76,6 @@
 
 						"windows"   "342"
 						"linux"     "362"
-						"mac"       "362"
 					}
 
 					"m_bUnlockedSentence"  // BYTE
@@ -92,7 +85,6 @@
 
 						"windows"   "343"
 						"linux"     "363"
-						"mac"       "363"
 					}
 
 					"m_sounds"  // int
@@ -101,7 +93,6 @@
 
 						"windows"   "344"
 						"linux"     "364"
-						"mac"       "364"
 					}
 				}
 			}

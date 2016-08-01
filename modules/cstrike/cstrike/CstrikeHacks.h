@@ -17,8 +17,11 @@
 #include <amxxmodule.h>
 #include <IGameConfigs.h>
 #include <CDetour/detours.h>
-#include <engine_strucs.h>
 #include "CstrikeDatas.h"
+
+#include "entity_state.h"
+#include "usercmd.h"
+#include "struct.h"
 
 void InitializeHacks();
 void InitFuncsAddresses();
@@ -26,7 +29,6 @@ void InitClassMembers();
 void InitGlobalVars();
 void ShutdownHacks();
 
-void CtrlDetours_ClientCommand(bool set);
 void CtrlDetours_BuyCommands(bool set);
 void CtrlDetours_Natives(bool set);
 
@@ -46,7 +48,6 @@ extern bool HasInternalCommandForward;
 extern bool HasOnBuyAttemptForward;
 extern bool HasOnBuyForward;
 
-extern CDetour *ClientCommandDetour;
 extern CDetour *GiveNamedItemDetour;
 extern CDetour *AddAccountDetour;
 extern CDetour *CanPlayerBuyDetour;
@@ -80,7 +81,7 @@ extern server_static_t *ServerStatic;
 extern server_t *Server;
 extern void **GameRules;
 
-extern int *UseBotArgs;
-extern const char **BotArgs;
+//extern int *UseBotArgs;
+//extern const char **BotArgs;
 
 #endif // CSTRIKE_HACKS_H

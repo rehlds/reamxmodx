@@ -10,7 +10,7 @@
 #include "amxmodx.h"
 #include "messages.h"
 
-Message Msg;
+Message MsgAmx;
 RegisteredMessage msgHooks[256];
 int msgBlocks[256] = {BLOCK_NOT};
 int msgDest;
@@ -227,7 +227,7 @@ void C_WriteByte(int iValue)
 	{
 		RETURN_META(MRES_SUPERCEDE);
 	} else if (inhook) {
-		Msg.AddParam(iValue, arg_byte);
+		MsgAmx.AddParam(iValue, arg_byte);
 		RETURN_META(MRES_SUPERCEDE);
 	}
 
@@ -240,7 +240,7 @@ void C_WriteChar(int iValue)
 	{
 		RETURN_META(MRES_SUPERCEDE);
 	} else if (inhook) {
-		Msg.AddParam(iValue, arg_char);
+		MsgAmx.AddParam(iValue, arg_char);
 		RETURN_META(MRES_SUPERCEDE);
 	}
 
@@ -253,7 +253,7 @@ void C_WriteShort(int iValue)
 	{
 		RETURN_META(MRES_SUPERCEDE);
 	} else if (inhook) {
-		Msg.AddParam(iValue, arg_short);
+		MsgAmx.AddParam(iValue, arg_short);
 		RETURN_META(MRES_SUPERCEDE);
 	}
 
@@ -266,7 +266,7 @@ void C_WriteLong(int iValue)
 	{
 		RETURN_META(MRES_SUPERCEDE);
 	} else if (inhook) {
-		Msg.AddParam(iValue, arg_long);
+		MsgAmx.AddParam(iValue, arg_long);
 		RETURN_META(MRES_SUPERCEDE);
 	}
 
@@ -279,7 +279,7 @@ void C_WriteAngle(float flValue)
 	{
 		RETURN_META(MRES_SUPERCEDE);
 	} else if (inhook) {
-		Msg.AddParam(flValue, arg_angle);
+		MsgAmx.AddParam(flValue, arg_angle);
 		RETURN_META(MRES_SUPERCEDE);
 	}
 
@@ -292,7 +292,7 @@ void C_WriteCoord(float flValue)
 	{
 		RETURN_META(MRES_SUPERCEDE);
 	} else if (inhook) {
-		Msg.AddParam(flValue, arg_coord);
+		MsgAmx.AddParam(flValue, arg_coord);
 		RETURN_META(MRES_SUPERCEDE);
 	}
 
@@ -305,7 +305,7 @@ void C_WriteString(const char *sz)
 	{
 		RETURN_META(MRES_SUPERCEDE);
 	} else if (inhook) {
-		Msg.AddParam(sz, arg_string);
+		MsgAmx.AddParam(sz, arg_string);
 		RETURN_META(MRES_SUPERCEDE);
 	}
 
@@ -318,7 +318,7 @@ void C_WriteEntity(int iValue)
 	{
 		RETURN_META(MRES_SUPERCEDE);
 	} else if (inhook) {
-		Msg.AddParam(iValue, arg_entity);
+		MsgAmx.AddParam(iValue, arg_entity);
 		RETURN_META(MRES_SUPERCEDE);
 	}
 
@@ -352,17 +352,17 @@ void C_MessageEnd(void)
 		inhook = false;
 		if (mres & 1)
 		{
-			Msg.Reset();
+			MsgAmx.Reset();
 			RETURN_META(MRES_SUPERCEDE);
 		}
 
 		/* send the real message */
 		MESSAGE_BEGIN(msgDest, msgType, msgOrigin, msgpEntity);
-		Msg.Send();
+		MsgAmx.Send();
 		MESSAGE_END();
 
 		/* reset */
-		Msg.Reset();
+		MsgAmx.Reset();
 
 		RETURN_META(MRES_SUPERCEDE);
 	}
@@ -513,8 +513,8 @@ static cell AMX_NATIVE_CALL register_message(AMX *amx, cell *params)
 	int len;
 	char *name = get_amxstring(amx, params[2], 0, len);
 
-	if (!Msg.Ready())
-		Msg.Init();
+	if (!MsgAmx.Ready())
+		MsgAmx.Init();
 
 	if (params[1]>0 && params[1] < 256)
 	{
@@ -535,8 +535,8 @@ static cell AMX_NATIVE_CALL register_message(AMX *amx, cell *params)
 // unregister_message(msgid, msghandle)
 static cell AMX_NATIVE_CALL unregister_message(AMX *amx, cell *params)
 {
-	if (!Msg.Ready())
-		Msg.Init();
+	if (!MsgAmx.Ready())
+		MsgAmx.Init();
 
 	if (params[1]>0 && params[1] < 256)
 	{
@@ -586,46 +586,46 @@ static cell AMX_NATIVE_CALL get_msg_block(AMX *amx, cell *params)
 
 static cell AMX_NATIVE_CALL get_msg_args(AMX *amx, cell *params)
 {
-	return Msg.Params();
+	return MsgAmx.Params();
 }
 
 static cell AMX_NATIVE_CALL get_msg_argtype(AMX *amx, cell *params)
 {
 	size_t argn = static_cast<size_t>(params[1]);
 
-	if (!inhook || argn > Msg.Params())
+	if (!inhook || argn > MsgAmx.Params())
 	{
 		LogError(amx, AMX_ERR_NATIVE, "Invalid message argument %d", argn);
 		return 0;
 	}
 
-	return Msg.GetParamType(argn);
+	return MsgAmx.GetParamType(argn);
 }
 
 static cell AMX_NATIVE_CALL get_msg_arg_int(AMX *amx, cell *params)
 {
 	size_t argn = static_cast<size_t>(params[1]);
 
-	if (!inhook || argn > Msg.Params())
+	if (!inhook || argn > MsgAmx.Params())
 	{
 		LogError(amx, AMX_ERR_NATIVE, "Invalid message argument %d", argn);
 		return 0;
 	}
 
-	return Msg.GetParamInt(argn);
+	return MsgAmx.GetParamInt(argn);
 }
 
 static cell AMX_NATIVE_CALL set_msg_arg_int(AMX *amx, cell *params)
 {
 	size_t argn = static_cast<size_t>(params[1]);
 
-	if (!inhook || argn > Msg.Params())
+	if (!inhook || argn > MsgAmx.Params())
 	{
 		LogError(amx, AMX_ERR_NATIVE, "Invalid message argument %d", argn);
 		return 0;
 	}
 
-	Msg.SetParam(argn, (int)params[3]);
+	MsgAmx.SetParam(argn, (int)params[3]);
 
 	return 1;
 }
@@ -634,13 +634,13 @@ static cell AMX_NATIVE_CALL get_msg_arg_float(AMX *amx, cell *params)
 {
 	size_t argn = static_cast<size_t>(params[1]);
 
-	if (!inhook || argn > Msg.Params())
+	if (!inhook || argn > MsgAmx.Params())
 	{
 		LogError(amx, AMX_ERR_NATIVE, "Invalid message argument %d", argn);
 		return 0;
 	}
 
-	REAL f = (REAL)Msg.GetParamFloat(argn);
+	REAL f = (REAL)MsgAmx.GetParamFloat(argn);
 	return amx_ftoc(f);
 }
 
@@ -648,7 +648,7 @@ static cell AMX_NATIVE_CALL set_msg_arg_float(AMX *amx, cell *params)
 {
 	size_t argn = static_cast<size_t>(params[1]);
 
-	if (!inhook || argn > Msg.Params())
+	if (!inhook || argn > MsgAmx.Params())
 	{
 		LogError(amx, AMX_ERR_NATIVE, "Invalid message argument %d", argn);
 		return 0;
@@ -656,7 +656,7 @@ static cell AMX_NATIVE_CALL set_msg_arg_float(AMX *amx, cell *params)
 
 	REAL fVal = amx_ctof(params[3]);
 
-	Msg.SetParam(argn, (float)fVal);
+	MsgAmx.SetParam(argn, (float)fVal);
 
 	return 1;
 }
@@ -665,13 +665,13 @@ static cell AMX_NATIVE_CALL get_msg_arg_string(AMX *amx, cell *params)
 {
 	size_t argn = static_cast<size_t>(params[1]);
 
-	if (!inhook || argn > Msg.Params())
+	if (!inhook || argn > MsgAmx.Params())
 	{
 		LogError(amx, AMX_ERR_NATIVE, "Invalid message argument %d", argn);
 		return 0;
 	}
 
-	const char *szVal = Msg.GetParamString(argn);
+	const char *szVal = MsgAmx.GetParamString(argn);
 
 	return set_amxstring(amx, params[2], szVal, params[3]);
 }
@@ -681,7 +681,7 @@ static cell AMX_NATIVE_CALL set_msg_arg_string(AMX *amx, cell *params)
 	size_t argn = static_cast<size_t>(params[1]);
 	int iLen;
 
-	if (!inhook || argn > Msg.Params())
+	if (!inhook || argn > MsgAmx.Params())
 	{
 		LogError(amx, AMX_ERR_NATIVE, "Invalid message argument %d", argn);
 		return 0;
@@ -689,7 +689,7 @@ static cell AMX_NATIVE_CALL set_msg_arg_string(AMX *amx, cell *params)
 
 	char *szVal = get_amxstring(amx, params[2], 0, iLen);
 
-	Msg.SetParam(argn, szVal);
+	MsgAmx.SetParam(argn, szVal);
 
 	return 1;
 }

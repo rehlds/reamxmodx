@@ -1273,4 +1273,7 @@ forward CS_OnBuyAttempt(index, item);
  * @return          PLUGIN_CONTINUE to let the buy continue
  *                  PLUGIN_HANDLED to block the buy
  */
-forward CS_OnBuy(index, item);
+
+// disable forward to module
+
+//forward CS_OnBuy(index, item);

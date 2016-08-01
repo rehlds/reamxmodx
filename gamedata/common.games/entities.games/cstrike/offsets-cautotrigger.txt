@@ -25,7 +25,6 @@
 
 						"windows"   "144"
 						"linux"     "160"
-						"mac"       "160"
 					}
 
 					"triggerType"  // USE_TYPE
@@ -34,7 +33,6 @@
 
 						"windows"   "148"
 						"linux"     "164"
-						"mac"       "164"
 					}
 				}
 			}

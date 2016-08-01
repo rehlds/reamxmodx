@@ -73,10 +73,8 @@ void Client_ShowMenu(void* mValue)
 	}
 }
 
-extern bool g_bmod_tfc;
 void Client_TeamInfo(void* mValue)
 {
-	if (mPlayer && !g_bmod_tfc) return;
 	static int index;
 
 	switch (mState++)
@@ -98,7 +96,7 @@ void Client_TeamInfo(void* mValue)
 			* This means for the first round of first spectator, SPECTATOR name is not associated with its index.
 			* The following fix manually sets the team index when we hit SPECTATOR team.
 			*/
-			if (g_players[index].teamId == -1 && g_bmod_cstrike && !strcmp(msg, "SPECTATOR"))
+			if (g_players[index].teamId == -1 && !strcmp(msg, "SPECTATOR"))
 			{
 				g_players[index].teamId = 3;
 				g_teamsIds.registerTeam(msg, 3);
@@ -325,9 +323,6 @@ void Client_DeathMsg(void* mValue)
 
 void Client_InitHUDEnd(void* mValue)
 {
-	if (!g_bmod_cstrike)
-		return;
-
 	CPlayer *pPlayer = mPlayer;
 
 	if (!pPlayer->teamIdsInitialized && !pPlayer->IsBot())

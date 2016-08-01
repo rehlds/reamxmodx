@@ -211,7 +211,7 @@ static cell AMX_NATIVE_CALL dllfunc(AMX *amx,cell *params)
 
 	case	DLLFunc_PM_FindTextureType:	// char )( char *name );
 		temp = MF_GetAmxString(amx,params[2],0,&len);
-		return gpGamedllFuncs->dllapi_table->pfnPM_FindTextureType(temp);
+		return gpGamedllFuncs->dllapi_table->pfnPM_FindTextureType((char*)temp);
 
 	case	DLLFunc_RegisterEncoders:	// void )	( void );
 		gpGamedllFuncs->dllapi_table->pfnRegisterEncoders();

@@ -18,6 +18,10 @@
 #include "CstrikeUserMessages.h"
 #include <IGameConfigs.h>
 
+#include "mod_rehlds_api.h"
+
+bool m_api_rehlds = false;
+
 IGameConfig *MainConfig;
 IGameConfig *CommonConfig;
 IGameConfigManager *ConfigManager;
@@ -36,6 +40,14 @@ int AmxxCheckGame(const char *game)
 
 void OnAmxxAttach()
 {
+	m_api_rehlds = RehldsApi_Init();
+
+	if (m_api_rehlds == false)
+	{
+		MF_Log("Error load ReHLDS.");
+		return;
+	}
+
 	MF_AddNatives(CstrikeNatives);
 
 	ConfigManager = MF_GetConfigManager();
@@ -62,34 +74,53 @@ void OnAmxxAttach()
 
 void OnPluginsLoaded()
 {
+	if (m_api_rehlds == false)
+	{
+		return;
+	}
+
 	TypeConversion.init();
 
 	ForwardInternalCommand = MF_RegisterForward("CS_InternalCommand", ET_STOP, FP_CELL, FP_STRING, FP_DONE);
-	ForwardOnBuy           = MF_RegisterForward("CS_OnBuy"          , ET_STOP, FP_CELL, FP_CELL, FP_DONE);
+	//ForwardOnBuy           = MF_RegisterForward("CS_OnBuy"          , ET_STOP, FP_CELL, FP_CELL, FP_DONE);
 	ForwardOnBuyAttempt    = MF_RegisterForward("CS_OnBuyAttempt"   , ET_STOP, FP_CELL, FP_CELL, FP_DONE);
 }
 
 void OnServerActivate(edict_t *pEdictList, int edictCount, int clientMax)
 {
+	if (m_api_rehlds == false)
+	{
+		return;
+	}
+
 	// Used to catch WeaponList message at map change.
 	EnableMessageHooks();
 
-	if (!ClientCommandDetour) // All CS_* forwards requires ClientCommand. Unlikely to fail. 
+	auto OnBuyAttempt = UTIL_CheckForPublic("CS_OnBuyAttempt");
+
+	auto OnBuy = false;
+
+	/*
+	auto OnBuy = UTIL_CheckForPublic("CS_OnBuy");
+
+	if (OnBuy)
 	{
-		ToggleDetour_ClientCommands(false);
-		ToggleDetour_BuyCommands(false);
-
-		RETURN_META(MRES_IGNORED);
+		CtrlDetours_BuyCommands(true);
 	}
+	*/
 
-	auto haveBotDetours = UseBotArgs && BotArgs;
+	HasInternalCommandForward = UTIL_CheckForPublic("CS_InternalCommand");
+
 	auto haveBuyDetours = BuyGunAmmoDetour && GiveNamedItemDetour && AddAccountDetour && CanPlayerBuyDetour && CanBuyThisDetour;
 
-	HasInternalCommandForward = haveBotDetours && UTIL_CheckForPublic("CS_InternalCommand");
-	HasOnBuyAttemptForward    = haveBuyDetours && UTIL_CheckForPublic("CS_OnBuyAttempt");
-	HasOnBuyForward           = haveBuyDetours && UTIL_CheckForPublic("CS_OnBuy");
+	if (haveBuyDetours)
+	{
+		HasOnBuyAttemptForward = OnBuyAttempt;
+		HasOnBuyForward = OnBuy;
+	}
 
 	ToggleDetour_ClientCommands(HasInternalCommandForward || HasOnBuyAttemptForward || HasOnBuyForward);
+	
 	ToggleDetour_BuyCommands(HasOnBuyForward);
 
 	RETURN_META(MRES_IGNORED);
@@ -104,13 +135,8 @@ void OnServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
 
 void OnServerDeactivate()
 {
-	if (!ClientCommandDetour)
-	{
-		RETURN_META(MRES_IGNORED);
-	}
-
-	ToggleDetour_ClientCommands(false);
 	ToggleDetour_BuyCommands(false);
+	ToggleDetour_ClientCommands(false);
 
 	RETURN_META(MRES_IGNORED);
 }

@@ -25,7 +25,6 @@
 
 						"windows"   "292"
 						"linux"     "312"
-						"mac"       "312"
 					}
 
 					"m_direction"  // int
@@ -34,7 +33,6 @@
 
 						"windows"   "296"
 						"linux"     "316"
-						"mac"       "316"
 					}
 
 					"m_returnSpeed"  // float
@@ -43,7 +41,6 @@
 
 						"windows"   "300"
 						"linux"     "320"
-						"mac"       "320"
 					}
 
 					"m_start"  // Vector
@@ -52,7 +49,6 @@
 
 						"windows"   "304"
 						"linux"     "324"
-						"mac"       "324"
 					}
 
 					"m_end"  // Vector
@@ -61,7 +57,6 @@
 
 						"windows"   "316"
 						"linux"     "336"
-						"mac"       "336"
 					}
 
 					"m_sounds"  // int
@@ -70,7 +65,6 @@
 
 						"windows"   "328"
 						"linux"     "348"
-						"mac"       "348"
 					}
 				}
 			}

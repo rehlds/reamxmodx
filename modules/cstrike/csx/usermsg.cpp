@@ -23,9 +23,10 @@ int aim;
 bool ignore;
 CPlayer *pAttacker;
 
-
-void Client_ResetHUD(void* mValue){
-	if ( mPlayer ){ 
+void Client_ResetHUD(void* mValue)
+{
+	if ( mPlayer )
+	{
 		mPlayer->clearStats = gpGlobals->time + 0.25f;
 	}
 }
@@ -68,18 +69,22 @@ void Client_DeathMsg(void *mValue)
 	}
 }
 
-void Client_WeaponList(void* mValue){
+void Client_WeaponList(void* mValue)
+{
   static int wpnList;
   static int iSlot;
   static const char* wpnName;
 
-  switch (mState++) {
+  switch (mState++)
+  {
   case 0:
     wpnName = (const char*)mValue;
     break;
+
   case 1:
     iSlot = *(int*)mValue;
     break;
+
   case 7:
     int iId = *(int*)mValue;
     if ( (iId < 0 || iId >= MAX_WEAPONS ) || ( wpnList & (1<<iId) ) )
@@ -99,18 +104,23 @@ void Client_WeaponList(void* mValue){
   } 
 }
 
-void Client_Damage(void* mValue){
+void Client_Damage(void* mValue)
+{
   static int bits;
-  switch (mState++) {
+  switch (mState++)
+  {
   case 1: 
 	ignore = false;
     damage = *(int*)mValue;
     break;
+
   case 2:
     bits = *(int*)mValue;
     break;
+
   case 3:
-	  if (!mPlayer || !damage || bits){
+	  if (!mPlayer || !damage || bits)
+	  {
 	    ignore = true;
 		break;
 	  }
@@ -118,7 +128,8 @@ void Client_Damage(void* mValue){
     edict_t *enemy;
 	enemy = mPlayer->pEdict->v.dmg_inflictor;
     
-	if ( FNullEnt( enemy ) ){
+	if ( FNullEnt( enemy ) )
+	{
 		ignore = true;
 		break;
 	}
@@ -127,7 +138,8 @@ void Client_Damage(void* mValue){
 	weapon = 0;
 	pAttacker = NULL;
 
-	if (enemy->v.flags & (FL_CLIENT | FL_FAKECLIENT) ) {
+	if (enemy->v.flags & (FL_CLIENT | FL_FAKECLIENT) )
+	{
 		pAttacker = GET_PLAYER_POINTER(enemy);
 		aim = pAttacker->aiming;
 		weapon = pAttacker->current;
@@ -141,19 +153,22 @@ void Client_Damage(void* mValue){
   }
 }
 
-void Client_Damage_End(void* mValue){
+void Client_Damage_End(void* mValue)
+{
 	if ( ignore )
 		return;
 
 	if ( !pAttacker ) pAttacker = mPlayer;
 		TA = 0;
+
 	if ( (mPlayer->teamId == pAttacker->teamId) && (mPlayer != pAttacker) )
 		TA = 1;
 
 	MF_ExecuteForward( iFDamage, static_cast<cell>(pAttacker->index) , static_cast<cell>(mPlayer->index) ,
 		static_cast<cell>(damage), static_cast<cell>(weapon), static_cast<cell>(aim), static_cast<cell>(TA) );
 	 
-	if ( !mPlayer->IsAlive() ){
+	if ( !mPlayer->IsAlive() )
+	{
 		if ( weapon != CSW_C4 )
 			pAttacker->saveKill(mPlayer,weapon,( aim == 1 ) ? 1:0 ,TA);
 		MF_ExecuteForward( iFDeath, static_cast<cell>(pAttacker->index), static_cast<cell>(mPlayer->index),
@@ -161,10 +176,12 @@ void Client_Damage_End(void* mValue){
 	}
 }
 
-void Client_CurWeapon(void* mValue){
+void Client_CurWeapon(void* mValue)
+{
   static int iState;
   static int iId;
-  switch (mState++){
+  switch (mState++)
+  {
   case 0: 
     iState = *(int*)mValue;
     break;
@@ -182,9 +199,11 @@ void Client_CurWeapon(void* mValue){
   }
 }
 
-void Client_AmmoX(void* mValue){
+void Client_AmmoX(void* mValue)
+{
   static int iAmmo;
-  switch (mState++){
+  switch (mState++)
+  {
   case 0:
     iAmmo = *(int*)mValue;
     break;
@@ -196,9 +215,11 @@ void Client_AmmoX(void* mValue){
   }
 }
 
-void Client_AmmoPickup(void* mValue){
+void Client_AmmoPickup(void* mValue)
+{
   static int iSlot;
-  switch (mState++){
+  switch (mState++)
+  {
   case 0:
     iSlot = *(int*)mValue;
     break;
@@ -210,28 +231,36 @@ void Client_AmmoPickup(void* mValue){
   }
 }
 
-void Client_ScoreInfo(void* mValue){
+void Client_ScoreInfo(void* mValue)
+{
   static int index;
-  switch (mState++){
+  switch (mState++)
+  {
   case 0:
     index = *(int*)mValue;
     break;
+
   case 4:
 	if ( index > 0 && index <= gpGlobals->maxClients )
 		GET_PLAYER_POINTER_I( index )->teamId = *(int*)mValue;
   }
 }
 
-void Client_SendAudio(void* mValue){
+void Client_SendAudio(void* mValue)
+{
 	static const char* szText;
-	if ( mState == 1 ){
+	if ( mState == 1 )
+	{
 		szText = (const char*)mValue;
-		if ( !mPlayer && szText[7]=='B' ) {
-			if ( szText[11]=='P' && g_Planter ){
+		if ( !mPlayer && szText[7]=='B' )
+		{
+			if ( szText[11]=='P' && g_Planter )
+			{
 				GET_PLAYER_POINTER_I(g_Planter)->saveBPlant();
 				g_bombAnnounce = BOMB_PLANTED;
 			}
-			else if ( szText[11]=='D' && g_Defuser ){
+			else if ( szText[11]=='D' && g_Defuser )
+			{
 				GET_PLAYER_POINTER_I(g_Defuser)->saveBDefused();
 				g_bombAnnounce = BOMB_DEFUSED;
 			}
@@ -241,11 +270,14 @@ void Client_SendAudio(void* mValue){
 	mState++;
 }
 
-void Client_TextMsg(void* mValue){
+void Client_TextMsg(void* mValue)
+{
 	static const char* szText;
-	if ( !mPlayer && mState==1 ){
+	if ( !mPlayer && mState == 1 )
+	{
 		szText = (const char*)mValue;
-		if ( szText[1]=='T' && szText[8]=='B' && g_Planter ){
+		if ( szText[1]=='T' && szText[8]=='B' && g_Planter )
+		{
 			GET_PLAYER_POINTER_I(g_Planter)->saveBExplode();
 			g_bombAnnounce = BOMB_EXPLODE;
 		}
@@ -253,15 +285,18 @@ void Client_TextMsg(void* mValue){
 	mState++;
 }
 
-void Client_BarTime(void* mValue){
+void Client_BarTime(void* mValue)
+{
 	int iTime = *(int*)mValue;
+
 	if ( !iTime || !mPlayer->IsAlive() ) return;
-	if ( iTime == 3 ){
+
+	if ( iTime == 3 )
+	{
 		g_Planter = mPlayerIndex;
 		g_bombAnnounce = BOMB_PLANTING;
 		g_Defuser = 0;
-	}
-	else {
+	} else {
 		mPlayer->saveBDefusing();
 		g_Defuser = mPlayerIndex;
 		g_bombAnnounce = BOMB_DEFUSING;

@@ -143,19 +143,6 @@
 #define CSA_SMOKEGRENADE				18
 
 /**
- * Weapon states of the following weapons: usp, elite, glock18, famas and m4a1.
- */
-enum WeaponState
-{
-	WPNSTATE_USP_SILENCED       = (1 << 0),
-	WPNSTATE_GLOCK18_BURST_MODE = (1 << 1),
-	WPNSTATE_M4A1_SILENCED      = (1 << 2),
-	WPNSTATE_ELITE_LEFT         = (1 << 3),
-	WPNSTATE_FAMAS_BURST_MODE   = (1 << 4),
-	WPNSTATE_SHIELD_DRAWN       = (1 << 5),
-};
-
-/**
  * M4A1 animations
  */
 enum m4a1_e
@@ -197,18 +184,6 @@ enum usp_e
 	USP_UNSIL_RELOAD,
 	USP_UNSIL_DRAW,
 	USP_DETACH_SILENCER
-};
-
-/**
- * States of gameplay zones.
- */
-enum SignalState
-{
-	SIGNAL_BUY       = (1 << 0),
-	SIGNAL_BOMB      = (1 << 1),
-	SIGNAL_RESCUE    = (1 << 2),
-	SIGNAL_ESCAPE    = (1 << 3),
-	SIGNAL_VIPSAFETY = (1 << 4),
 };
 
 /**
@@ -283,30 +258,6 @@ enum CS_Internal_Models
 };
 
 /**
- * Menu states.
- */
-typedef enum
-{
-	Menu_OFF,
-	Menu_ChooseTeam,
-	Menu_IGChooseTeam,
-	Menu_ChooseAppearance,
-	Menu_Buy,
-	Menu_BuyPistol,
-	Menu_BuyRifle,
-	Menu_BuyMachineGun,
-	Menu_BuyShotgun,
-	Menu_BuySubMachineGun,
-	Menu_BuyItem,
-	Menu_Radio1,
-	Menu_Radio2,
-	Menu_Radio3,
-	Menu_ClientBuy
-
-} Menu;
-
-
-/**
  * Weapon class types.
  */
 enum CsWeaponClassType
@@ -324,22 +275,6 @@ enum CsWeaponClassType
 };
 
 /**
- * Weapon infos.
- */
-typedef struct
-{
-	int id;
-	int cost;
-	int clipCost;
-	int buyClipSize;
-	int gunClipSize;
-	int maxRounds;
-	int ammoType;
-	char *entityName;
-}
-WeaponInfoStruct;
-
-/**
  * Weapon infos for use with cs_get_weapon_info().
  */
 enum CsWeaponInfo
@@ -350,53 +285,6 @@ enum CsWeaponInfo
 	CS_WEAPONINFO_GUN_CLIP_SIZE = 3,
 	CS_WEAPONINFO_MAX_ROUNDS    = 4,
 	CS_WEAPONINFO_AMMO_TYPE     = 5,
-};
-
-/**
- * Weapon default cost.
- */
-enum WeaponCostType
-{
-	AK47_PRICE      = 2500,
-	AWP_PRICE       = 4750,
-	DEAGLE_PRICE    = 650,
-	G3SG1_PRICE     = 5000,
-	SG550_PRICE     = 4200,
-	GLOCK18_PRICE   = 400,
-	M249_PRICE      = 5750,
-	M3_PRICE        = 1700,
-	M4A1_PRICE      = 3100,
-	AUG_PRICE       = 3500,
-	MP5NAVY_PRICE   = 1500,
-	P228_PRICE      = 600,
-	P90_PRICE       = 2350,
-	UMP45_PRICE     = 1700,
-	MAC10_PRICE     = 1400,
-	SCOUT_PRICE     = 2750,
-	SG552_PRICE     = 3500,
-	TMP_PRICE       = 1250,
-	USP_PRICE       = 500,
-	ELITE_PRICE     = 800,
-	FIVESEVEN_PRICE = 750,
-	XM1014_PRICE    = 3000,
-	GALIL_PRICE     = 2000,
-	FAMAS_PRICE     = 2250,
-	SHIELDGUN_PRICE = 2200
-};
-
-/**
- * Equipment default cost.
- */
-enum ItemCostType
-{
-	ASSAULTSUIT_PRICE  = 1000,
-	FLASHBANG_PRICE    = 200,
-	HEGRENADE_PRICE    = 300,
-	SMOKEGRENADE_PRICE = 300,
-	KEVLAR_PRICE       = 650,
-	HELMET_PRICE       = 350,
-	NVG_PRICE          = 1250,
-	DEFUSEKIT_PRICE    = 200
 };
 
 #endif // CSTRIKE_DATA_H

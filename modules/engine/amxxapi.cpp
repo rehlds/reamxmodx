@@ -13,6 +13,10 @@
 
 #include "engine.h"
 
+#include "mod_rehlds_api.h"
+
+bool m_api_rehlds = false;
+
 BOOL CheckForPublic(const char *publicname);
 void CreateDetours();
 void DestroyDetours();
@@ -45,6 +49,14 @@ void ClearHooks()
 
 void OnAmxxAttach()
 {
+	m_api_rehlds = RehldsApi_Init();
+
+	if (m_api_rehlds == false)
+	{
+		MF_Log("Error load ReHLDS");
+		return;
+	}
+
 	pfnTouchForward = 0;
 	pfnThinkForward = 0;
 	PlayerPreThinkForward = 0;
@@ -92,7 +104,7 @@ void OnPluginsLoaded()
 
 	// These will be reset through native calls, if need be
 
-	g_pFunctionTable->pfnAddToFullPack=NULL;
+	g_pFunctionTable_Post->pfnAddToFullPack = NULL;
 
 	g_pFunctionTable->pfnKeyValue=NULL;
 	if (CheckForPublic("pfn_keyvalue"))
@@ -183,7 +195,7 @@ void ClientDisconnect(edict_t *pEntity)
 		if (g_CameraCount < 0)
 			g_CameraCount=0;
 		if (g_CameraCount==0) // Reset the AddToFullPack pointer if there's no more cameras in use...
-			g_pFunctionTable->pfnAddToFullPack=NULL;
+			g_pFunctionTable_Post->pfnAddToFullPack = NULL;
 	}
 
 	plinfo[id].iSpeakFlags = SPEAK_NORMAL;
@@ -210,7 +222,7 @@ void ServerDeactivate()
 	glinfo.bCheckLights = false;
 	
 	// Reset all forwarding function tables (so that forwards won't be called before plugins are initialized)
-	g_pFunctionTable->pfnAddToFullPack=NULL;
+	g_pFunctionTable_Post->pfnAddToFullPack = NULL;
 	g_pFunctionTable->pfnKeyValue=NULL;
 	g_pengfuncsTable->pfnPlaybackEvent=NULL; // "pfn_playbackevent"
 	g_pFunctionTable->pfnPlayerPreThink=NULL; // "client_PreThink"

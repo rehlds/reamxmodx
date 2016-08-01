@@ -34,6 +34,28 @@ extern HLTypeConversion TypeConversion;
 	}
 
 
+#define CHECK_ENTITY(x)																      \
+	if (x < 0 || x > gpGlobals->maxEntities) {                                            \
+		MF_LogError(amx, AMX_ERR_NATIVE, "Entity out of range (%d)", x);			      \
+		return 0;																	      \
+	} else {                                                                              \
+		if (x <= gpGlobals->maxClients) {                                                 \
+			if (!MF_IsPlayerIngame(x)) {                                                  \
+				MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", x);   \
+				return 0;                                                                 \
+			}                                                                             \
+		} else {                                                                          \
+		 if (TypeConversion.id_to_edict(x)->free) {                                       \
+			MF_LogError(amx, AMX_ERR_NATIVE, "Invalid entity (%d)", x);					  \
+			 return 0;																	  \
+		} else if (TypeConversion.id_to_edict(x)->pvPrivateData == NULL) {                \
+			MF_LogError(amx, AMX_ERR_NATIVE, "Entity has null private data (%d)", x);	  \
+			return 0;																	  \
+		}																				  \
+	}                                                                                     \
+}
+
+/*
 #define CHECK_ENTITY(x)																	\
 	if (x < 0 || x > gpGlobals->maxEntities) {											\
 		MF_LogError(amx, AMX_ERR_NATIVE, "Entity out of range (%d)", x);				\
@@ -47,6 +69,8 @@ extern HLTypeConversion TypeConversion;
 			return 0;																	\
 		}																				\
 	}
+*/
+
 
 inline void **EdictToVTable(edict_t *ent)
 {

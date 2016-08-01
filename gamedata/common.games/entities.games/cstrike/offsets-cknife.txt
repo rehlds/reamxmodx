@@ -25,7 +25,6 @@
 
 						"windows"   "320"
 						"linux"     "336"
-						"mac"       "336"
 					}
 
 					"m_usKnife"  // short unsigned int
@@ -35,7 +34,6 @@
 
 						"windows"   "376"
 						"linux"     "392"
-						"mac"       "392"
 					}
 				}
 			}

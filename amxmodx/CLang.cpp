@@ -313,12 +313,6 @@ void reparse_newlines_and_color(char* def)
 					case 't': c = '\t'; break;
 				}
 
-				if (!g_bmod_cstrike && (c >= '1' && c <= '4')) // remove completely these two characters if not under CS
-				{
-					offs += 2;
-					continue;
-				}
-
 				offs++;
 			}
 		}
