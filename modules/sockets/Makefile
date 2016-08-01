@@ -1,13 +1,13 @@
 HLSDK = /opt/sdk/hlsdk
 MM_ROOT = /opt/sdk/metamod
 AMXX_DIR = ../../public
-AMXX_DIR_SDK = ../../public/sdk
+AMXX_DIR_SDK = sdk
 
 NAME = sockets
 
 COMPILER = /opt/intel/bin/icpc
 
-OBJECTS = $(AMXX_DIR_SDK)/amxxmodule.cpp sockets.cpp
+OBJECTS = sdk/amxxmodule.cpp sockets.cpp
 
 LINK = -lm -ldl -static-intel -static-libgcc -no-intel-extensions
 

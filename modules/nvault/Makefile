@@ -1,13 +1,13 @@
 HLSDK = /opt/sdk/hlsdk
 MM_ROOT = /opt/sdk/metamod
 AMXX_DIR = ../../public
-AMXX_DIR_SDK = ../../public/sdk
+AMXX_DIR_SDK = sdk
 
 NAME = nvault
 
 COMPILER = /opt/intel/bin/icpc
 
-OBJECTS = $(AMXX_DIR_SDK)/amxxmodule.cpp amxxapi.cpp Binary.cpp Journal.cpp NVault.cpp
+OBJECTS = sdk/amxxmodule.cpp amxxapi.cpp Binary.cpp Journal.cpp NVault.cpp
 
 LINK = -lm -ldl -static-intel -static-intel -static-libgcc -no-intel-extensions
 

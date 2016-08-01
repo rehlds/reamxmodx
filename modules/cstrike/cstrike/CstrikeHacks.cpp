@@ -533,7 +533,7 @@ void InitGlobalVars()
 		uintptr_t base = *reinterpret_cast<uintptr_t*>(reinterpret_cast<byte*>(g_engfuncs.pfnGetCurrentPlayer) + typeDesc.fieldOffset);
 		ServerStatic = reinterpret_cast<decltype(ServerStatic)>(base - 4);
 	}
-
+	
 	if (CommonConfig->GetAddress("sv", &address))
 	{
 		Server = *reinterpret_cast<decltype(Server)*>(address);

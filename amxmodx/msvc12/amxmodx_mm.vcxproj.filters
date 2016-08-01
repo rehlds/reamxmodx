@@ -5,7 +5,7 @@
       <UniqueIdentifier>{0d31fe96-c452-4d62-8c7c-0f0f8d69efa8}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
-    <Filter Include="Header Files">1
+    <Filter Include="Header Files">
       <UniqueIdentifier>{6e1c49c6-6432-4873-bb9a-9d30996955b2}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>

@@ -6,6 +6,7 @@
 *.user
 *.opensdf
 *.opendb
+*.ipch
 
 # Build directories
 Debug
@@ -20,3 +21,4 @@ plugins/compile.dat
 plugins/compiled/
 
 **/*.log
+_bin

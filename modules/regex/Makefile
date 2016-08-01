@@ -1,13 +1,13 @@
 HLSDK = /opt/sdk/hlsdk
 MM_ROOT = /opt/sdk/metamod
 AMXX_DIR = ../../public
-AMXX_DIR_SDK = ../../public/sdk
+AMXX_DIR_SDK = sdk
 
 NAME = regex
 
 COMPILER = /opt/intel/bin/icpc
 
-OBJECTS = $(AMXX_DIR_SDK)/amxxmodule.cpp module.cpp CRegEx.cpp utils.cpp
+OBJECTS = sdk/amxxmodule.cpp module.cpp CRegEx.cpp utils.cpp
 
 LINK = -lm -ldl -static-intel -static-libgcc -no-intel-extensions lib_linux/libpcre.a
 

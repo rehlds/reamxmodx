@@ -30,7 +30,7 @@ LINK = -lm -ldl -static-intel -static-libgcc -no-intel-extensions -Lzlib -L$(AMX
 
 OPT_FLAGS = -O3 -msse3 -no-prec-div -fp-model fast=2 -funroll-loops -fomit-frame-pointer -fno-stack-protector -pipe
 
-INCLUDE = -I. -I$(AMXX_SDK) -I$(AMXX_SDK)/sdk -I$(HLSDK) -I$(HLSDK)/common -I$(HLSDK)/dlls -I$(HLSDK)/engine -I$(HLSDK)/game_shared \
+INCLUDE = -I. -I$(AMXX_SDK) -Isdk -I$(HLSDK) -I$(HLSDK)/common -I$(HLSDK)/dlls -I$(HLSDK)/engine -I$(HLSDK)/game_shared \
 	  -I$(HLSDK)/pm_shared -I$(HLSDK)/public -I$(MM_ROOT) -I$(AMXX_HASHER) -I$(AMXX_MEMTOOLS)
 
 BIN_DIR = Release

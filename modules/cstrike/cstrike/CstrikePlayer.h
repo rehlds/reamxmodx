@@ -112,12 +112,20 @@ class CPlayer
 
 		void PostponeModelUpdate(int index)
 		{
+
 			if (!g_pFunctionTable->pfnStartFrame)
 			{
 				g_pFunctionTable->pfnStartFrame = StartFrame;
 				g_pFunctionTable->pfnClientUserInfoChanged = ClientUserInfoChanged;
 				g_pengfuncsTable->pfnSetClientKeyValue = SetClientKeyValue;
 			}
+
+#ifdef WIN32
+
+			MF_Log("error PostponeModelUpdate");
+			return;
+
+#endif
 
 			if (!ServerStatic)
 			{
