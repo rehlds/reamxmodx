@@ -139,12 +139,8 @@ void OnPluginsLoaded()
 		g_pFunctionTable->pfnThink=Think;
 
 	g_pFunctionTable->pfnStartFrame=NULL; // "server_frame","ServerFrame"
-	if (CheckForPublic("server_frame"))
+	if (CheckForPublic("server_frame") || CheckForPublic("ServerFrame"))
 		g_pFunctionTable->pfnStartFrame=StartFrame;
-
-	if (CheckForPublic("ServerFrame"))
-		g_pFunctionTable->pfnStartFrame=StartFrame;
-
 
 	g_pFunctionTable->pfnTouch=NULL; // "pfn_touch","vexd_pfntouch"
 	if (CheckForPublic("pfn_touch"))

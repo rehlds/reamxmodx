@@ -33,7 +33,7 @@ extern HLTypeConversion TypeConversion;
 		return 0;																					\
 	}
 
-
+/*
 #define CHECK_ENTITY(x)																      \
 	if (x < 0 || x > gpGlobals->maxEntities) {                                            \
 		MF_LogError(amx, AMX_ERR_NATIVE, "Entity out of range (%d)", x);			      \
@@ -54,8 +54,8 @@ extern HLTypeConversion TypeConversion;
 		}																				  \
 	}                                                                                     \
 }
+*/
 
-/*
 #define CHECK_ENTITY(x)																	\
 	if (x < 0 || x > gpGlobals->maxEntities) {											\
 		MF_LogError(amx, AMX_ERR_NATIVE, "Entity out of range (%d)", x);				\
@@ -69,8 +69,6 @@ extern HLTypeConversion TypeConversion;
 			return 0;																	\
 		}																				\
 	}
-*/
-
 
 inline void **EdictToVTable(edict_t *ent)
 {

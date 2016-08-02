@@ -225,4 +225,3 @@ extern ke::Vector<EntClass *> Thinks;
 extern ke::Vector<Touch *> Touches;
 
 #endif //_ENGINE_INCLUDE_H
-

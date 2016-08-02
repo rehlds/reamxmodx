@@ -73,7 +73,7 @@ struct CPlayer {
 				 (pEdict->v.flags & FL_FAKECLIENT));  // FL_FAKECLIENT flag set
 	}
 	inline bool IsAlive(){
-		return ((pEdict->v.deadflag==DEAD_NO)&&(pEdict->v.health>0));
+		return (pEdict->v.deadflag == DEAD_NO && pEdict->v.health > 0);
 	}
 };
 

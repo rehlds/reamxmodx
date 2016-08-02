@@ -169,19 +169,16 @@ void PlayerPreThink_Post(edict_t *pEntity)
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
 	if (pPlayer->clearStats && pPlayer->clearStats < gpGlobals->time)
 	{
-		if (!isModuleActive())
+		if (!isModuleActive() || ignoreBots(pEntity))
 		{
 			RETURN_META(MRES_IGNORED);
 		}
-		if (!ignoreBots(pEntity))
+		pPlayer->clearStats = 0.0f;
+		if (pPlayer->rank)
 		{
-			pPlayer->clearStats = 0.0f;
-			if (pPlayer->rank)
-			{
-				pPlayer->rank->updatePosition(&pPlayer->life);
-			}
-			pPlayer->restartStats(false);
+			pPlayer->rank->updatePosition(&pPlayer->life);
 		}
+		pPlayer->restartStats(false);
 	}
 	RETURN_META(MRES_IGNORED);
 }
