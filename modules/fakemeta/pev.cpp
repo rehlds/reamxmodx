@@ -162,7 +162,14 @@ static cell AMX_NATIVE_CALL amx_pev(AMX *amx,cell *params)
 {
 	int index = params[1];
 	CHECK_ENTITY(index);
+
 	edict_t *pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict)
+	{
+		return 0;
+	}
+
 	int iSwitch = params[2];
 
 	//onto normal cases - sanity check
@@ -347,7 +354,14 @@ static cell AMX_NATIVE_CALL amx_set_pev(AMX *amx, cell *params)
 	// index, pevdata
 	int index = params[1];
 	CHECK_ENTITY(index);
+
 	edict_t *pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict)
+	{
+		return 0;
+	}
+
 	int iSwitch = params[2];
 
 	//onto normal cases - sanity check
@@ -416,7 +430,14 @@ static cell AMX_NATIVE_CALL amx_set_pev_string(AMX *amx, cell *params)
 	// index, pevdata
 	int index = params[1];
 	CHECK_ENTITY(index);
+
 	edict_t *pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict)
+	{
+		return 0;
+	}
+
 	int iSwitch = params[2];
 
 	//onto normal cases - sanity check
@@ -470,7 +491,13 @@ static cell AMX_NATIVE_CALL amx_pev_serial(AMX* amx, cell* params)
 	int id = static_cast<int>(params[1]);
 
 	CHECK_ENTITY(id);
+
 	edict_t* ent = TypeConversion.id_to_edict(id);
+
+	if (!ent)
+	{
+		return 0;
+	}
 
 	return ent->serialnumber;
 }

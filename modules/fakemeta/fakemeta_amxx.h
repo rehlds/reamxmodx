@@ -28,6 +28,7 @@
 #include <IGameConfigs.h>
 #include <HLTypeConversion.h>
 
+/*
 #define CHECK_ENTITY(x) \
 	if (x < 0 || x > gpGlobals->maxEntities) { \
 		MF_LogError(amx, AMX_ERR_NATIVE, "Entity out of range (%d)", x); \
@@ -45,10 +46,10 @@
 			} \
 		} \
 	}
-
-/*
-#define CHECK_ENTITY(x) if (x != 0 && (FNullEnt(TypeConversion.id_to_edict(x)) || x < 0 || x > gpGlobals->maxEntities)) { MF_LogError(amx, AMX_ERR_NATIVE, "Invalid entity"); return 0; }
 */
+
+#define CHECK_ENTITY(x) if (x != 0 && (FNullEnt(TypeConversion.id_to_edict(x)) || x < 0 || x > gpGlobals->maxEntities)) { MF_LogError(amx, AMX_ERR_NATIVE, "Invalid entity"); return 0; }
+
 
 #define CHECK_OFFSET(x) if (x < 0) { MF_LogError(amx, AMX_ERR_NATIVE, "Invalid offset"); return 0; }
 

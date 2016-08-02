@@ -42,10 +42,10 @@ bool IsBadWritePtr(void *l, size_t size)
 
 static cell AMX_NATIVE_CALL set_pdata_int(AMX *amx, cell *params)
 {
-	int index=params[1];
+	int index = params[1];
 	CHECK_ENTITY(index);
 
-	int iOffset=params[2];
+	int iOffset = params[2];
 	CHECK_OFFSET(iOffset);
 
 #if defined( __linux__ )
@@ -57,17 +57,27 @@ static cell AMX_NATIVE_CALL set_pdata_int(AMX *amx, cell *params)
 	else
 		iOffset += params[5];
 #endif
-	int iValue=params[3];
-	set_pdata<int>(TypeConversion.id_to_edict(index), iOffset * 4, iValue); // *4 because macro is char-based, while native is int-based
+
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	int iValue = params[3];
+
+	set_pdata<int>(pEdict, iOffset * 4, iValue); // *4 because macro is char-based, while native is int-based
+	
 	return 1;
 }
 
 static cell AMX_NATIVE_CALL get_pdata_int(AMX *amx, cell *params)
 {
-	int index=params[1];
+	int index = params[1];
 	CHECK_ENTITY(index);
 
-	int iOffset=params[2];
+	int iOffset = params[2];
 	CHECK_OFFSET(iOffset);
 
 #if defined( __linux__ )
@@ -80,16 +90,23 @@ static cell AMX_NATIVE_CALL get_pdata_int(AMX *amx, cell *params)
 		iOffset += params[4];
 #endif
 
-	return get_pdata<int>(TypeConversion.id_to_edict(index), iOffset * 4); // *4 because macro is char-based, while native is int-based
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	return get_pdata<int>(pEdict, iOffset * 4); // *4 because macro is char-based, while native is int-based
 }
 
 // Float
 static cell AMX_NATIVE_CALL set_pdata_float(AMX *amx, cell *params)
 {
-	int index=params[1];
+	int index = params[1];
 	CHECK_ENTITY(index);
 
-	int iOffset=params[2];
+	int iOffset = params[2];
 	CHECK_OFFSET(iOffset);
 
 #if defined( __linux__ )
@@ -102,16 +119,26 @@ static cell AMX_NATIVE_CALL set_pdata_float(AMX *amx, cell *params)
 		iOffset += params[5];
 #endif
 
-	float fValue=amx_ctof(params[3]);
-	set_pdata<float>(TypeConversion.id_to_edict(index), iOffset * 4, fValue); // *4 because macro is char-based, while native is int-based
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	float fValue = amx_ctof(params[3]);
+		
+	set_pdata<float>(pEdict, iOffset * 4, fValue); // *4 because macro is char-based, while native is int-based
+		
 	return 1;
 }
+
 static cell AMX_NATIVE_CALL get_pdata_float(AMX *amx, cell *params)
 {
-	int index=params[1];
+	int index = params[1];
 	CHECK_ENTITY(index);
 
-	int iOffset=params[2];
+	int iOffset = params[2];
 	CHECK_OFFSET(iOffset);
 
 #if defined( __linux__ )
@@ -124,15 +151,22 @@ static cell AMX_NATIVE_CALL get_pdata_float(AMX *amx, cell *params)
 		iOffset += params[4];
 #endif
 
-	return amx_ftoc(get_pdata<float>(TypeConversion.id_to_edict(index), iOffset * 4)); // *4 because macro is char-based, while native is int-based
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	return amx_ftoc(get_pdata<float>(pEdict, iOffset * 4)); // *4 because macro is char-based, while native is int-based
 }
 
 static cell AMX_NATIVE_CALL get_pdata_string(AMX *amx, cell *params)
 {
-	int index=params[1];
+	int index = params[1];
 	CHECK_ENTITY(index);
 
-	int iOffset=params[2];
+	int iOffset = params[2];
 	CHECK_OFFSET(iOffset);
 
 #if defined( __linux__ )
@@ -144,9 +178,16 @@ static cell AMX_NATIVE_CALL get_pdata_string(AMX *amx, cell *params)
 	else
 		iOffset += params[7];
 #endif
+
 	edict_t *pEdict = TypeConversion.id_to_edict(index);
 
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
 	char *szData;
+
 	if (params[5])
 	{
 		szData = get_pdata<char*>(pEdict, iOffset);
@@ -166,10 +207,10 @@ static cell AMX_NATIVE_CALL get_pdata_string(AMX *amx, cell *params)
 
 static cell AMX_NATIVE_CALL set_pdata_string(AMX *amx, cell *params)
 {
-	int index=params[1];
+	int index = params[1];
 	CHECK_ENTITY(index);
 
-	int iOffset=params[2];
+	int iOffset = params[2];
 	CHECK_OFFSET(iOffset);
 
 #if defined( __linux__ )
@@ -184,27 +225,37 @@ static cell AMX_NATIVE_CALL set_pdata_string(AMX *amx, cell *params)
 
 	edict_t *pEdict = TypeConversion.id_to_edict(index);
 
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
 	char *szData;
 	int len;
 	char *data = MF_GetAmxString(amx, params[3], 0, &len);
+
 	if (params[4] == -1)
 	{
 		szData = get_pdata_direct<char*>(pEdict, iOffset);
+
 		if (IsBadWritePtr(szData, 1))
 			return 0;
+
 		strcpy(szData, data);
 	} else {
 		szData = get_pdata<char*>(pEdict, iOffset);
+
 		if (IsBadWritePtr(szData, 1))
 			return 0;
-		if (params[4] == 1)
-		{
+
+		if (params[4] == 1) {
 			free(szData);
 			szData = (char *)malloc(len + 1);
 		} else if (params[4] == 2) {
 			delete [] szData;
 			szData = new char[len + 1];
 		}
+
 		strcpy(szData, data);
 		set_pdata<char*>(pEdict, iOffset, szData);
 	}
@@ -214,10 +265,10 @@ static cell AMX_NATIVE_CALL set_pdata_string(AMX *amx, cell *params)
 
 static cell AMX_NATIVE_CALL get_pdata_ent(AMX *amx, cell *params)
 {
-	int index=params[1];
+	int index = params[1];
 	CHECK_ENTITY(index);
 
-	int iOffset=params[2];
+	int iOffset = params[2];
 	CHECK_OFFSET(iOffset); 
 
 #if defined( __linux__ )
@@ -238,6 +289,7 @@ static cell AMX_NATIVE_CALL get_pdata_ent(AMX *amx, cell *params)
 	}
 
 	edict_t *pWorld = INDEXENT(0);
+
 	int ent = pEdict - pWorld;
 
 	if (ent < 0 || ent > gpGlobals->maxEntities)
@@ -255,14 +307,16 @@ static cell AMX_NATIVE_CALL get_pdata_ent(AMX *amx, cell *params)
 
 static cell AMX_NATIVE_CALL set_pdata_ent(AMX *amx, cell *params)
 {
-	int index  = params[1];
+	int index = params[1];
 	CHECK_ENTITY(index);
 
 	int offset = params[2];
 	CHECK_OFFSET(offset);
 
 	int entity = params[3];
-	CHECK_ENTITY(entity);
+	if (entity != -1) {
+		CHECK_ENTITY(entity);
+	}
 
 #if defined(__linux__)
 	offset += params[4];
@@ -274,7 +328,21 @@ static cell AMX_NATIVE_CALL set_pdata_ent(AMX *amx, cell *params)
 		offset += params[5];
 #endif
 
-	set_pdata<edict_t*>(TypeConversion.id_to_edict(index), offset, TypeConversion.id_to_edict(entity));
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	auto pEnt = TypeConversion.id_to_edict(entity);
+
+	if (!pEnt || !pEnt->pvPrivateData)
+	{
+		return 0;
+	}
+
+	set_pdata<edict_t*>(pEdict, offset, pEnt);
 
 	return 1;
 }
@@ -297,7 +365,14 @@ static cell AMX_NATIVE_CALL get_pdata_bool(AMX *amx, cell *params)
 		offset += params[4];
 #endif
 
-	return get_pdata<bool>(TypeConversion.id_to_edict(index), offset) ? TRUE : FALSE;
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	return get_pdata<bool>(pEdict, offset) ? TRUE : FALSE;
 }
 
 static cell AMX_NATIVE_CALL set_pdata_bool(AMX *amx, cell *params)
@@ -320,7 +395,14 @@ static cell AMX_NATIVE_CALL set_pdata_bool(AMX *amx, cell *params)
 		offset += params[5];
 #endif
 
-	set_pdata<bool>(TypeConversion.id_to_edict(index), offset, value);
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	set_pdata<bool>(pEdict, offset, value);
 
 	return 1;
 }
@@ -343,7 +425,14 @@ static cell AMX_NATIVE_CALL get_pdata_byte(AMX *amx, cell *params)
 		offset += params[4];
 #endif
 
-	return static_cast<cell>(get_pdata<byte>(TypeConversion.id_to_edict(index), offset));
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	return static_cast<cell>(get_pdata<byte>(pEdict, offset));
 }
 
 static cell AMX_NATIVE_CALL set_pdata_byte(AMX *amx, cell *params)
@@ -366,7 +455,14 @@ static cell AMX_NATIVE_CALL set_pdata_byte(AMX *amx, cell *params)
 		offset += params[5];
 #endif
 
-	set_pdata<byte>(TypeConversion.id_to_edict(index), offset, value);
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	set_pdata<byte>(pEdict, offset, value);
 
 	return 1;
 }
@@ -389,7 +485,14 @@ static cell AMX_NATIVE_CALL get_pdata_short(AMX *amx, cell *params)
 		offset += params[4];
 #endif
 
-	return static_cast<cell>(get_pdata<short>(TypeConversion.id_to_edict(index), offset));
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	return static_cast<cell>(get_pdata<short>(pEdict, offset));
 }
 
 static cell AMX_NATIVE_CALL set_pdata_short(AMX *amx, cell *params)
@@ -399,8 +502,6 @@ static cell AMX_NATIVE_CALL set_pdata_short(AMX *amx, cell *params)
 
 	int offset = params[2];
 	CHECK_OFFSET(offset);
-
-	short value = static_cast<short>(params[3]);
 
 #if defined(__linux__)
 	offset += params[4];
@@ -412,7 +513,16 @@ static cell AMX_NATIVE_CALL set_pdata_short(AMX *amx, cell *params)
 		offset += params[5];
 #endif
 
-	set_pdata<short>(TypeConversion.id_to_edict(index), offset, value);
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	short value = static_cast<short>(params[3]);
+
+	set_pdata<short>(pEdict, offset, value);
 
 	return 1;
 }
@@ -435,9 +545,16 @@ static cell AMX_NATIVE_CALL get_pdata_vector(AMX *amx, cell *params)
 		offset += params[5];
 #endif
 
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
 	cell *cpvec = MF_GetAmxAddr(amx, params[3]);
 
-	Vector vec = get_pdata<Vector>(TypeConversion.id_to_edict(index), offset);
+	Vector vec = get_pdata<Vector>(pEdict, offset);
 
 	cpvec[0] = amx_ftoc(vec.x);
 	cpvec[1] = amx_ftoc(vec.y);
@@ -464,11 +581,18 @@ static cell AMX_NATIVE_CALL set_pdata_vector(AMX *amx, cell *params)
 		offset += params[5];
 #endif
 
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
 	cell *pcvec = MF_GetAmxAddr(amx, params[3]);
 
 	Vector vec(amx_ctof(pcvec[0]), amx_ctof(pcvec[1]), amx_ctof(pcvec[2]));
 
-	set_pdata<Vector>(TypeConversion.id_to_edict(index), offset, vec);
+	set_pdata<Vector>(pEdict, offset, vec);
 
 	return 1;
 }
@@ -491,7 +615,14 @@ static cell AMX_NATIVE_CALL get_pdata_ehandle(AMX *amx, cell *params)
 		offset += params[4];
 #endif
 
-	edict_t *pEdict = get_pdata<edict_t*>(TypeConversion.id_to_edict(index), offset);
+	auto pEnt = TypeConversion.id_to_edict(index);
+
+	if (!pEnt)
+	{
+		return -1;
+	}
+
+	edict_t *pEdict = get_pdata<edict_t*>(pEnt, offset);
 
 	if (pEdict == NULL)
 	{
@@ -499,6 +630,7 @@ static cell AMX_NATIVE_CALL get_pdata_ehandle(AMX *amx, cell *params)
 	}
 
 	edict_t *pWorld = INDEXENT(0);
+
 	int ent = pEdict - pWorld;
 
 	if (ent < 0 || ent > gpGlobals->maxEntities)
@@ -511,7 +643,7 @@ static cell AMX_NATIVE_CALL get_pdata_ehandle(AMX *amx, cell *params)
 		return -1;
 	}
 
-	int serialnumber = get_pdata<int>(TypeConversion.id_to_edict(index), offset + 4);
+	int serialnumber = get_pdata<int>(pEnt, offset + 4);
 
 	if (pEdict->serialnumber != serialnumber)
 	{
@@ -544,13 +676,22 @@ static cell AMX_NATIVE_CALL set_pdata_ehandle(AMX *amx, cell *params)
 
 	edict_t *pEntity = TypeConversion.id_to_edict(entity);
 
-	set_pdata<edict_t*>(TypeConversion.id_to_edict(index), offset, pEntity);
-
-	if (pEntity)
+	if (!pEntity || !pEntity->pvPrivateData)
 	{
-		set_pdata<int>(TypeConversion.id_to_edict(index), offset +  4, pEntity->serialnumber);
+		return 0;
 	}
 
+	auto pEdict = TypeConversion.id_to_edict(index);
+
+	if (!pEdict || !pEdict->pvPrivateData)
+	{
+		return 0;
+	}
+
+	set_pdata<edict_t*>(pEdict, offset, pEntity);
+
+	set_pdata<int>(pEdict, offset + 4, pEntity->serialnumber);
+	
 	return 1;
 }
 

@@ -86,7 +86,7 @@ static cell AMX_NATIVE_CALL set_tr(AMX *amx, cell *params)
 	case TR_pHit:
 		{
 			e = TypeConversion.id_to_edict(*ptr);
-			if (!e || FNullEnt(e))
+			if (*ptr != -1 && (!e || FNullEnt(e)))
 				return 0; //TODO: return error
 			gfm_tr->pHit = e;
 			return 1;
