@@ -14,34 +14,8 @@
 {
 	"#default"
 	{
-		"Offsets"
-		{
-			"svs"    // Used with pfnGetCurrentPlayer base address
-			{
-				"windows"   "8"
-			}
-		}
-
 		"Addresses"
 		{
-			"realtime"
-			{
-				"windows"
-				{
-					"signature"  "realtime"
-					"read"       "4"
-				}
-			}
-
-			"sv"
-			{
-				"windows"
-				{
-					"signature"  "sv"
-					"read"       "4"
-				}
-			}
-
 			"g_pGameRules"
 			{
 				"signature"  "g_pGameRules"
@@ -57,26 +31,6 @@
 
 		"Signatures"
 		{
-			"svs"	// server_static_t svs
-			{
-				"library"	"engine"
-				"linux"	"@g_psvs"
-			}
-
-			"sv"		// server_t sv
-			{
-				"library"		"engine"
-				"windows"	"\x83\x2A\x2A\x2A\x2A\x2A\x2A\x0F\x2A\x2A\x2A\x2A\x2A\xF2\x2A\x2A\x2A\x2A\x2A\x2A\x2A\x66"
-				"linux"		"@g_psv"
-			}
-
-			"realtime"	// double realtime
-			{
-				"library"		"engine"
-				"windows"	"\xF2\x2A\x2A\x2A\x2A\x2A\x2A\x2A\xA1\x2A\x2A\x2A\x2A\x0F"
-				"linux"   		  "@realtime"
-			}
-
 			"g_pGameRules" // CGameRules *g_pGameRules
 			{
 				"library"   "server"

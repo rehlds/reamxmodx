@@ -45,28 +45,3 @@ void SetClientKeyValue(int clientIndex, char *infobuffer, const char *key, const
 
 	RETURN_META(MRES_IGNORED);
 }
-
-void StartFrame()
-{
-	if (ModelsUpdateQueue.empty())
-	{
-		g_pFunctionTable->pfnStartFrame = nullptr;
-
-		for (int i = 1; i <= gpGlobals->maxClients; ++i)
-		{
-			if (Players[i].HasModel())
-			{
-				RETURN_META(MRES_IGNORED);
-			}
-		}
-
-		g_pFunctionTable->pfnClientUserInfoChanged = nullptr;
-		g_pengfuncsTable->pfnSetClientKeyValue = nullptr;
-
-		RETURN_META(MRES_IGNORED);
-	}
-
-	ServerStatic->clients[ModelsUpdateQueue.popCopy()].sendinfo = true;
-
-	RETURN_META(MRES_IGNORED);
-}

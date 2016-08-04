@@ -21,7 +21,6 @@
 
 extern ke::Vector<int> ModelsUpdateQueue;
 
-void StartFrame();
 void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer);
 void SetClientKeyValue(int clientIndex, char *infobuffer, const char *key, const char *value);
 
@@ -112,29 +111,6 @@ class CPlayer
 
 		void PostponeModelUpdate(int index)
 		{
-
-			if (!g_pFunctionTable->pfnStartFrame)
-			{
-				g_pFunctionTable->pfnStartFrame = StartFrame;
-				g_pFunctionTable->pfnClientUserInfoChanged = ClientUserInfoChanged;
-				g_pengfuncsTable->pfnSetClientKeyValue = SetClientKeyValue;
-			}
-
-#ifdef WIN32
-
-			MF_Log("error PostponeModelUpdate");
-			return;
-
-#endif
-
-			if (!ServerStatic)
-			{
-				MF_Log("Postponing of model update disabled, check your gamedata files");
-				return;
-			}
-
-			ServerStatic->clients[index].sendinfo = false;
-
 			ModelsUpdateQueue.append(index);
 		}
 

@@ -54,10 +54,6 @@ TypeDescription MoneyDesc;
 // GameRules members.
 TypeDescription BombTargetDesc;
 
-// Engine global variables.
-server_static_t *ServerStatic;
-server_t *Server;
-
 // Mod global variable
 void **GameRules;
 
@@ -526,19 +522,6 @@ void InitGlobalVars()
 
 #if defined(KE_WINDOWS)
 
-	TypeDescription typeDesc;
-
-	if (CommonConfig->GetOffset("svs", &typeDesc))
-	{
-		uintptr_t base = *reinterpret_cast<uintptr_t*>(reinterpret_cast<byte*>(g_engfuncs.pfnGetCurrentPlayer) + typeDesc.fieldOffset);
-		ServerStatic = reinterpret_cast<decltype(ServerStatic)>(base - 4);
-	}
-	
-	if (CommonConfig->GetAddress("sv", &address))
-	{
-		Server = *reinterpret_cast<decltype(Server)*>(address);
-	}
-
 	if (CommonConfig->GetAddress("g_pGameRules", &address))
 	{
 		GameRules = *reinterpret_cast<decltype(GameRules)*>(address);
@@ -546,32 +529,12 @@ void InitGlobalVars()
 
 #else
 
-	if (CommonConfig->GetMemSig("svs", &address))
-	{
-		ServerStatic = reinterpret_cast<decltype(ServerStatic)>(address);
-	}
-
-	if (CommonConfig->GetMemSig("sv", &address))
-	{
-		Server = reinterpret_cast<decltype(Server)>(address);
-	}
-
 	if (CommonConfig->GetMemSig("g_pGameRules", &address))
 	{
 		GameRules = reinterpret_cast<decltype(GameRules)>(address);
 	}
 
 #endif
-
-	if (!ServerStatic)
-	{
-		MF_Log("svs global variable is not available");
-	}
-
-	if (!Server)
-	{
-		MF_Log("sv global variable is not available");
-	}
 
 	if (!GameRules)
 	{

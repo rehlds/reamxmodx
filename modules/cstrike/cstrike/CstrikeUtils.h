@@ -16,6 +16,8 @@
 
 #include <HLTypeConversion.h>
 
+#include "mod_rehlds_api.h"
+
 extern HLTypeConversion TypeConversion;
 
 bool UTIL_IsPlayer(edict_t *pPlayer);

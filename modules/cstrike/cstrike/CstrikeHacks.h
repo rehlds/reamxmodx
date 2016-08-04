@@ -77,11 +77,6 @@ extern enginefuncs_t *g_pengfuncsTable;
 extern DLL_FUNCTIONS *g_pFunctionTable;
 extern bool NoKnivesMode;
 
-extern server_static_t *ServerStatic;
-extern server_t *Server;
 extern void **GameRules;
-
-//extern int *UseBotArgs;
-//extern const char **BotArgs;
 
 #endif // CSTRIKE_HACKS_H

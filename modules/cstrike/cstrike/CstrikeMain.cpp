@@ -18,8 +18,6 @@
 #include "CstrikeUserMessages.h"
 #include <IGameConfigs.h>
 
-#include "mod_rehlds_api.h"
-
 bool m_api_rehlds = false;
 
 IGameConfig *MainConfig;
@@ -47,7 +45,7 @@ void OnAmxxAttach()
 		MF_Log("Error load ReHLDS.");
 		return;
 	}
-
+	
 	MF_AddNatives(CstrikeNatives);
 
 	ConfigManager = MF_GetConfigManager();
@@ -146,7 +144,6 @@ void OnPluginsUnloaded()
 	// Used with model natives, enabled on demand.
 	g_pengfuncsTable->pfnSetClientKeyValue     = nullptr;
 	g_pFunctionTable->pfnClientUserInfoChanged = nullptr;
-	g_pFunctionTable->pfnStartFrame            = nullptr;
 
 	// Force to disable all event hooks at map change.
 	DisableMessageHooks(true);

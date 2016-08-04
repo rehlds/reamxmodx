@@ -854,33 +854,14 @@ static cell AMX_NATIVE_CALL cs_set_user_model(AMX *amx, cell *params)
 
 	if (*params / sizeof(cell) >= 3 && params[3] != 0)
 	{
-		if (!Server)
-		{
-			MF_Log("cs_set_user_model is disabled with update_index parameter set");
-			return 0;
-		}
-
 		GET_OFFSET("CBasePlayer", m_modelIndexPlayer);
 
 		char modelpath[260];
 		ke::SafeSprintf(modelpath, sizeof(modelpath), "models/player/%s/%s.mdl", newModel, newModel);
 
-		for (size_t i = 0; i < HL_MODEL_MAX; ++i)
-		{
-			if (Server->model_precache[i] && !strcmp(Server->model_precache[i], modelpath))
-			{
-				if (pPlayer->v.modelindex != i)
-				{
-					SET_MODEL(pPlayer, STRING(ALLOC_STRING(modelpath)));
-				}
-
-				set_pdata<int>(pPlayer, m_modelIndexPlayer, i);
-				return 1;
-			}
-		}
-
-		MF_Log("Model must be precached using cs_set_user_model with update_index parameter set");
-		return 0;
+		SET_MODEL(pPlayer, modelpath);
+	
+		set_pdata<int>(pPlayer, m_modelIndexPlayer, pPlayer->v.modelindex);
 	}
 
 	return 1;
