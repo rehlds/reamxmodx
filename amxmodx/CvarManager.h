@@ -165,7 +165,7 @@ class CvarManager
 		CvarsCache m_Cache;
 		CvarsList  m_Cvars;
 		size_t     m_AmxmodxCvars;
-		CDetour*   m_HookDetour;
+		bool       m_Hook_Cvar_DirectSet;
 };
 
 extern CvarManager g_CvarManager;

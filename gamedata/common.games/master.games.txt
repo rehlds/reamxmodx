@@ -21,12 +21,6 @@
 		"engine"  "engine_ls"
 	}
 
-	"functions.engine.txt"
-	{
-		"engine"  "engine_ds"
-		"engine"  "engine_ls"
-	}
-
 	//
 	// Counter-Strike
 	//

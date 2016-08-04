@@ -120,8 +120,6 @@ int mPlayerIndex;
 int mState;
 int g_srvindex;
 
-CDetour *DropClientDetour;
-
 cvar_t init_amxmodx_version = {"amxmodx_version", "", FCVAR_SERVER | FCVAR_SPONLY};
 cvar_t init_amxmodx_modules = {"amxmodx_modules", "", FCVAR_SPONLY};
 cvar_t init_amxmodx_debug = {"amx_debug", "1", FCVAR_SPONLY};
@@ -616,11 +614,6 @@ void C_ServerActivate(edict_t *pEdictList, int edictCount, int clientMax)
 		}
 	}
 
-	if (DropClientDetour)
-	{
-		DropClientDetour->EnableDetour();
-	}
-
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -674,7 +667,7 @@ void C_ServerDeactivate()
 			// deprecated
 			executeForwards(FF_ClientDisconnect, static_cast<cell>(pPlayer->index));
 
-			if (DropClientDetour && !pPlayer->disconnecting)
+			if (!pPlayer->disconnecting)
 			{
 				executeForwards(FF_ClientDisconnected, static_cast<cell>(pPlayer->index), FALSE, prepareCharArray(const_cast<char*>(""), 0), 0);
 			}
@@ -685,11 +678,6 @@ void C_ServerDeactivate()
 			pPlayer->Disconnect();
 			--g_players_num;
 		}
-	}
-
-	if (DropClientDetour)
-	{
-		DropClientDetour->DisableDetour();
 	}
 
 	g_players_num	= 0;
@@ -864,7 +852,7 @@ void C_ClientDisconnect(edict_t *pEntity)
 		// deprecated
 		executeForwards(FF_ClientDisconnect, static_cast<cell>(pPlayer->index));
 		
-		if (DropClientDetour && !pPlayer->disconnecting)
+		if (!pPlayer->disconnecting)
 		{
 			executeForwards(FF_ClientDisconnected, static_cast<cell>(pPlayer->index), FALSE, prepareCharArray(const_cast<char*>(""), 0), 0);
 		}
@@ -880,32 +868,32 @@ void C_ClientDisconnect(edict_t *pEntity)
 	RETURN_META(MRES_IGNORED);
 }
 
-// void SV_DropClient(client_t *cl, qboolean crash, const char *fmt, ...);
-DETOUR_DECL_STATIC3_VAR(SV_DropClient, void, client_t*, cl, qboolean, crash, const char*, format)
+void SV_DropClient_Hook(IRehldsHook_SV_DropClient* chain, IGameClient* cl, bool crash, const char* msg)
 {
 	char buffer[1024];
 
 	va_list ap;
-	va_start(ap, format);
-	ke::SafeVsprintf(buffer, sizeof(buffer) - 1, format, ap);
+	va_start(ap, msg);
+	ke::SafeVsprintf(buffer, sizeof(buffer)-1, msg, ap);
 	va_end(ap);
 
 	CPlayer *pPlayer;
+	edict_t *pEdict = cl->GetEdict();
 
-	if (cl->pEdict)
+	if (pEdict)
 	{
-		pPlayer = GET_PLAYER_POINTER(cl->pEdict);
+		pPlayer = GET_PLAYER_POINTER(pEdict);
 
 		if (pPlayer->initialized)
 		{
 			pPlayer->disconnecting = true;
-			executeForwards(FF_ClientDisconnected, pPlayer->index, TRUE, prepareCharArray(buffer, sizeof(buffer), true), sizeof(buffer) - 1);
+			executeForwards(FF_ClientDisconnected, pPlayer->index, TRUE, prepareCharArray(buffer, sizeof(buffer), true), sizeof(buffer)-1);
 		}
 	}
 
-	DETOUR_STATIC_CALL(SV_DropClient)(cl, crash, "%s", buffer);
+	chain->callNext(cl, crash, buffer);
 
-	if (cl->pEdict)
+	if (pEdict)
 	{
 		pPlayer->Disconnect();
 	}
@@ -1562,7 +1550,7 @@ C_DLLEXPORT	int	Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 	g_coloredmenus = ColoredMenus(g_mod_name.chars()); // whether or not to use colored menus
 
 	// ###### Print short GPL
-	print_srvconsole("\n   AMX Mod X version %s Copyright (c) 2004-2015 AMX Mod X Development Team \n"
+	print_srvconsole("\n   AMX Mod X version %s Copyright (c) 2004-2016 AMX Mod X Development Team (modification ReHLDS Team)\n"
 					 "   AMX Mod X comes with ABSOLUTELY NO WARRANTY; for details type `amxx gpl'.\n", AMXX_VERSION);
 	print_srvconsole("   This is free software and you are welcome to redistribute it under \n"
 					 "   certain conditions; type 'amxx gpl' for details.\n  \n");
@@ -1601,14 +1589,7 @@ C_DLLEXPORT	int	Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 
 	void *address = nullptr;
 
-	if (CommonConfig && CommonConfig->GetMemSig("SV_DropClient", &address) && address)
-	{
-		DropClientDetour = DETOUR_CREATE_STATIC_FIXED(SV_DropClient, address);
-	}
-	else
-	{
-		AMXXLOG_Log("client_disconnected forward has been disabled - check your gamedata files.");
-	}
+	g_RehldsHookchains->SV_DropClient()->registerHook(&SV_DropClient_Hook);
 
 	GET_IFACE<IFileSystem>("filesystem_stdio", g_FileSystem, FILESYSTEM_INTERFACE_VERSION);
 
@@ -1655,10 +1636,7 @@ C_DLLEXPORT	int	Meta_Detach(PLUG_LOADTIME now, PL_UNLOAD_REASON	reason)
 	ClearLibraries(LibSource_Plugin);
 	ClearLibraries(LibSource_Module);
 
-	if (DropClientDetour)
-	{
-		DropClientDetour->Destroy();
-	}
+	g_RehldsHookchains->SV_DropClient()->unregisterHook(&SV_DropClient_Hook);
 
 	return (TRUE);
 }
