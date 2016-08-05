@@ -13,6 +13,7 @@
 
 #include "CstrikeItemsInfos.h"
 #include "CstrikeHacks.h"
+#include "CstrikeUtils.h"
 
 CsItemInfo ItemsManager;
 ItemInfo_AMX WeaponsList[MAX_WEAPONS];
@@ -271,5 +272,12 @@ int CsItemInfo::GetItemPrice(int itemId)
 		return m_EquipmentsPrice[static_cast<size_t>(id)];
 	}
 
-	return GetWeaponInfo(itemId == CSI_SHIELD ? CSI_SHIELDGUN : itemId)->cost;
+	if (g_bReGame)
+	{
+		return g_ReGameApi->GetWeaponInfo(itemId == CSI_SHIELD ? CSI_SHIELDGUN : itemId)->cost;
+	}
+	else
+	{
+		return GetWeaponInfo(itemId == CSI_SHIELD ? CSI_SHIELDGUN : itemId)->cost;
+	}
 }

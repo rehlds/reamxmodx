@@ -19,7 +19,7 @@ void REHLDS_PRINT(const char *fmt, ...)
 	vsnprintf(buf, sizeof(buf), fmt, ap);
 	va_end(ap);
 	len = strlen(buf);
-	if (len < sizeof(buf)-2)
+	if (len < sizeof(buf) - 2)
 	{
 		strcat(buf, "\n");
 	} else {

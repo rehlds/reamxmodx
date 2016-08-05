@@ -16,21 +16,7 @@
 #include "CstrikeHacks.h"
 #include "CstrikeItemsInfos.h"
 
-int ForwardInternalCommand = -1;
-int ForwardOnBuy           = -1;
-int ForwardOnBuyAttempt    = -1;
-
-bool HasInternalCommandForward;
-bool HasOnBuyAttemptForward;
-bool HasOnBuyForward;
-
-CDetour *GiveShieldDetour;
-CDetour *GiveNamedItemDetour;
-CDetour *AddAccountDetour;
-CDetour *CanPlayerBuyDetour;
-CDetour *CanBuyThisDetour;
 CDetour *GiveDefaultItemsDetour;
-CDetour *BuyGunAmmoDetour;
 
 CreateNamedEntityFunc       CS_CreateNamedEntity;
 UTIL_FindEntityByStringFunc CS_UTIL_FindEntityByString;
@@ -38,132 +24,11 @@ GetWeaponInfoFunc           GetWeaponInfo;
 AddEntityHashValueFunc      AddEntityHashValue;
 RemoveEntityHashValueFunc   RemoveEntityHashValue;
 
-int CurrentItemId;
-bool TriggeredFromCommand;
-bool BlockMoneyUpdate;
-bool BlockAmmosUpdate;
-
-// CBasePlayer members.
-TypeDescription TeamDesc;
-TypeDescription MenuDesc;
-TypeDescription NvgsDesc;
-TypeDescription DefuserDesc;
-TypeDescription SignalsDesc;
-TypeDescription MoneyDesc;
-
-// GameRules members.
-TypeDescription BombTargetDesc;
-
-// Mod global variable
-void **GameRules;
-
-
-void InitializeHacks()
-{
-	ToggleDetour_ClientCommands(false);
-	CtrlDetours_BuyCommands(false);
-	CtrlDetours_Natives(true);
-
-	InitFuncsAddresses();
-	InitClassMembers();
-	InitGlobalVars();
-}
-
-void ShutdownHacks()
-{
-	ToggleDetour_ClientCommands(false);
-	CtrlDetours_BuyCommands(false);
-	CtrlDetours_Natives(false);
-}
-
-void ClientCommand(edict_t* pEdict)
-{
-	auto command = CMD_ARGV(0);
-	auto client = TypeConversion.edict_to_id(pEdict);
-
-	CurrentItemId = CSI_NONE;
-
-	if (MF_IsPlayerAlive(client))
-	{
-		// Purpose is to retrieve an item id based on alias name or selected item from menu,
-		// to be used in CS_OnBuy* forwards.
-		if ((HasOnBuyAttemptForward || HasOnBuyForward) && command && *command)
-		{
-			// Handling buy via menu.
-			if (!strcmp(command, "menuselect"))
-			{
-				auto slot = atoi(CMD_ARGV(1));
-
-				if (slot > 0 && slot < 9)
-				{
-					static const int menuItemsTe[][9] =
-					{
-						/* Menu_Buy              */ { 0, 0, 0, 0, 0, 0, CSI_PRIAMMO, CSI_SECAMMO, 0 },
-						/* Menu_BuyPistol        */ { 0, CSI_GLOCK18, CSI_USP, CSI_P228, CSI_DEAGLE, CSI_ELITE, 0, 0, 0 },
-						/* Menu_BuyRifle         */ { 0, CSI_GALIL, CSI_AK47, CSI_SCOUT, CSI_SG552, CSI_AWP, CSI_G3SG1, 0, 0 },
-						/* Menu_BuyMachineGun    */ { 0, CSI_M249, 0, 0, 0, 0, 0, 0, 0 },
-						/* Menu_BuyShotgun       */ { 0, CSI_M3, CSI_XM1014, 0, 0, 0, 0, 0, 0 },
-						/* Menu_BuySubMachineGun */ { 0, CSI_MAC10, CSI_MP5NAVY, CSI_UMP45, CSI_P90, 0, 0, 0, 0 },
-						/* Menu_BuyItem          */ { 0, CSI_VEST, CSI_VESTHELM, CSI_FLASHBANG, CSI_HEGRENADE, CSI_SMOKEGRENADE, CSI_NVGS, 0, 0 }
-					};
-
-					static const int menuItemsCt[][9] =
-					{
-						/* Menu_Buy              */ { 0, 0, 0, 0, 0, 0, CSI_PRIAMMO, CSI_SECAMMO, 0 },
-						/* Menu_BuyPistol        */ { 0, CSI_GLOCK18, CSI_USP, CSI_P228, CSI_DEAGLE, CSI_FIVESEVEN, 0, 0, 0 },
-						/* Menu_BuyRifle         */ { 0, CSI_FAMAS, CSI_SCOUT, CSI_M4A1, CSI_AUG, CSI_SG550, CSI_AWP, 0, 0 },
-						/* Menu_BuyMachineGun    */ { 0, CSI_M249, 0, 0, 0, 0, 0, 0, 0 },
-						/* Menu_BuyShotgun       */ { 0, CSI_M3, CSI_XM1014, 0, 0, 0, 0, 0, 0 },
-						/* Menu_BuySubMachineGun */ { 0, CSI_TMP, CSI_MP5NAVY, CSI_UMP45, CSI_P90, 0, 0, 0, 0 },
-						/* Menu_BuyItem          */ { 0, CSI_VEST, CSI_VESTHELM, CSI_FLASHBANG, CSI_HEGRENADE, CSI_SMOKEGRENADE, CSI_NVGS, CSI_DEFUSER, CSI_SHIELD }
-					};
-
-					auto menuId = get_pdata<int>(pEdict, MenuDesc.fieldOffset);
-
-					if (menuId >= Menu_Buy && menuId <= Menu_BuyItem)
-					{
-						switch (get_pdata<int>(pEdict, TeamDesc.fieldOffset))
-						{
-							case TEAM_T: CurrentItemId = menuItemsTe[menuId - 4][slot]; break; // -4 because array is zero-based and Menu_Buy* constants starts from 4.
-							case TEAM_CT: CurrentItemId = menuItemsCt[menuId - 4][slot]; break;
-						}
-					}
-				}
-			}
-			else // Handling buy via alias
-			{
-				if (get_pdata<CUnifiedSignals_AMX>(pEdict, SignalsDesc.fieldOffset).GetState() & SIGNAL_BUY) // Are we inside the buy zone?
-				{
-					AliasInfo info;
-					char commandLowered[32];
-
-					UTIL_StringToLower(command, commandLowered, sizeof(commandLowered));
-
-					if (ItemsManager.GetAliasInfos(commandLowered, &info))
-					{
-						CurrentItemId = info.itemid;
-					}
-				}
-			}
-		}
-
-		if (HasInternalCommandForward && MF_ExecuteForward(ForwardInternalCommand, client, command) > 0)
-		{
-			RETURN_META(MRES_SUPERCEDE);
-		}
-
-		if (HasOnBuyAttemptForward && CurrentItemId && MF_ExecuteForward(ForwardOnBuyAttempt, client, CurrentItemId) > 0)
-		{
-			RETURN_META(MRES_SUPERCEDE);
-		}
-	}
-
-	TriggeredFromCommand = CurrentItemId != CSI_NONE;
-
-	TriggeredFromCommand = BlockMoneyUpdate = BlockAmmosUpdate = false;
-
-	RETURN_META(MRES_IGNORED);
-}
+bool Active_cs_set_no_knives = false;
+bool Active_cs_create_entity = false;
+bool Active_cs_find_ent = false;
+bool Active_cs_get_weapon_info = false;
+bool Active_set_ent_class = false;
 
 edict_s* OnCreateNamedEntity(int classname)
 {
@@ -194,240 +59,29 @@ DETOUR_DECL_MEMBER0(GiveDefaultItems, void)  // void CBasePlayer::GiveDefaultIte
 	g_pengfuncsTable->pfnCreateNamedEntity = nullptr;
 }
 
-DETOUR_DECL_MEMBER1(CanPlayerBuy, bool, bool, display)  // bool CBasePlayer::CanPlayerBuy(bool display)
+void CBasePlayer_GiveDefaultItems(IReGameHook_CBasePlayer_GiveDefaultItems *chain, CBasePlayer *pthis)
 {
-	auto canBuy = DETOUR_MEMBER_CALL(CanPlayerBuy)(display);
-
-	if (!canBuy || !TriggeredFromCommand || !(CurrentItemId == CSI_NVGS || CurrentItemId == CSI_DEFUSER))
+	if (NoKnivesMode)
 	{
-		return canBuy;
+		g_pengfuncsTable->pfnCreateNamedEntity = OnCreateNamedEntity;
 	}
 
-	auto pPlayer  = TypeConversion.cbase_to_edict(this);
-	auto playerId = TypeConversion.edict_to_id(pPlayer);
+	chain->callNext(pthis);
 
-	if (!MF_IsPlayerAlive(playerId))
-	{
-		return canBuy;
-	}
-
-	auto allowedToBuy = false;
-	auto itemPrice = ItemsManager.GetItemPrice(CurrentItemId);
-	switch (CurrentItemId)
-	{
-		case CSI_NVGS:
-		{
-			allowedToBuy = !get_pdata<bool>(pPlayer, NvgsDesc.fieldOffset) &&
-							get_pdata<int>(pPlayer, MoneyDesc.fieldOffset) >= itemPrice;
-			break;
-		}
-		case CSI_DEFUSER:
-		{
-			allowedToBuy = !get_pdata<bool>(pPlayer, DefuserDesc.fieldOffset)        &&
-							get_pdata<int>(pPlayer, TeamDesc.fieldOffset) == TEAM_CT &&
-							get_pdata<bool>(*GameRules, BombTargetDesc.fieldOffset)  &&
-							get_pdata<int>(pPlayer, MoneyDesc.fieldOffset) >= itemPrice;
-			break;
-		}
-	}
-
-	if (allowedToBuy && MF_ExecuteForward(ForwardOnBuy, playerId, CurrentItemId) > 0)
-	{
-		canBuy = false;
-	}
-
-	return canBuy;
+	g_pengfuncsTable->pfnCreateNamedEntity = nullptr;
 }
 
-DETOUR_DECL_STATIC2(CanBuyThis, bool, void*, pvPlayer, int, weaponId) // bool CanBuyThis(CBasePlayer *pPlayer, int weaponId)
+void InitializeHacks()
 {
-	auto canBuy = DETOUR_STATIC_CALL(CanBuyThis)(pvPlayer, weaponId);
-
-	if (!canBuy || !TriggeredFromCommand || !((1 << CurrentItemId & CSI_ALL_GUNS) || CurrentItemId == CSI_SHIELD))
+	if (g_bReGame == true)
 	{
-		return canBuy;
-	}
-
-	auto playerId = TypeConversion.cbase_to_id(pvPlayer);
-
-	if (MF_IsPlayerAlive(playerId) && get_pdata<int>(pvPlayer, MoneyDesc.fieldOffset) >= ItemsManager.GetItemPrice(CurrentItemId))
-	{
-		if (MF_ExecuteForward(ForwardOnBuy, playerId, CurrentItemId) > 0)
-		{
-			canBuy = false;
-		}
-	}
-
-	return canBuy;
-}
-
-DETOUR_DECL_STATIC3(BuyGunAmmo, bool, void*, player, int, nSlot, bool, bBlinkMoney) // bool BuyGunAmmo(CBasePlayer *player, int nSlot, bool bBlinkMoney)
-{
-	auto result = DETOUR_STATIC_CALL(BuyGunAmmo)(player, nSlot, bBlinkMoney);
-
-	if (result && BlockAmmosUpdate)
-	{
-		BlockAmmosUpdate = false;
-		return false;
-	}
-
-	return result;
-}
-
-DETOUR_DECL_MEMBER1(GiveNamedItem, void, const char*, pszName) // void CBasePlayer::GiveNamedItem(const char *pszName)
-{
-	if (TriggeredFromCommand)
-	{
-		switch (CurrentItemId)
-		{
-			case CSI_VEST:
-			case CSI_VESTHELM:
-			case CSI_FLASHBANG:
-			case CSI_HEGRENADE:
-			case CSI_SMOKEGRENADE:
-			case CSI_PRIAMMO:
-			case CSI_SECAMMO:
-			{
-				auto playerId = TypeConversion.cbase_to_id(this);
-
-				if (MF_IsPlayerAlive(playerId) && MF_ExecuteForward(ForwardOnBuy, playerId, CurrentItemId) > 0)
-				{
-					BlockAmmosUpdate = CurrentItemId == CSI_PRIAMMO || CurrentItemId == CSI_SECAMMO;
-					BlockMoneyUpdate = true;
-					return;
-				}
-			}
-		}
-	}
-
-	DETOUR_MEMBER_CALL(GiveNamedItem)(pszName);
-}
-
-DETOUR_DECL_MEMBER2(AddAccount, void, int, amount, bool, bTrackChange) // void CBasePlayer::AddAccount(int amount, bool bTrackChange)
-{
-	if (BlockMoneyUpdate)
-	{
-		BlockMoneyUpdate = false;
-		return;
-	}
-
-	DETOUR_MEMBER_CALL(AddAccount)(amount, bTrackChange);
-}
-
-
-void ToggleDetour(CDetour *detour, bool enable)
-{
-	if (detour)
-	{
-		(enable) ? detour->EnableDetour() : detour->DisableDetour();
-	}
-}
-
-void DestroyDetour(CDetour *&detour)
-{
-	if (detour)
-	{
-		detour->Destroy();
-		detour = nullptr;
-	}
-}
-
-void ToggleDetour_ClientCommands(bool enable)
-{
-	if (enable == true)
-	{
-		g_pFunctionTable->pfnClientCommand = ClientCommand;
-	} else {
-		g_pFunctionTable->pfnClientCommand = NULL;
-	}
-}
-
-
-void CtrlDetours_BuyCommands(bool set)
-{
-	if (set)
-	{
-		void *address = nullptr;
-
-		if (MainConfig->GetMemSig("BuyGunAmmo", &address))
-		{
-			BuyGunAmmoDetour = DETOUR_CREATE_STATIC_FIXED(BuyGunAmmo, address);
-		}
-
-		if (MainConfig->GetMemSig("GiveNamedItem", &address))
-		{
-			GiveNamedItemDetour = DETOUR_CREATE_MEMBER_FIXED(GiveNamedItem, address);
-		}
-
-		if (MainConfig->GetMemSig("AddAccount", &address))
-		{
-			AddAccountDetour = DETOUR_CREATE_MEMBER_FIXED(AddAccount, address);
-		}
-
-		if (MainConfig->GetMemSig("CanPlayerBuy", &address))
-		{
-			CanPlayerBuyDetour = DETOUR_CREATE_MEMBER_FIXED(CanPlayerBuy, address);
-		}
-
-		if (MainConfig->GetMemSig("CanBuyThis", &address))
-		{
-			CanBuyThisDetour = DETOUR_CREATE_STATIC_FIXED(CanBuyThis, address);
-		}
-
-		if (!BuyGunAmmoDetour || !GiveNamedItemDetour || !AddAccountDetour || !CanPlayerBuyDetour || !CanBuyThisDetour)
-		{
-			if (!BuyGunAmmoDetour)
-			{
-				MF_Log("BuyGunAmmo is not available");
-			}
-
-			if (!GiveNamedItemDetour)
-			{
-				MF_Log("GiveNamedItem is not available");
-			}
-
-			if (!AddAccountDetour)
-			{
-				MF_Log("AddAccount is not available");
-			}
-
-			if (!CanPlayerBuyDetour)
-			{
-				MF_Log("CanPlayerBuy is not available");
-			}
-
-			if (!CanBuyThisDetour)
-			{
-				MF_Log("CanBuyThis is not available");
-			}
-
-			MF_Log("Some functions are not available - forwards CS_OnBuy[Attempt] have been disabled");
-			ToggleDetour_BuyCommands(false);
-		}
+		Active_cs_set_no_knives = true;
+		Active_cs_create_entity = true;
+		Active_cs_find_ent = true;
+		Active_cs_get_weapon_info = true;
+		Active_set_ent_class = true;
 	}
 	else
-	{
-		DestroyDetour(BuyGunAmmoDetour);
-		DestroyDetour(GiveNamedItemDetour);
-		DestroyDetour(AddAccountDetour);
-		DestroyDetour(CanPlayerBuyDetour);
-		DestroyDetour(CanBuyThisDetour);
-	}
-}
-
-void ToggleDetour_BuyCommands(bool enable)
-{
-	ToggleDetour(BuyGunAmmoDetour, enable);
-	ToggleDetour(GiveNamedItemDetour, enable);
-	ToggleDetour(AddAccountDetour, enable);
-	ToggleDetour(CanPlayerBuyDetour, enable);
-	ToggleDetour(CanBuyThisDetour, enable);
-}
-
-
-void CtrlDetours_Natives(bool set)
-{
-	if (set)
 	{
 		void *address = nullptr;
 
@@ -436,109 +90,64 @@ void CtrlDetours_Natives(bool set)
 			GiveDefaultItemsDetour = DETOUR_CREATE_MEMBER_FIXED(GiveDefaultItems, address);
 		}
 
-		if (!GiveDefaultItemsDetour)
+		if (MainConfig->GetMemSig("CreateNamedEntity", &address)) // cs_create_entity()
 		{
+			CS_CreateNamedEntity = reinterpret_cast<CreateNamedEntityFunc>(address);
+		}
+
+		if (MainConfig->GetMemSig("FindEntityByString", &address)) // cs_find_ent_by_class()
+		{
+			CS_UTIL_FindEntityByString = reinterpret_cast<UTIL_FindEntityByStringFunc>(address);
+		}
+
+		if (MainConfig->GetMemSig("GetWeaponInfo", &address)) // cs_get_weapon_info()
+		{
+			GetWeaponInfo = reinterpret_cast<GetWeaponInfoFunc>(address);
+		}
+
+		if (MainConfig->GetMemSig("AddEntityHashValue", &address)) // cs_set_ent_class()
+		{
+			AddEntityHashValue = reinterpret_cast<AddEntityHashValueFunc>(address);
+		}
+
+		if (MainConfig->GetMemSig("RemoveEntityHashValue", &address)) // cs_set_ent_class()
+		{
+			RemoveEntityHashValue = reinterpret_cast<RemoveEntityHashValueFunc>(address);
+		}
+
+		if (GiveDefaultItemsDetour)
+		{
+			Active_cs_set_no_knives = true;
+		} else {
 			MF_Log("GiveDefaultItems is not available - native cs_set_no_knives has been disabled");
 		}
-	}
-	else
-	{
-		DestroyDetour(GiveDefaultItemsDetour);
-	}
-}
 
+		if (CS_CreateNamedEntity)
+		{
+			Active_cs_create_entity = true;
+		} else {
+			MF_Log("CREATE_NAMED_ENITTY is not available - native cs_create_entity() has been disabled");
+		}
 
-void InitFuncsAddresses()
-{
-	void *address = nullptr;
+		if (CS_UTIL_FindEntityByString)
+		{
+			Active_cs_find_ent = true;
+		} else {
+			MF_Log("UTIL_FindEntByString is not available - native cs_find_ent_by_class() has been disabled");
+		}
 
-	if (MainConfig->GetMemSig("CreateNamedEntity", &address)) // cs_create_entity()
-	{
-		CS_CreateNamedEntity = reinterpret_cast<CreateNamedEntityFunc>(address);
-	}
+		if (GetWeaponInfo)
+		{
+			Active_cs_get_weapon_info = true;
+		} else {
+			MF_Log("GetWeaponInfo is not available - native cs_get_weapon_info() have been disabled");
+		}
 
-	if (MainConfig->GetMemSig("FindEntityByString", &address)) // cs_find_ent_by_class()
-	{
-		CS_UTIL_FindEntityByString = reinterpret_cast<UTIL_FindEntityByStringFunc>(address);
-	}
-
-	if (MainConfig->GetMemSig("GetWeaponInfo", &address)) // cs_get_weapon_info()
-	{
-		GetWeaponInfo = reinterpret_cast<GetWeaponInfoFunc>(address);
-	}
-
-	if (MainConfig->GetMemSig("AddEntityHashValue", &address)) // cs_set_ent_class()
-	{
-		AddEntityHashValue = reinterpret_cast<AddEntityHashValueFunc>(address);
-	}
-
-	if (MainConfig->GetMemSig("RemoveEntityHashValue", &address)) // cs_set_ent_class()
-	{
-		RemoveEntityHashValue = reinterpret_cast<RemoveEntityHashValueFunc>(address);
-	}
-
-
-	if (!CS_CreateNamedEntity)
-	{
-		MF_Log("CREATE_NAMED_ENITTY is not available - native cs_create_entity() has been disabled");
-	}
-
-	if (!CS_UTIL_FindEntityByString)
-	{
-		MF_Log("UTIL_FindEntByString is not available - native cs_find_ent_by_class() has been disabled");
-	}
-
-	if (!GetWeaponInfo)
-	{
-		MF_Log("GetWeaponInfo is not available - native cs_get_weapon_info() and forward CS_OnBuy have been disabled");
-		CtrlDetours_BuyCommands(false);
-	}
-}
-
-void InitClassMembers()
-{
-	CommonConfig->GetOffsetByClass("CBasePlayer", "m_iTeam"          , &TeamDesc   );
-	CommonConfig->GetOffsetByClass("CBasePlayer", "m_iMenu"          , &MenuDesc   );
-	CommonConfig->GetOffsetByClass("CBasePlayer", "m_bHasNightVision", &NvgsDesc   );
-	CommonConfig->GetOffsetByClass("CBasePlayer", "m_bHasDefuser"    , &DefuserDesc);
-	CommonConfig->GetOffsetByClass("CBasePlayer", "m_signals"        , &SignalsDesc);
-	CommonConfig->GetOffsetByClass("CBasePlayer", "m_iAccount"       , &MoneyDesc  );
-
-	if (!TeamDesc.fieldOffset    ||
-		!MenuDesc.fieldOffset    ||
-		!NvgsDesc.fieldOffset    ||
-		!DefuserDesc.fieldOffset ||
-		!SignalsDesc.fieldOffset ||
-		!MoneyDesc.fieldOffset)
-	{
-		MF_Log("Invalid or missing entity gamedata files - forwards CS_OnBuy[Attempt] have been disabled");
-		CtrlDetours_BuyCommands(false);
-	}
-}
-
-void InitGlobalVars()
-{
-	void *address = nullptr;
-
-#if defined(KE_WINDOWS)
-
-	if (CommonConfig->GetAddress("g_pGameRules", &address))
-	{
-		GameRules = *reinterpret_cast<decltype(GameRules)*>(address);
-	}
-
-#else
-
-	if (CommonConfig->GetMemSig("g_pGameRules", &address))
-	{
-		GameRules = reinterpret_cast<decltype(GameRules)>(address);
-	}
-
-#endif
-
-	if (!GameRules)
-	{
-		MF_Log("g_pGameRules is not available - Forward CS_OnBuy has been disabled");
-		CtrlDetours_BuyCommands(false);
+		if (AddEntityHashValue && RemoveEntityHashValue)
+		{
+			Active_set_ent_class = true;
+		} else {
+			MF_Log("GetWeaponInfo is not available - native cs_set_ent_class() have been disabled");
+		}
 	}
 }

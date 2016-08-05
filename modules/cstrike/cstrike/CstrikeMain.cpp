@@ -18,7 +18,8 @@
 #include "CstrikeUserMessages.h"
 #include <IGameConfigs.h>
 
-bool m_api_rehlds = false;
+bool g_bReHLDS = false;
+bool g_bReGame = false;
 
 IGameConfig *MainConfig;
 IGameConfig *CommonConfig;
@@ -28,8 +29,7 @@ HLTypeConversion TypeConversion;
 
 int AmxxCheckGame(const char *game)
 {
-	if (strcasecmp(game, "cstrike") == 0 ||
-		strcasecmp(game, "czero") == 0)
+	if (strcasecmp(game, "cstrike") == 0 || strcasecmp(game, "czero") == 0)
 	{
 		return AMXX_GAME_OK;
 	}
@@ -38,14 +38,16 @@ int AmxxCheckGame(const char *game)
 
 void OnAmxxAttach()
 {
-	m_api_rehlds = RehldsApi_Init();
+	g_bReHLDS = RehldsApi_Init();
 
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		MF_Log("Error load ReHLDS.");
 		return;
 	}
 	
+	g_bReGame = RegamedllApi_Init();
+
 	MF_AddNatives(CstrikeNatives);
 
 	ConfigManager = MF_GetConfigManager();
@@ -72,69 +74,30 @@ void OnAmxxAttach()
 
 void OnPluginsLoaded()
 {
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		return;
 	}
 
 	TypeConversion.init();
-
-	ForwardInternalCommand = MF_RegisterForward("CS_InternalCommand", ET_STOP, FP_CELL, FP_STRING, FP_DONE);
-	//ForwardOnBuy           = MF_RegisterForward("CS_OnBuy"          , ET_STOP, FP_CELL, FP_CELL, FP_DONE);
-	ForwardOnBuyAttempt    = MF_RegisterForward("CS_OnBuyAttempt"   , ET_STOP, FP_CELL, FP_CELL, FP_DONE);
 }
 
 void OnServerActivate(edict_t *pEdictList, int edictCount, int clientMax)
 {
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		return;
 	}
 
 	// Used to catch WeaponList message at map change.
 	EnableMessageHooks();
-
-	auto OnBuyAttempt = UTIL_CheckForPublic("CS_OnBuyAttempt");
-
-	auto OnBuy = false;
-
-	/*
-	auto OnBuy = UTIL_CheckForPublic("CS_OnBuy");
-
-	if (OnBuy)
-	{
-		CtrlDetours_BuyCommands(true);
-	}
-	*/
-
-	HasInternalCommandForward = UTIL_CheckForPublic("CS_InternalCommand");
-
-	auto haveBuyDetours = BuyGunAmmoDetour && GiveNamedItemDetour && AddAccountDetour && CanPlayerBuyDetour && CanBuyThisDetour;
-
-	if (haveBuyDetours)
-	{
-		HasOnBuyAttemptForward = OnBuyAttempt;
-		HasOnBuyForward = OnBuy;
-	}
-
-	ToggleDetour_ClientCommands(HasInternalCommandForward || HasOnBuyAttemptForward || HasOnBuyForward);
 	
-	ToggleDetour_BuyCommands(HasOnBuyForward);
-
 	RETURN_META(MRES_IGNORED);
 }
 
 void OnServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
 {
 	DisableMessageHooks();
-
-	RETURN_META(MRES_IGNORED);
-}
-
-void OnServerDeactivate()
-{
-	ToggleDetour_BuyCommands(false);
-	ToggleDetour_ClientCommands(false);
 
 	RETURN_META(MRES_IGNORED);
 }
@@ -147,6 +110,11 @@ void OnPluginsUnloaded()
 
 	// Force to disable all event hooks at map change.
 	DisableMessageHooks(true);
+
+	if (g_bReGame && NoKnivesMode)
+	{
+		g_ReGameHookchains->CBasePlayer_GiveDefaultItems()->unregisterHook(&CBasePlayer_GiveDefaultItems);
+	}
 }
 
 void OnAmxxDetach()
@@ -155,6 +123,4 @@ void OnAmxxDetach()
 
 	ConfigManager->CloseGameConfigFile(MainConfig);
 	ConfigManager->CloseGameConfigFile(CommonConfig);
-
-	ShutdownHacks();
 }

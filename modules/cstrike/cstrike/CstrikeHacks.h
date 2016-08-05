@@ -24,36 +24,12 @@
 #include "struct.h"
 
 void InitializeHacks();
-void InitFuncsAddresses();
-void InitClassMembers();
 void InitGlobalVars();
-void ShutdownHacks();
-
-void CtrlDetours_BuyCommands(bool set);
-void CtrlDetours_Natives(bool set);
-
-void ToggleDetour_ClientCommands(bool enable);
-void ToggleDetour_BuyCommands(bool enable);
 
 extern AMX_NATIVE_INFO CstrikeNatives[];
 
 extern IGameConfig *MainConfig;
 extern IGameConfig *CommonConfig;
-
-extern int ForwardInternalCommand;
-extern int ForwardOnBuy;
-extern int ForwardOnBuyAttempt;
-
-extern bool HasInternalCommandForward;
-extern bool HasOnBuyAttemptForward;
-extern bool HasOnBuyForward;
-
-extern CDetour *GiveNamedItemDetour;
-extern CDetour *AddAccountDetour;
-extern CDetour *CanPlayerBuyDetour;
-extern CDetour *CanBuyThisDetour;
-extern CDetour *GiveDefaultItemsDetour;
-extern CDetour *BuyGunAmmoDetour;
 
 enum class HashType
 {
@@ -61,7 +37,7 @@ enum class HashType
 };
 
 typedef edict_t* (*CreateNamedEntityFunc)(string_t iszClassname);
-typedef void*    (*UTIL_FindEntityByStringFunc)(void* pStartEntity, const char *szKeyword, const char *szValue);
+typedef CBaseEntity* (*UTIL_FindEntityByStringFunc)(CBaseEntity* pStartEntity, const char *szKeyword, const char *szValue);
 typedef WeaponInfoStruct* (*GetWeaponInfoFunc)(int id);
 typedef void (*AddEntityHashValueFunc)(struct entvars_s *pev, const char *value, HashType fieldType);
 typedef void (*RemoveEntityHashValueFunc)(struct entvars_s *pev, const char *value, HashType fieldType);
@@ -72,11 +48,17 @@ extern GetWeaponInfoFunc           GetWeaponInfo;
 extern AddEntityHashValueFunc      AddEntityHashValue;
 extern RemoveEntityHashValueFunc   RemoveEntityHashValue;
 
+extern bool Active_cs_set_no_knives;
+extern bool Active_cs_create_entity;
+extern bool Active_cs_find_ent;
+extern bool Active_cs_get_weapon_info;
+extern bool Active_set_ent_class;
+
 extern CDetour *GiveDefaultItemsDetour;
-extern enginefuncs_t *g_pengfuncsTable;
-extern DLL_FUNCTIONS *g_pFunctionTable;
+
 extern bool NoKnivesMode;
 
-extern void **GameRules;
+extern enginefuncs_t *g_pengfuncsTable;
+extern DLL_FUNCTIONS *g_pFunctionTable;
 
 #endif // CSTRIKE_HACKS_H

@@ -110,7 +110,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\;..\sdk;..\memtools;..\..\..\..\public;..\..\..\..\public\amtl;..\..\..\..\public\metamod;..\..\..\..\public\cssdk\common;..\..\..\..\public\cssdk\dlls;..\..\..\..\public\cssdk\engine;..\..\..\..\public\cssdk\pm_shared;..\..\..\..\public\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\sdk;..\memtools;..\..\..\..\public;..\..\..\..\public\amtl;..\..\..\..\public\metamod;..\..\..\..\public\cssdk\common;..\..\..\..\public\cssdk\dlls;..\..\..\..\public\cssdk\engine;..\..\..\..\public\cssdk\game_shared;..\..\..\..\public\cssdk\pm_shared;..\..\..\..\public\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;HAVE_STDINT_H;_CRT_SECURE_NO_DEPRECATE;CSTRIKE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -154,6 +154,7 @@
     <ClCompile Include="..\sdk\amxxmodule.cpp" />
     <ClCompile Include="..\sdk\interface.cpp" />
     <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
+    <ClCompile Include="..\sdk\mod_gamedll_api.cpp" />
     <ClCompile Include="..\CstrikeItemsInfos.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +169,8 @@
     <ClInclude Include="..\CstrikeUserMessages.h" />
     <ClInclude Include="..\moduleconfig.h" />
     <ClInclude Include="..\sdk\amxxmodule.h" />
+    <ClInclude Include="..\sdk\mod_rehlds_api.h" />
+    <ClInclude Include="..\sdk\mod_gamedll_api.h" />
     <ClInclude Include="..\CstrikeUtils.h" />
   </ItemGroup>
   <ItemGroup>

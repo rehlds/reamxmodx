@@ -15,54 +15,6 @@
 	{
 		"Signatures"
 		{
-			"CanPlayerBuy"  // bool CBasePlayer::CanPlayerBuy(bool display)
-			{
-				"library"   "server"
-				"windows"   "\x51\x53\x55\x56\x57\x8B\x2A\x8B\x2A\x2A\x2A\x2A\x2A\x8B\x2A\xFF"
-				"linux"     "@_ZN11CBasePlayer12CanPlayerBuyEb"
-				"mac"       "@_ZN11CBasePlayer12CanPlayerBuyEb"
-			}
-
-			"CanBuyThis"  // bool CanBuyThis(CBasePlayer *pPlayer, int weaponId)
-			{
-				"library"   "server"
-				"windows"   "\x53\x8B\x2A\x2A\x2A\x2A\x2A\x56\x8B\x2A\x2A\x2A\x57\x8B"
-				"linux"     "@_Z10CanBuyThisP11CBasePlayeri"
-				"mac"       "@_Z10CanBuyThisP11CBasePlayeri"
-			}
-
-			"AddAccount"    // void CBasePlayer::AddAccount(int amount, bool bTrackChange)
-			{
-				"library"   "server"
-				"windows"   "\x8B\x2A\x2A\x2A\x56\x8B\x2A\x8B\x2A\x2A\x2A\x2A\x2A\x03"
-				"linux"     "@_ZN11CBasePlayer10AddAccountEib"
-				"mac"       "@_ZN11CBasePlayer10AddAccountEib"
-			}
-
-			"GiveNamedItem" // void CBasePlayer::GiveNamedItem(const char *pszName)
-			{
-				"library"   "server"
-				"windows"   "\x8B\x2A\x2A\x2A\x56\x57\x8B\x2A\x8B\x2A\x2A\x2A\x2A\x2A\x2B"
-				"linux"     "@_ZN11CBasePlayer13GiveNamedItemEPKc"
-				"mac"       "@_ZN11CBasePlayer13GiveNamedItemEPKc"
-			}
-
-			"GiveDefaultItems" // void CBasePlayer::GiveDefaultItems(void)
-			{
-				"library"   "server"
-				"windows"   "\x56\x57\x6A\x2A\x8B\x2A\xE8\x2A\x2A\x2A\x2A\x8B\x2A\x2A\x2A\x2A\x2A\xC6"
-				"linux"     "@_ZN11CBasePlayer16GiveDefaultItemsEv"
-				"mac"       "@_ZN11CBasePlayer16GiveDefaultItemsEv"
-			}
-
-			"GiveShield"    // void CBasePlayer::GiveShield(bool bRetire)
-			{
-				"library"   "server"
-				"windows"   "\x56\x8B\x2A\x57\x33\x2A\x8B\x2A\x2A\x2A\x2A\x2A\xB0"
-				"linux"     "@_ZN11CBasePlayer10GiveShieldEb"
-				"mac"       "@_ZN11CBasePlayer10GiveShieldEb"
-			}
-
 			"CreateNamedEntity" // edict_t* CREATE_NAMED_ENTITY(int classname)
 			{
 				"library"   "server"
@@ -101,57 +53,6 @@
 				"windows"   "\x8B\x2A\x2A\x2A\x2A\x2A\x33\x2A\x85\x2A\x56\x74\x2A\x8B"
 				"linux"     "@_Z13GetWeaponInfoi"
 				"mac"       "@_Z13GetWeaponInfoi"
-			}
-
-			"GetAmmoIndex" // int CBasePlayer::GetAmmoIndex(const char *psz)
-			{
-				"library"   "server"
-				"windows"   "\x56\x57\x8B\x2A\x2A\x2A\x85\x2A\x74\x2A\xBE"
-				"linux"     "@_ZN11CBasePlayer12GetAmmoIndexEPKc"
-				"mac"       "@_ZN11CBasePlayer12GetAmmoIndexEPKc"
-			}
-
-			"BuyGunAmmo" // bool BuyGunAmmo(CBasePlayer *player, CBasePlayerItem *weapon, bool bBlinkMoney)
-			{
-				"library"   "server"
-				"windows"   "\x56\x57\x8B\x2A\x2A\x2A\x6A\x2A\x8B\x2A\xE8\x2A\x2A\x2A\x2A\x84\x2A\x0F"
-				"linux"     "@_Z10BuyGunAmmoR11CBasePlayerR15CBasePlayerItemb"
-				"mac"       "@_Z10BuyGunAmmoR11CBasePlayerR15CBasePlayerItemb"
-			}
-		}
-	}
-
-	"#default"
-	{
-		"Signatures"
-		{
-			"UseBotArgs"    // bool UseBotArgs
-			{
-				"library"   "server"
-				"windows"   "\x8B\x2A\x2A\x2A\x56\x8B\x2A\x8B\x2A\x2A\x2A\x2A\x2A\x03"
-				"linux"     "@UseBotArgs"
-				"mac"       "@UseBotArgs"
-			}
-
-			"BotArgs"       // const char *BotArgs[4]
-			{
-				"library"   "server"
-				"windows"   "\x8B\x2A\x2A\x2A\x56\x8B\x2A\x8B\x2A\x2A\x2A\x2A\x2A\x03"
-				"linux"     "@BotArgs"
-				"mac"       "@BotArgs"
-			}
-		}
-
-		"Offsets"
-		{
-			"UseBotArgs_off"    // bool UseBotArgs
-			{
-				"windows"   "2"
-			}
-
-			"BotArgs"       // const char *BotArgs[4]
-			{
-				"windows"   "22"
 			}
 		}
 	}

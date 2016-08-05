@@ -15,7 +15,7 @@
 #define CSTRIKE_DATA_H
 
 /**
- * Weapon Ids for use with CS_OnBuyAttempt(), CS_OnBuy().
+ * Weapon Ids.
  */
 #define CSI_NONE                CSW_NONE
 #define CSI_P228                CSW_P228

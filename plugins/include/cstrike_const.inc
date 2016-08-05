@@ -140,7 +140,6 @@ enum
 };
 
 /**
- * Constants used for the CS_OnBuy() and CS_OnBuyAttempt() forwards.
  *
  * @note While these mostly overlap with the CSW_* constants the CSI_* constants
  *       contain custom AMXX values that do not correspond to any real value in
