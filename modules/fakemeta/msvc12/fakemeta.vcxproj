@@ -77,7 +77,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\;..\sdk;..\..\..\public;..\..\..\public\amtl;..\..\..\public\metamod;..\..\..\public\cssdk\common;..\..\..\public\cssdk\dlls;..\..\..\public\cssdk\engine;..\..\..\public\cssdk\pm_shared;..\..\..\public\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\sdk;..\..\..\public;..\..\..\public\amtl;..\..\..\public\metamod;..\..\..\public\cssdk\common;..\..\..\public\cssdk\dlls;..\..\..\public\cssdk\engine;..\..\..\public\cssdk\game_shared;..\..\..\public\cssdk\pm_shared;..\..\..\public\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FAKEMETA_EXPORTS;HAVE_STDINT_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -113,6 +113,7 @@
     <ClCompile Include="..\sdk\amxxmodule.cpp" />
     <ClCompile Include="..\sdk\interface.cpp" />
     <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
+    <ClCompile Include="..\sdk\mod_gamedll_api.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\public\HLTypeConversion.h" />
@@ -128,6 +129,8 @@
     <ClInclude Include="..\moduleconfig.h" />
     <ClInclude Include="..\pdata_shared.h" />
     <ClInclude Include="..\sdk\amxxmodule.h" />
+    <ClInclude Include="..\sdk\mod_rehlds_api.h" />
+    <ClInclude Include="..\sdk\mod_gamedll_api.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\plugins\include\fakemeta.inc" />

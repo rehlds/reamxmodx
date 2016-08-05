@@ -28,6 +28,9 @@
 #include <IGameConfigs.h>
 #include <HLTypeConversion.h>
 
+#include "mod_rehlds_api.h"
+#include "mod_gamedll_api.h"
+
 /*
 #define CHECK_ENTITY(x) \
 	if (x < 0 || x > gpGlobals->maxEntities) { \
@@ -84,5 +87,6 @@ extern IGameConfigManager *ConfigManager;
 extern HLTypeConversion TypeConversion;
 extern void **GameRulesAddress;
 
-#endif //_FAKEMETA_INCLUDE_H
+extern bool FindGameRules;
 
+#endif //_FAKEMETA_INCLUDE_H

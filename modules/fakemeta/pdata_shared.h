@@ -64,7 +64,7 @@ enum class BaseFieldType
 	}
 
 #define CHECK_GAMERULES()                                                                  \
-	if (!GameRulesAddress)                                                                 \
+	if (!FindGameRules)																       \
 	{                                                                                      \
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s is disabled. Check your AMXX log.", __FUNCTION__);  \
 		return 0;                                                                          \

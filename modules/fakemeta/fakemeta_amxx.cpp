@@ -14,9 +14,8 @@
 #include "fakemeta_amxx.h"
 #include "sh_stack.h"
 
-#include "mod_rehlds_api.h"
-
-bool m_api_rehlds = false;
+bool g_bReHLDS = false;
+bool g_bReGame = false;
 
 IGameConfig *CommonConfig;
 IGameConfig *GamerulesConfig;
@@ -25,15 +24,19 @@ IGameConfigManager *ConfigManager;
 HLTypeConversion TypeConversion;
 void **GameRulesAddress;
 
+bool FindGameRules = false;
+
 void OnAmxxAttach()
 {
-	m_api_rehlds = RehldsApi_Init();
+	g_bReHLDS = RehldsApi_Init();
 
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		MF_Log("Error load ReHLDS");
 		return;
 	}
+
+	g_bReGame = RegamedllApi_Init();
 
 	initialze_offsets();
 	initialize_glb_offsets();
@@ -73,19 +76,37 @@ void OnAmxxAttach()
 		return;
 	}
 
-	void *address = nullptr;
-
-	if (!CommonConfig->GetAddress("g_pGameRules", &address) || !address)
+	if (g_bReGame)
 	{
-		MF_Log("get/set_gamerules_* natives have been disabled because g_pGameRules address could not be found. ");
-		return;
+		g_ReGameHookchains->InstallGameRules()->registerHook(&InstallGameRules);
 	}
+	else
+	{
+		void *address = nullptr;
+
+		if (!CommonConfig->GetAddress("g_pGameRules", &address) || !address)
+		{
+			MF_Log("get/set_gamerules_* natives have been disabled because g_pGameRules address could not be found. ");
+			return;
+		}
 
 #if defined(KE_WINDOWS)
-	GameRulesAddress = *reinterpret_cast<void***>(address);
+		GameRulesAddress = *reinterpret_cast<void***>(address);
 #else
-	GameRulesAddress = reinterpret_cast<void**>(address);
+		GameRulesAddress = reinterpret_cast<void**>(address);
 #endif
+
+		if (GameRulesAddress)
+		{
+			FindGameRules = true;
+		}
+	}
+}
+
+CGameRules *InstallGameRules(IReGameHook_InstallGameRules *chain)
+{
+	FindGameRules = true;
+	return g_pGameRules = chain->callNext();
 }
 
 void OnPluginsLoaded()
@@ -113,6 +134,11 @@ void OnAmxxDetach()
 
 	while (!g_FreeKVDWs.empty())
 		delete g_FreeKVDWs.popCopy();
+
+	if (g_bReGame)
+	{
+		g_ReGameHookchains->InstallGameRules()->unregisterHook(&InstallGameRules);
+	}
 }
 
 void ServerActivate(edict_t *pEdictList, int edictCount, int clientMax)

@@ -8,6 +8,7 @@ const RehldsFuncs_t* g_RehldsFuncs;
 IRehldsServerData* g_RehldsData;
 IRehldsHookchains* g_RehldsHookchains;
 IRehldsServerStatic* g_RehldsSvs;
+IRehldsServerData* g_RehldsSv;
 
 void REHLDS_PRINT(const char *fmt, ...)
 {
@@ -18,7 +19,7 @@ void REHLDS_PRINT(const char *fmt, ...)
 	vsnprintf(buf, sizeof(buf), fmt, ap);
 	va_end(ap);
 	len = strlen(buf);
-	if (len < sizeof(buf)-2)
+	if (len < sizeof(buf) - 2)
 	{
 		strcat(buf, "\n");
 	} else {
@@ -78,6 +79,7 @@ bool RehldsApi_Init()
 	g_RehldsData = g_RehldsApi->GetServerData();
 	g_RehldsHookchains = g_RehldsApi->GetHookchains();
 	g_RehldsSvs = g_RehldsApi->GetServerStatic();
+	g_RehldsSv = g_RehldsApi->GetServerData();
 
 	return true;
 }
