@@ -874,12 +874,10 @@ void SV_DropClient_Hook(IRehldsHook_SV_DropClient* chain, IGameClient* cl, bool 
 {
 	char buffer[1024];
 
-	va_list ap;
-	va_start(ap, msg);
-	ke::SafeVsprintf(buffer, sizeof(buffer)-1, msg, ap);
-	va_end(ap);
+	ke::SafeSprintf(buffer, sizeof(buffer) - 1, msg);
 
 	CPlayer *pPlayer;
+
 	edict_t *pEdict = cl->GetEdict();
 
 	if (pEdict)
@@ -889,7 +887,7 @@ void SV_DropClient_Hook(IRehldsHook_SV_DropClient* chain, IGameClient* cl, bool 
 		if (pPlayer->initialized)
 		{
 			pPlayer->disconnecting = true;
-			executeForwards(FF_ClientDisconnected, pPlayer->index, TRUE, prepareCharArray(buffer, sizeof(buffer), true), sizeof(buffer)-1);
+			executeForwards(FF_ClientDisconnected, pPlayer->index, TRUE, prepareCharArray(buffer, sizeof(buffer), true), sizeof(buffer) - 1);
 		}
 	}
 

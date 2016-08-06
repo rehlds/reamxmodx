@@ -12,7 +12,7 @@ COMPILER = /opt/intel/bin/icpc
 OBJECTS = sdk/amxxmodule.cpp CstrikeMain.cpp CstrikePlayer.cpp CstrikeNatives.cpp CstrikeHacks.cpp CstrikeUtils.cpp \
 CstrikeUserMessages.cpp CstrikeItemsInfos.cpp memtools/MemoryUtils.cpp memtools/CDetour/detours.cpp memtools/CDetour/asm/asm.c
 
-OBJECTS += sdk/mod_rehlds_api.cpp sdk/interface.cpp
+OBJECTS += sdk/mod_rehlds_api.cpp sdk/mod_gamedll_api.cpp sdk/interface.cpp
 
 LINK = -lm -ldl -static-intel -static-libgcc -no-intel-extensions
 

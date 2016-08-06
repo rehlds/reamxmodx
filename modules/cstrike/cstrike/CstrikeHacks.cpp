@@ -147,7 +147,7 @@ void InitializeHacks()
 		{
 			Active_set_ent_class = true;
 		} else {
-			MF_Log("GetWeaponInfo is not available - native cs_set_ent_class() have been disabled");
+			MF_Log("EntityHashValue is not available - native cs_set_ent_class() have been disabled");
 		}
 	}
 }

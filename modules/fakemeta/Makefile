@@ -11,7 +11,7 @@ COMPILER = /opt/intel/bin/icpc
 OBJECTS = sdk/amxxmodule.cpp memtools/MemoryUtils.cpp \
 dllfunc.cpp engfunc.cpp fakemeta_amxx.cpp pdata.cpp pdata_entities.cpp pdata_gamerules.cpp forward.cpp fm_tr.cpp pev.cpp glb.cpp fm_tr2.cpp misc.cpp
 
-OBJECTS += sdk/mod_rehlds_api.cpp sdk/interface.cpp
+OBJECTS += sdk/mod_rehlds_api.cpp sdk/mod_gamedll_api.cpp sdk/interface.cpp
 
 LINK = -lm -ldl -static-intel -static-libgcc -no-intel-extensions
 
