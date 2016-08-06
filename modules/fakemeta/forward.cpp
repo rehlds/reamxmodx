@@ -13,10 +13,10 @@
 
 #include "fakemeta_amxx.h"
 
-ke::Vector<int> Engine[ENGFUNC_NUM+10];
+ke::Vector<int> Engine[ENGFUNC_NUM + 10];
 ke::Vector<int> EnginePost[ENGFUNC_NUM + 10];
-void *EngineAddrs[ENGFUNC_NUM+10];
-void *EngineAddrsPost[ENGFUNC_NUM+10];
+void *EngineAddrs[ENGFUNC_NUM + 10];
+void *EngineAddrsPost[ENGFUNC_NUM + 10];
 cell mCellResult;
 cell mlCellResult;
 float mFloatResult;
@@ -63,25 +63,25 @@ static cell AMX_NATIVE_CALL fm_return(AMX *amx, cell *params)
 	int len;
 	switch (params[1])
 	{
-	case FMV_STRING:
+		case FMV_STRING:
 		{
 			mStringResult = STRING(ALLOC_STRING(MF_GetAmxString(amx, params[2], 0 ,&len)));
 			break;
 		}
-	case FMV_FLOAT:
+		case FMV_FLOAT:
 		{
 			mFloatResult = amx_ctof(*(MF_GetAmxAddr(amx,params[2])));
 			break;
 		}
-	case FMV_CELL:
+		case FMV_CELL:
 		{
 			mCellResult = *(MF_GetAmxAddr(amx,params[2]));
 			break;
 		}
-	default:
+		default:
 		{
-		return 0;
-		break;
+			return 0;
+			break;
 		}
 	}
 
@@ -247,7 +247,6 @@ void TraceSphere_post(const float *v1, const float *v2, int fNoMonsters, float r
 	RETURN_META(MRES_IGNORED);
 }
 
-
 /*
 // Passed to pfnKeyValue
 typedef struct KeyValueData_s
@@ -258,6 +257,7 @@ typedef struct KeyValueData_s
 	int32	fHandled;		// out: DLL sets to true if key-value pair was understood
 } KeyValueData;
 */
+
 void KeyValue(edict_t* entity, KeyValueData* data)
 {
 	FM_ENG_HANDLE(FM_KeyValue, (Engine[FM_KeyValue].at(i), (cell)ENTINDEX(entity), (cell)(data)));

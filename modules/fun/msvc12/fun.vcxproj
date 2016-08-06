@@ -145,8 +145,8 @@
     <ClCompile Include="..\memtools\MemoryUtils.cpp" />
     <ClCompile Include="..\fun.cpp" />
     <ClCompile Include="..\sdk\amxxmodule.cpp" />
-    <ClCompile Include="..\sdk\interface.cpp" />
     <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
+    <ClCompile Include="..\sdk\interface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\public\HLTypeConversion.h" />
@@ -154,6 +154,7 @@
     <ClInclude Include="..\fun.h" />
     <ClInclude Include="..\moduleconfig.h" />
     <ClInclude Include="..\sdk\amxxmodule.h" />
+    <ClInclude Include="..\sdk\mod_rehlds_api.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\plugins\include\fun.inc" />

@@ -28,7 +28,8 @@ void UTIL_SetSize(edict_t *pev, const Vector &vecMin, const Vector &vecMax)
 	SET_SIZE(ENT(&pev->v), vecMin, vecMax);
 }
 
-edict_t *UTIL_FindEntityInSphere(edict_t *pStart, const Vector &vecCenter, float flRadius) {
+edict_t *UTIL_FindEntityInSphere(edict_t *pStart, const Vector &vecCenter, float flRadius)
+{
 	if (!pStart) pStart = NULL;
 
 	pStart = FIND_ENTITY_IN_SPHERE(pStart, vecCenter, flRadius);
@@ -96,6 +97,7 @@ static cell AMX_NATIVE_CALL register_impulse(AMX *amx, cell *params)
 static cell AMX_NATIVE_CALL unregister_impulse(AMX *amx, cell *params)
 {
 	int fwd = params[1];
+
 	for (size_t i = 0; i < Impulses.length(); ++i)
 	{
 		Impulse *p = Impulses.at(i);
@@ -147,6 +149,7 @@ static cell AMX_NATIVE_CALL register_touch(AMX *amx, cell *params)
 static cell AMX_NATIVE_CALL unregister_touch(AMX *amx, cell *params)
 {
 	int fwd = params[1];
+
 	for (size_t i = 0; i < Touches.length(); ++i)
 	{
 		Touch *p = Touches.at(i);
@@ -182,6 +185,7 @@ static cell AMX_NATIVE_CALL RadiusDamage(AMX *amx, cell *params)
 	REAL fCurrentX = amx_ctof(cAddr[0]);
 	REAL fCurrentY = amx_ctof(cAddr[1]);
 	REAL fCurrentZ = amx_ctof(cAddr[2]);
+
 	int iDamageMultiplier = params[2];
 	int iRadiusMultiplier = params[3];
 
@@ -413,7 +417,8 @@ static cell AMX_NATIVE_CALL attach_view(AMX *amx, cell *params)
 // SetView, this sets the view of a player. This is done by
 // Creating a camera entity, which follows the player.
 //(vexd)
-static cell AMX_NATIVE_CALL set_view(AMX *amx, cell *params) { 
+static cell AMX_NATIVE_CALL set_view(AMX *amx, cell *params)
+{
 	int iIndex = params[1];
 	int iCameraType = params[2];
 
@@ -543,7 +548,8 @@ static cell AMX_NATIVE_CALL set_view(AMX *amx, cell *params) {
 
 // SetLights, this sets the lights for the map.
 //(vexd)
-static cell AMX_NATIVE_CALL set_lights(AMX *amx, cell *params) { 
+static cell AMX_NATIVE_CALL set_lights(AMX *amx, cell *params)
+{
 	int iLength;
 	char *szLights = MF_GetAmxString(amx, params[1], 0, &iLength);
 
@@ -815,6 +821,7 @@ static cell AMX_NATIVE_CALL is_visible(AMX *amx, cell *params)
 {
 	int src = params[1];
 	int dest = params[2];
+
 	CHECK_ENTITY(src);
 	CHECK_ENTITY(dest);
 
@@ -955,7 +962,9 @@ static cell AMX_NATIVE_CALL trace_forward(AMX *amx, cell *params)
 {
    cell *cStart = MF_GetAmxAddr(amx, params[1]);
    cell *cAngles = MF_GetAmxAddr(amx, params[2]);
+
    REAL fGive = amx_ctof(params[3]);
+
    int iIgnoreEnt = params[4];
    if (iIgnoreEnt > 0) {
 	   CHECK_ENTITY(iIgnoreEnt);
@@ -999,6 +1008,7 @@ static cell AMX_NATIVE_CALL trace_forward(AMX *amx, cell *params)
 	  REAL fUseZ = fStartZ + (REAL)inum;
 	  Vector vStart =  Vector(fStartX, fStartY, fUseZ);
 	  Vector vEnd = Vector(fEndX, fEndY, fUseZ);
+
 	  if(iIgnoreEnt > 0)
 		  TRACE_LINE(vStart, vEnd, dont_ignore_monsters, TypeConversion.id_to_edict(iIgnoreEnt), &tr);
 	  else
@@ -1020,6 +1030,7 @@ static cell AMX_NATIVE_CALL trace_forward(AMX *amx, cell *params)
 		 fClosestY = fRetY;
 	  }
    }
+
    fClosestLow += 36.0;
    fClosestHigh += 36.0;
 

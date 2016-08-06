@@ -23,12 +23,11 @@
 #include "ham_const.h"	
 #include "ham_utils.h"
 
-
-
 inline cell TypeToCell(const float& value)
 {
 	return amx_ftoc2(value);
 }
+
 inline cell TypeToCell(const float*& value)
 {
 	return amx_ftoc2(*value);
@@ -38,6 +37,7 @@ inline cell TypeToCell(const Vector*& value)
 {
 	return reinterpret_cast<cell>(value);
 }
+
 inline cell TypeToCell(const int& value)
 {
 	return value;
@@ -67,6 +67,5 @@ inline cell TypeToCell(const HLBaseEntity*& value)
 {
 	return PrivateToIndex(reinterpret_cast<const void *>(value));
 }
-
 
 #endif

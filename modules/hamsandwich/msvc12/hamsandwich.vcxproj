@@ -108,8 +108,8 @@
     <ClCompile Include="..\hook_native.cpp" />
     <ClCompile Include="..\hook_specialbot.cpp" />
     <ClCompile Include="..\sdk\amxxmodule.cpp" />
-    <ClCompile Include="..\sdk\interface.cpp" />
     <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
+    <ClCompile Include="..\sdk\interface.cpp" />
     <ClCompile Include="..\config_parser.cpp" />
     <ClCompile Include="..\DataHandler.cpp" />
     <ClCompile Include="..\pdata.cpp" />
@@ -130,6 +130,7 @@
     <ClInclude Include="..\Trampolines.h" />
     <ClInclude Include="..\moduleconfig.h" />
     <ClInclude Include="..\sdk\amxxmodule.h" />
+    <ClInclude Include="..\sdk\mod_rehlds_api.h" />
     <ClInclude Include="..\DataHandler.h" />
     <ClInclude Include="..\ham_const.h" />
     <ClInclude Include="..\ham_utils.h" />

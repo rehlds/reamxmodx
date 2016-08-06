@@ -13,6 +13,8 @@
 
 #include "amxxmodule.h"
 
+#include "mod_rehlds_api.h"
+
 extern DLL_FUNCTIONS *g_pFunctionTable;
 
 // Fun-specific defines below

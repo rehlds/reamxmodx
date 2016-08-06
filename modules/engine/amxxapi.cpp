@@ -13,9 +13,7 @@
 
 #include "engine.h"
 
-#include "mod_rehlds_api.h"
-
-bool m_api_rehlds = false;
+bool g_bReHLDS = false;
 
 BOOL CheckForPublic(const char *publicname);
 void CreateDetours();
@@ -49,9 +47,9 @@ void ClearHooks()
 
 void OnAmxxAttach()
 {
-	m_api_rehlds = RehldsApi_Init();
+	g_bReHLDS = RehldsApi_Init();
 
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		MF_Log("Error load ReHLDS");
 		return;
@@ -65,11 +63,13 @@ void OnAmxxAttach()
 	ClientImpulseForward = 0;
 	CmdStartForward = 0;
 	StartFrameForward = 0;
+
 	MF_AddNatives(ent_Natives);
 	MF_AddNewNatives(ent_NewNatives);
 	MF_AddNatives(engine_Natives);
 	MF_AddNewNatives(engine_NewNatives);
 	MF_AddNatives(global_Natives);
+
 	memset(glinfo.szLastLights, 0x0, 128);
 	memset(glinfo.szRealLights, 0x0, 128);
 	glinfo.bCheckLights = false;
@@ -84,9 +84,15 @@ void OnAmxxDetach()
 
 void OnPluginsLoaded()
 {
+	if (g_bReHLDS == false)
+	{
+		return;
+	}
+
 	TypeConversion.init();
 
-	g_CameraCount=0;
+	g_CameraCount = 0;
+
 	pfnThinkForward = MF_RegisterForward("pfn_think", ET_STOP, FP_CELL, FP_DONE);  // done
 	PlayerPreThinkForward = MF_RegisterForward("client_PreThink", ET_STOP, FP_CELL, FP_DONE); // done
 	PlayerPostThinkForward = MF_RegisterForward("client_PostThink", ET_STOP, FP_CELL, FP_DONE); // done

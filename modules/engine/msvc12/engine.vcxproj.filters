@@ -47,10 +47,10 @@
     <ClCompile Include="..\sdk\amxxmodule.cpp">
       <Filter>Module SDK\SDK Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\sdk\interface.cpp">
+    <ClCompile Include="..\sdk\mod_rehlds_api.cpp">
       <Filter>Module SDK\SDK Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\sdk\mod_rehlds_api.cpp">
+    <ClCompile Include="..\sdk\interface.cpp">
       <Filter>Module SDK\SDK Base</Filter>
     </ClCompile>
     <ClCompile Include="..\memtools\MemoryUtils.cpp">
@@ -77,6 +77,9 @@
       <Filter>Module SDK</Filter>
     </ClInclude>
     <ClInclude Include="..\sdk\amxxmodule.h">
+      <Filter>Module SDK\SDK Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sdk\mod_rehlds_api.h">
       <Filter>Module SDK\SDK Base</Filter>
     </ClInclude>
     <ClInclude Include="..\memtools\MemoryUtils.h">

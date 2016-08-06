@@ -18,6 +18,8 @@
 #include "offsets.h"
 #include <HLTypeConversion.h>
 
+#include "mod_rehlds_api.h"
+
 extern HLTypeConversion TypeConversion;
 
 #define CHECK_FUNCTION(x)																			\
@@ -81,6 +83,7 @@ inline void **GetVTable(void *pthis, int size)
 {
 	return *((void***)(((char*)pthis) + size));
 }
+
 inline void *GetVTableEntry(void *pthis, int ventry, int size)
 {
 	void **vtbl = GetVTable(pthis, size);

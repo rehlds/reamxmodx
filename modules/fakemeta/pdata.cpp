@@ -281,7 +281,14 @@ static cell AMX_NATIVE_CALL get_pdata_ent(AMX *amx, cell *params)
 		iOffset += params[4];
 #endif
 
-	edict_t *pEdict = get_pdata<edict_t*>(TypeConversion.id_to_edict(index), iOffset);
+	edict_t *pEnt = TypeConversion.id_to_edict(index);
+
+	if (!pEnt)
+	{
+		return -1;
+	}
+
+	edict_t *pEdict = get_pdata<edict_t*>(pEnt, iOffset);
 
 	if (pEdict == NULL)
 	{

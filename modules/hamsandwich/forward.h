@@ -30,7 +30,7 @@ enum fwdstate
 class Forward :public ke::Refcounted<Forward>
 {
 public:
-	int      id;    // id of the forward
+	int id;    // id of the forward
 	fwdstate state;
 	Forward(int id_) : id(id_), state(FSTATE_OK)
 	{
@@ -46,8 +46,8 @@ public:
 	}
 	inline void Set(int i)
 	{
-		state=FSTATE_OK;
-		id=i;
+		state = FSTATE_OK;
+		id = i;
 	};
 
 };

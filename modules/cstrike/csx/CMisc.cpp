@@ -17,27 +17,34 @@
 // *****************************************************
 // class Grenades
 // *****************************************************
-void Grenades::put( edict_t* grenade, float time, int type, CPlayer* player  )
+void Grenades::put(edict_t* grenade, float time, int type, CPlayer* player)
 {
   Obj* a = new Obj;
+
   if ( a == 0 ) return;
+
   a->player = player;
   a->grenade = grenade;
   a->time = gpGlobals->time + time;
   a->type = type;
   a->prev = 0;
   a->next = head;
-  if ( head ) head->prev = a;
+
+  if (head) head->prev = a;
+
   head = a;
 }
 
-bool Grenades::find( edict_t* enemy, CPlayer** p, int* type )
+bool Grenades::find(edict_t* enemy, CPlayer** p, int* type)
 {
   bool found = false;
   Obj* a = head;
-  while ( a ){
-    if ( a->time > gpGlobals->time && !found ) {
-      if ( a->grenade == enemy ) {
+
+  while (a) {
+    if (a->time > gpGlobals->time && !found)
+	{
+      if (a->grenade == enemy)
+	  {
         found = true;
         *p = a->player;
         *type = a->type;
@@ -45,24 +52,27 @@ bool Grenades::find( edict_t* enemy, CPlayer** p, int* type )
     }
     else {
       Obj* next = a->next;
+
       if (a->prev)  a->prev->next = next;
       else  head = next;
+
       if (next) next->prev = a->prev;
+
       delete a;
       a = next;
+
       continue;
     }
+
     a = a->next;
   }
 
   return found;
 }
 
-
-
 void Grenades::clear()
 {
-  while(head){
+  while(head) {
     Obj* a = head->next;
     delete head;
     head = a;
@@ -73,45 +83,51 @@ void Grenades::clear()
 // class CPlayer
 // *****************************************************
 
-void CPlayer::Disconnect(){
-
+void CPlayer::Disconnect()
+{
 	if ( ignoreBots(pEdict) || !isModuleActive() ) // ignore if he is bot and bots rank is disabled or module is paused
 		return;
 
 	if (rank != 0) // Just a sanity check, FL_FAKECLIENT is notoriously unreliable.
 	{
-		rank->updatePosition( &life );
+		rank->updatePosition(&life);
 	}
-		
+
 	rank = 0;
 }
 
-void CPlayer::PutInServer(){
-
+void CPlayer::PutInServer()
+{
 	//if ( ignoreBots(pEdict) )
-	if ( (int)csstats_rankbots->value == 0 &&
-		 IsBot() )
+	if ((int)csstats_rankbots->value == 0 && IsBot())
 		return;
 
 	restartStats();
+
 	const char* name = STRING(pEdict->v.netname);
 	const char* unique = name;
 	bool isip = false;
-	switch((int)csstats_rank->value) {
-	case 1: 
-		if ( (unique = GETPLAYERAUTHID(pEdict)) == 0 )
-			unique = name; // failed to get authid
-		break;
-	case 2:
-		unique = ip;
-		isip = true;
+
+	switch((int)csstats_rank->value)
+	{
+		case 1: 
+			if ((unique = GETPLAYERAUTHID(pEdict)) == 0)
+				unique = name; // failed to get authid
+			break;
+
+		case 2:
+			unique = ip;
+			isip = true;
 	}
-	rank = g_rank.findEntryInRank( unique , name , isip);
+
+	rank = g_rank.findEntryInRank(unique , name , isip);
 }
 
-void CPlayer::Connect(const char* address ){
+void CPlayer::Connect(const char* address )
+{
 	bot = IsBot();
 	strcpy(ip,address);
+
 	// Strip the port from the ip
 	for (size_t i = 0; i < sizeof(ip); i++)
 	{
@@ -121,6 +137,7 @@ void CPlayer::Connect(const char* address ){
 			break;
 		}
 	}
+
 	rank = 0;
 	clearStats = 0.0f;
 }
@@ -145,16 +162,13 @@ void CPlayer::Init( int pi, edict_t* pe )
 
 void CPlayer::saveKill(CPlayer* pVictim, int wweapon, int hhs, int ttk)
 {
-	if ( !isModuleActive() )
+	if (!isModuleActive() || ignoreBots(pEdict, pVictim->pEdict))
 		return;
 
-	if ( ignoreBots(pEdict,pVictim->pEdict) )
-		return;
-
-	if ( pVictim->index == index ){ // killed self
+	if (pVictim->index == index) { // killed self
 		pVictim->weapons[0].deaths++;
 		pVictim->life.deaths++;
-		pVictim->weaponsRnd[0].deaths++;       // DEC-Weapon (round) stats
+		pVictim->weaponsRnd[0].deaths++; // DEC-Weapon (round) stats
 		return;
 	}
 
@@ -169,9 +183,8 @@ void CPlayer::saveKill(CPlayer* pVictim, int wweapon, int hhs, int ttk)
 	pVictim->weapons[0].deaths++;
 	pVictim->life.deaths++;
 	
-	
 	pVictim->weaponsRnd[pVictim->current].deaths++; // DEC-Weapon (round) stats
-	pVictim->weaponsRnd[0].deaths++;                   // DEC-Weapon (round) stats
+	pVictim->weaponsRnd[0].deaths++;                // DEC-Weapon (round) stats
 	
 	int vi = pVictim->index;
 	victims[vi].name = weaponData[wweapon].name;
@@ -182,12 +195,12 @@ void CPlayer::saveKill(CPlayer* pVictim, int wweapon, int hhs, int ttk)
 	victims[0].hs += hhs;
 	victims[0].tks += ttk;
 	
-	weaponsRnd[wweapon].kills++;                // DEC-Weapon (round) stats
-	weaponsRnd[wweapon].hs += hhs;         // DEC-Weapon (round) stats
+	weaponsRnd[wweapon].kills++;        // DEC-Weapon (round) stats
+	weaponsRnd[wweapon].hs += hhs;      // DEC-Weapon (round) stats
 	weaponsRnd[wweapon].tks += ttk;     // DEC-Weapon (round) stats
-	weaponsRnd[0].kills++;                     // DEC-Weapon (round) stats
-	weaponsRnd[0].hs += hhs;              // DEC-Weapon (round) stats
-	weaponsRnd[0].tks += ttk;          // DEC-Weapon (round) stats
+	weaponsRnd[0].kills++;              // DEC-Weapon (round) stats
+	weaponsRnd[0].hs += hhs;            // DEC-Weapon (round) stats
+	weaponsRnd[0].tks += ttk;           // DEC-Weapon (round) stats
 	
 	weapons[wweapon].kills++;
 	weapons[wweapon].hs += hhs;
@@ -202,13 +215,10 @@ void CPlayer::saveKill(CPlayer* pVictim, int wweapon, int hhs, int ttk)
 
 void CPlayer::saveHit(CPlayer* pVictim, int wweapon, int ddamage, int bbody)
 {
-	if ( !isModuleActive() )
+	if (!isModuleActive() || ignoreBots(pEdict, pVictim->pEdict))
 		return;
 
-	if ( ignoreBots(pEdict,pVictim->pEdict) )
-		return;
-
-	if ( index == pVictim->index ) return;
+	if (index == pVictim->index) return;
 
 	pVictim->attackers[index].hits++;
 	pVictim->attackers[index].damage += ddamage;
@@ -216,7 +226,6 @@ void CPlayer::saveHit(CPlayer* pVictim, int wweapon, int ddamage, int bbody)
 	pVictim->attackers[0].hits++;
 	pVictim->attackers[0].damage += ddamage;
 	pVictim->attackers[0].bodyHits[bbody]++;
-
 
 	int vi = pVictim->index;
 	victims[vi].hits++;
@@ -227,11 +236,11 @@ void CPlayer::saveHit(CPlayer* pVictim, int wweapon, int ddamage, int bbody)
 	victims[0].bodyHits[bbody]++;
 
 	weaponsRnd[wweapon].hits++;              // DEC-Weapon (round) stats
-	weaponsRnd[wweapon].damage += ddamage;    // DEC-Weapon (round) stats
+	weaponsRnd[wweapon].damage += ddamage;   // DEC-Weapon (round) stats
 	weaponsRnd[wweapon].bodyHits[bbody]++;   // DEC-Weapon (round) stats
-	weaponsRnd[0].hits++;                   // DEC-Weapon (round) stats
+	weaponsRnd[0].hits++;                    // DEC-Weapon (round) stats
 	weaponsRnd[0].damage += ddamage;         // DEC-Weapon (round) stats
-	weaponsRnd[0].bodyHits[bbody]++;        // DEC-Weapon (round) stats
+	weaponsRnd[0].bodyHits[bbody]++;         // DEC-Weapon (round) stats
 
 	weapons[wweapon].hits++;
 	weapons[wweapon].damage += ddamage;
@@ -245,13 +254,9 @@ void CPlayer::saveHit(CPlayer* pVictim, int wweapon, int ddamage, int bbody)
 	life.bodyHits[bbody]++;
 }
 
-
 void CPlayer::saveShot(int weapon)
 {
-	if ( !isModuleActive() )
-		return;
-
-	if ( ignoreBots(pEdict) )
+	if (!isModuleActive() || ignoreBots(pEdict))
 		return;
 
 	victims[0].shots++;
@@ -265,7 +270,7 @@ void CPlayer::saveShot(int weapon)
 
 void CPlayer::saveBPlant()
 {
-	if ( !isModuleActive() )
+	if (!isModuleActive())
 		return;
 
 	life.bPlants++;
@@ -273,7 +278,7 @@ void CPlayer::saveBPlant()
 
 void CPlayer::saveBExplode()
 {
-	if ( !isModuleActive() )
+	if (!isModuleActive())
 		return;
 
 	life.bExplosions++;
@@ -281,7 +286,7 @@ void CPlayer::saveBExplode()
 
 void CPlayer::saveBDefusing()
 {
-	if ( !isModuleActive() )
+	if (!isModuleActive())
 		return;
 
 	life.bDefusions++;
@@ -289,7 +294,7 @@ void CPlayer::saveBDefusing()
 
 void CPlayer::saveBDefused()
 {
-	if ( !isModuleActive() )
+	if (!isModuleActive())
 		return;
 
 	life.bDefused++;
@@ -300,6 +305,7 @@ void CPlayer::saveBDefused()
 bool ignoreBots(edict_t *pEnt, edict_t *pOther)
 {
 	rankBots = (int)csstats_rankbots->value ? true : false;
+
 	if (!rankBots && (pEnt->v.flags & FL_FAKECLIENT || (pOther && pOther->v.flags & FL_FAKECLIENT)))
 	{
 		return true;
@@ -308,9 +314,10 @@ bool ignoreBots(edict_t *pEnt, edict_t *pOther)
 	return false;
 }
 
-bool isModuleActive(){
-	if ( !(int)csstats_pause->value )
+bool isModuleActive()
+{
+	if (!(int)csstats_pause->value) {
 		return true;
+	}
 	return false;
 }
-

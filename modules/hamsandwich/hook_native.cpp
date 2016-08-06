@@ -520,27 +520,28 @@ hook_t hooklist[] =
 
 void FailPlugin(AMX *amx, int id, int err, const char *reason)
 {
-	int fwd=MF_RegisterSPForwardByName(amx, "__fatal_ham_error", FP_CELL, FP_CELL, FP_STRING, FP_DONE);
+	int fwd = MF_RegisterSPForwardByName(amx, "__fatal_ham_error", FP_CELL, FP_CELL, FP_STRING, FP_DONE);
 
 	MF_ExecuteForward(fwd, id, err, reason);
 
 	MF_UnregisterSPForward(fwd);
 }
+
 static cell AMX_NATIVE_CALL RegisterHam(AMX *amx, cell *params)
 {
 	// Make sure the function we're requesting is within bounds
-	int func=params[1];
-	int post=params[4];
+	int func = params[1];
+	int post = params[4];
 
 	CHECK_FUNCTION(func);
 
-	char *function=MF_GetAmxString(amx, params[3], 0, NULL);
-	char *classname=MF_GetAmxString(amx, params[2], 1, NULL);
+	char *function = MF_GetAmxString(amx, params[3], 0, NULL);
+	char *classname = MF_GetAmxString(amx, params[2], 1, NULL);
 	
 	// Check the entity
 
 	// create an entity, assign it the gamedll's class, hook it and destroy it
-	edict_t *Entity=CREATE_ENTITY();
+	edict_t *Entity = CREATE_ENTITY();
 
 	CALL_GAME_ENTITY(PLID,classname,&Entity->v);
 
@@ -552,6 +553,7 @@ static cell AMX_NATIVE_CALL RegisterHam(AMX *amx, cell *params)
 
 		return 0;
 	}
+
 	void **vtable=GetVTable(Entity->pvPrivateData, Offsets.GetBase());
 
 	REMOVE_ENTITY(Entity);
@@ -565,7 +567,7 @@ static cell AMX_NATIVE_CALL RegisterHam(AMX *amx, cell *params)
 
 	// Verify that the function is valid
 	// Don't fail the plugin if this fails, just emit a normal error
-	int fwd=hooklist[func].makefunc(amx, function);
+	int fwd = hooklist[func].makefunc(amx, function);
 
 	if (fwd == -1)
 	{
@@ -586,14 +588,14 @@ static cell AMX_NATIVE_CALL RegisterHam(AMX *amx, cell *params)
 	pfwd->AddRef();
 
 	// We've passed all tests...
-	if (strcmp(classname, "player") == 0 && enableSpecialBot)
+	if (enableSpecialBot && strcmp(classname, "player") == 0)
 	{
 		SpecialbotHandler.RegisterHamSpecialBot(amx, func, function, post, pfwd);
 	}
 
-	int **ivtable=(int **)vtable;
+	int **ivtable = (int **)vtable;
 
-	void *vfunction=(void *)ivtable[hooklist[func].vtid];
+	void *vfunction = (void *)ivtable[hooklist[func].vtid];
 
 	// Check the list of this function's hooks, see if the function we have is a hook
 
@@ -629,17 +631,18 @@ static cell AMX_NATIVE_CALL RegisterHam(AMX *amx, cell *params)
 
 	return reinterpret_cast<cell>(pfwd);
 }
+
 // RegisterHamFromEntity(Ham:function, EntityId, const Callback[], Post=0);
 static cell AMX_NATIVE_CALL RegisterHamFromEntity(AMX *amx, cell *params)
 {
 	// Make sure the function we're requesting is within bounds
-	int func=params[1];
-	int post=params[4];
+	int func = params[1];
+	int post = params[4];
 
 	CHECK_FUNCTION(func);
 
-	char *function=MF_GetAmxString(amx, params[3], 0, NULL);
-	int entid=params[2];
+	char *function = MF_GetAmxString(amx, params[3], 0, NULL);
+	int entid = params[2];
 	char classname[64];
 
 	// Check the entity
@@ -648,12 +651,12 @@ static cell AMX_NATIVE_CALL RegisterHamFromEntity(AMX *amx, cell *params)
 
 	if (!Entity || Entity->pvPrivateData == NULL)
 	{
-
 		MF_LogError(amx, AMX_ERR_NATIVE,"Failed to retrieve classtype for entity id \"%d\", hook for \"%s\" not active.",entid,function);
 
 		return 0;
 	}
-	void **vtable=GetVTable(Entity->pvPrivateData, Offsets.GetBase());
+
+	void **vtable = GetVTable(Entity->pvPrivateData, Offsets.GetBase());
 
 	if (vtable == NULL)
 	{
@@ -664,7 +667,7 @@ static cell AMX_NATIVE_CALL RegisterHamFromEntity(AMX *amx, cell *params)
 
 	// Verify that the function is valid
 	// Don't fail the plugin if this fails, just emit a normal error
-	int fwd=hooklist[func].makefunc(amx, function);
+	int fwd = hooklist[func].makefunc(amx, function);
 
 	if (fwd == -1)
 	{
@@ -678,9 +681,9 @@ static cell AMX_NATIVE_CALL RegisterHamFromEntity(AMX *amx, cell *params)
 	Forward *pfwd = new Forward(fwd);
 	pfwd->AddRef();
 
-	int **ivtable=(int **)vtable;
+	int **ivtable = (int **)vtable;
 
-	void *vfunction=(void *)ivtable[hooklist[func].vtid];
+	void *vfunction = (void *)ivtable[hooklist[func].vtid];
 
 	// Check the list of this function's hooks, see if the function we have is a hook
 
@@ -722,29 +725,32 @@ static cell AMX_NATIVE_CALL RegisterHamFromEntity(AMX *amx, cell *params)
 
 	return reinterpret_cast<cell>(pfwd);
 }
+
 static cell AMX_NATIVE_CALL ExecuteHam(AMX *amx, cell *params)
 {
-	int func=params[1];
+	int func = params[1];
 
 	CHECK_FUNCTION(func);
 
-	gDoForwards=false;
+	gDoForwards = false;
+
 	return hooklist[func].call(amx, params);
 }
+
 static cell AMX_NATIVE_CALL ExecuteHamB(AMX *amx, cell *params)
 {
 	int func=params[1];
 
 	CHECK_FUNCTION(func);
 
-	gDoForwards=true;
+	gDoForwards = true;
+
 	return hooklist[func].call(amx, params);
 }
 
-
 static cell AMX_NATIVE_CALL IsHamValid(AMX *amx, cell *params)
 {
-	int func=params[1];
+	int func = params[1];
 
 	if (func >= 0 && 
 		func < HAM_LAST_ENTRY_DONT_USE_ME_LOL &&
@@ -752,12 +758,13 @@ static cell AMX_NATIVE_CALL IsHamValid(AMX *amx, cell *params)
 	{
 		return 1;
 	}
+
 	return 0;
 }
 
 static cell AMX_NATIVE_CALL DisableHamForward(AMX *amx, cell *params)
 {
-	Forward *fwd=reinterpret_cast<Forward *>(params[1]);
+	Forward *fwd = reinterpret_cast<Forward *>(params[1]);
 
 	if (fwd == 0)
 	{
@@ -765,12 +772,13 @@ static cell AMX_NATIVE_CALL DisableHamForward(AMX *amx, cell *params)
 		return -1;
 	}
 
-	fwd->state=FSTATE_STOP;
+	fwd->state = FSTATE_STOP;
+
 	return 0;
 }
 static cell AMX_NATIVE_CALL EnableHamForward(AMX *amx, cell *params)
 {
-	Forward *fwd=reinterpret_cast<Forward *>(params[1]);
+	Forward *fwd = reinterpret_cast<Forward *>(params[1]);
 
 	if (fwd == 0)
 	{
@@ -778,7 +786,8 @@ static cell AMX_NATIVE_CALL EnableHamForward(AMX *amx, cell *params)
 		return -1;
 	}
 
-	fwd->state=FSTATE_OK;
+	fwd->state = FSTATE_OK;
+
 	return 0;
 }
 AMX_NATIVE_INFO RegisterNatives[] =

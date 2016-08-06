@@ -23,11 +23,11 @@ extern ke::Vector<Hook *> hooks[HAM_LAST_ENTRY_DONT_USE_ME_LOL];
 
 void HamCommand(void)
 {
-	const char *cmd=CMD_ARGV(1);
+	const char *cmd = CMD_ARGV(1);
 
-	if (strcmp(cmd, "list")==0)
+	if (strcmp(cmd, "list") == 0)
 	{
-		unsigned int Total=0;
+		unsigned int Total = 0;
 
 		MF_PrintSrvConsole("%-24s | %10s\n","Name","Set","Value");
 		MF_PrintSrvConsole("------------------------------------\n");
@@ -38,16 +38,16 @@ void HamCommand(void)
 		{
 			Total++;
 		}
+
 		if (Offsets.IsBaseSet())
 		{
 			Total++;
 		}
 
-		int count=2;
-		for (int i=0; i<HAM_LAST_ENTRY_DONT_USE_ME_LOL; i++)
+		int count = 2;
+
+		for (int i = 0; i < HAM_LAST_ENTRY_DONT_USE_ME_LOL; i++)
 		{
-
-
 			if (hooklist[i].isset != 0)
 			{
 				MF_PrintSrvConsole("%-24s | %10d\n", hooklist[i].name, hooklist[i].vtid);
@@ -59,11 +59,9 @@ void HamCommand(void)
 			{
 				count = 0;
 				MF_PrintSrvConsole("------------------------------------\n");
-
 			}
-
-
 		}
+
 		MF_PrintSrvConsole("\n%u keys, %u set.\n\n", HAM_LAST_ENTRY_DONT_USE_ME_LOL, Total);
 		return;
 	}
@@ -71,10 +69,12 @@ void HamCommand(void)
 	{
 		MF_PrintSrvConsole("%-24s | %-27s | %10s | %10s\n", "Key", "Classname", "Pre", "Post");
 		MF_PrintSrvConsole("--------------------------------------------------------------------------------\n");
-		unsigned int ForwardCount=0;
-		unsigned int HookCount=0;
+		
+		unsigned int ForwardCount = 0;
+		unsigned int HookCount = 0;
 		int count = 0;
-		for (int i=0; i<HAM_LAST_ENTRY_DONT_USE_ME_LOL; i++)
+		
+		for (int i = 0; i < HAM_LAST_ENTRY_DONT_USE_ME_LOL; i++)
 		{
 			for (size_t j = 0; j < hooks[i].length(); ++j)
 			{
@@ -82,12 +82,14 @@ void HamCommand(void)
 				ForwardCount += hooks[i].at(j)->pre.length() + hooks[i].at(j)->post.length();
 
 				MF_PrintSrvConsole("%-24s | %-27s | %10d | %10d\n", hooklist[i].name, hooks[i].at(j)->ent, hooks[i].at(j)->pre.length(), hooks[i].at(j)->post.length());
+				
 				if (count >= 5)
 				{
 					MF_PrintSrvConsole("--------------------------------------------------------------------------------\n");
 				}
 			}
 		}
+
 		MF_PrintSrvConsole("\n%u hooks, %u forwards.\n\n", HookCount, ForwardCount);
 		return;
 	}

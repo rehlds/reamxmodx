@@ -15,9 +15,7 @@
 #include "fun.h"
 #include <HLTypeConversion.h>
 
-#include "mod_rehlds_api.h"
-
-bool m_api_rehlds = false;
+bool g_bReHLDS = false;
 
 /*
 	JGHG says:
@@ -64,13 +62,15 @@ void FUNUTIL_ResetPlayer(int index)
 						(1<<HITGROUP_LEFTLEG) | 
 						(1<<HITGROUP_RIGHTLEG));
 	}
+
 	// Reset silent slippers
 	g_silent[index] = false;
 
 	if (SiletActive == true)
 	{
 		bool pfnActive = false;
-		for (int i = 1; i <= gpGlobals->maxClients; i++) {
+		for (int i = 1; i <= gpGlobals->maxClients; i++)
+		{
 			if (g_silent[i] == false)
 			{
 				continue;
@@ -130,11 +130,15 @@ static cell AMX_NATIVE_CALL set_user_godmode(AMX *amx, cell *params) // set_user
 	// Get player pointer.
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
+	if (!pPlayer)
+	{
+		return 0;
+	}
+
 	if (params[2] == 1) {
 		// Enable godmode
 		pPlayer->v.takedamage = 0.0;	// 0.0, the player doesn't seem to be able to get hurt.
-	}
-	else {
+	} else {
 		// Disable godmode
 		pPlayer->v.takedamage = 2.0;	// 2.0 seems to be standard value?
 	}
@@ -153,9 +157,15 @@ static cell AMX_NATIVE_CALL get_user_godmode(AMX *amx, cell *params) // get_user
 	// Get player pointer.
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
+	if (!pPlayer)
+	{
+		return 0;
+	}
+
 	int godmode = 0;
 
-	if (pPlayer->v.takedamage == 0.0) {
+	if (pPlayer->v.takedamage == 0.0)
+	{
 		// God mode is enabled
 		godmode = 1;
 	}
@@ -177,6 +187,11 @@ static cell AMX_NATIVE_CALL give_item(AMX *amx, cell *params) // native give_ite
 	// Get player pointer.
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
+	if (!pPlayer)
+	{
+		return 0;
+	}
+
 	// Create item entity pointer
 	edict_t	*pItemEntity;
 
@@ -197,6 +212,7 @@ static cell AMX_NATIVE_CALL give_item(AMX *amx, cell *params) // native give_ite
 
 	//string_t item = MAKE_STRING(szItem);
 	string_t item = ALLOC_STRING(szItem); // Using MAKE_STRING makes "item" contents get lost when we leave this scope! ALLOC_STRING seems to allocate properly...
+	
 	// Create the entity, returns to pointer
 	pItemEntity = CREATE_NAMED_ENTITY(item);
 
@@ -243,6 +259,11 @@ static cell AMX_NATIVE_CALL spawn(AMX *amx, cell *params) // spawn(id) = 1 param
 
 	edict_t *pEnt = TypeConversion.id_to_edict(params[1]);
 
+	if (!pEnt)
+	{
+		return 0;
+	}
+
 	MDLL_Spawn(pEnt);
 
 	return 1;
@@ -260,11 +281,17 @@ static cell AMX_NATIVE_CALL set_user_health(AMX *amx, cell *params) // set_user_
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
+	if (!pPlayer)
+	{
+		return 0;
+	}
+
 	// Kill if health too low.
-	if (params[2] > 0)
+	if (params[2] > 0) {
 		pPlayer->v.health = float(params[2]);
-	else
+	} else {
 		MDLL_ClientKill(pPlayer);
+	}
 
 	return 1;
 }
@@ -280,6 +307,11 @@ static cell AMX_NATIVE_CALL set_user_frags(AMX *amx, cell *params) // set_user_f
 
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
+
+	if (!pPlayer)
+	{
+		return 0;
+	}
 
 	pPlayer->v.frags = params[2];
 
@@ -298,6 +330,11 @@ static cell AMX_NATIVE_CALL set_user_armor(AMX *amx, cell *params) // set_user_a
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
+	if (!pPlayer)
+	{
+		return 0;
+	}
+
 	pPlayer->v.armorvalue = params[2];
 
 	return 1;
@@ -314,6 +351,11 @@ static cell AMX_NATIVE_CALL set_user_origin(AMX *amx, cell *params) // set_user_
 
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
+
+	if (!pPlayer)
+	{
+		return 0;
+	}
 
 	cell *newVectorCell = MF_GetAmxAddr(amx, params[2]);
 
@@ -340,6 +382,11 @@ static cell AMX_NATIVE_CALL set_user_rendering(AMX *amx, cell *params) // set_us
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
+	if (!pPlayer)
+	{
+		return 0;
+	}
+
 	pPlayer->v.renderfx = params[2];
 	Vector newVector = Vector(float(params[3]), float(params[4]), float(params[5]));
 	pPlayer->v.rendercolor = newVector;
@@ -364,6 +411,11 @@ static cell AMX_NATIVE_CALL set_user_maxspeed(AMX *amx, cell *params) // set_use
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
+	if (!pPlayer)
+	{
+		return 0;
+	}
+
 	SETCLIENTMAXSPEED(pPlayer, fNewSpeed);
 	pPlayer->v.maxspeed = fNewSpeed;
 
@@ -381,6 +433,11 @@ static cell AMX_NATIVE_CALL get_user_maxspeed(AMX *amx, cell *params) // Float:g
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
+	if (!pPlayer)
+	{
+		return 0;
+	}
+
 	return amx_ftoc(pPlayer->v.maxspeed);
 }
 
@@ -394,6 +451,11 @@ static cell AMX_NATIVE_CALL set_user_gravity(AMX *amx, cell *params) // set_user
 
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
+
+	if (!pPlayer)
+	{
+		return 0;
+	}
 
 	pPlayer->v.gravity = amx_ctof(params[2]);
 
@@ -410,6 +472,11 @@ static cell AMX_NATIVE_CALL get_user_gravity(AMX *amx, cell *params) // Float:ge
 
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
+
+	if (!pPlayer)
+	{
+		return 0;
+	}
 
 	return amx_ftoc(pPlayer->v.gravity); 
 }
@@ -428,9 +495,12 @@ static cell AMX_NATIVE_CALL set_user_hitzones(AMX *amx, cell *params) // set_use
 
 	//set_user_hitzones(id, 0, 0) // Makes ID not able to shoot EVERYONE - id can shoot on 0 (all) at 0
 	//set_user_hitzones(0, id, 0) // Makes EVERYONE not able to shoot ID - 0 (all) can shoot id at 0
-	if (shooter == 0 && gettingHit == 0) {
-		for (int i = 1; i <= gpGlobals->maxClients; i++) {
-			for (int j = 1; j <= gpGlobals->maxClients; j++) {
+	if (shooter == 0 && gettingHit == 0)
+	{
+		for (int i = 1; i <= gpGlobals->maxClients; i++)
+		{
+			for (int j = 1; j <= gpGlobals->maxClients; j++)
+			{
 				g_bodyhits[i][j] = hitzones;
 			}
 			//g_zones_toHit[i] = hitzones;
@@ -464,8 +534,10 @@ static cell AMX_NATIVE_CALL get_user_hitzones(AMX *amx, cell *params) // get_use
 {
 	int shooter = params[1];
 	CHECK_PLAYER(shooter);
+
 	int target = params[2];
 	CHECK_PLAYER(target);
+
 	return g_bodyhits[shooter][target];
 }
 
@@ -481,10 +553,16 @@ static cell AMX_NATIVE_CALL set_user_noclip(AMX *amx, cell *params) // set_user_
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (params[2] == 1)
+	if (!pPlayer)
+	{
+		return 0;
+	}
+
+	if (params[2] == 1) {
 		pPlayer->v.movetype = MOVETYPE_NOCLIP;
-	else
+	} else {
 		pPlayer->v.movetype = MOVETYPE_WALK;
+	}
 
 	return 1;
 }
@@ -499,6 +577,11 @@ static cell AMX_NATIVE_CALL get_user_noclip(AMX *amx, cell *params) // get_user_
 
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
+
+	if (!pPlayer)
+	{
+		return 0;
+	}
 
 	return pPlayer->v.movetype == MOVETYPE_NOCLIP;
 }
@@ -516,6 +599,11 @@ static cell AMX_NATIVE_CALL set_user_footsteps(AMX *amx, cell *params) // set_us
 
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
+
+	if (!pPlayer)
+	{
+		return 0;
+	}
 
 	if (params[2]) {
 		pPlayer->v.flTimeStepSound = 999;
@@ -545,6 +633,11 @@ static cell AMX_NATIVE_CALL strip_user_weapons(AMX *amx, cell *params) // index
 	CHECK_PLAYER(params[1]);
 
 	edict_t* pPlayer = TypeConversion.id_to_edict(params[1]);
+
+	if (!pPlayer)
+	{
+		return 0;
+	}
 
 	string_t item = MAKE_STRING("player_weaponstrip");
 	edict_t *pent = CREATE_NAMED_ENTITY(item);
@@ -661,9 +754,9 @@ void TraceLine(const float *v1, const float *v2, int fNoMonsters, edict_t *shoot
 
 void OnAmxxAttach()
 {
-	m_api_rehlds = RehldsApi_Init();
+	g_bReHLDS = RehldsApi_Init();
 
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		MF_Log("Error load ReHLDS");
 		return;
@@ -676,7 +769,7 @@ void OnAmxxAttach()
 // initialized to its proper value until some time after OnAmxxAttach(). In OnAmxxAttach() it always showed 0. /JGHG
 void OnPluginsLoaded()
 {
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		return;
 	}

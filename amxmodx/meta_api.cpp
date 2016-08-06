@@ -152,6 +152,8 @@ int FF_ClientConnectEx = -1;
 IFileSystem* g_FileSystem;
 HLTypeConversion TypeConversion;
 
+bool g_bReHLDS = false;
+
 bool ColoredMenus(const char *ModName)
 {
 	const char * pModNames[] = { "cstrike", "czero" };
@@ -1342,12 +1344,13 @@ int	C_Cmd_Argc(void)
 // Only	here we	may	find out who is	an owner.
 void C_SetModel(edict_t *e, const char *m)
 {
-	if (m[9] == 'h')
+	if (m[9] != 'h' || m[8] != '_' || m[7] != 'w')
 	{
-		if (e->v.owner && m[7] == 'w' && m[8] == '_')
-		{
-			g_grenades.put(e, 1.75, 4, GET_PLAYER_POINTER(e->v.owner));
-		}
+		RETURN_META(MRES_IGNORED);
+	}
+	if (e->v.owner)
+	{
+		g_grenades.put(e, 1.75, 4, GET_PLAYER_POINTER(e->v.owner));
 	}
 	RETURN_META(MRES_IGNORED);
 }
@@ -1491,7 +1494,6 @@ C_DLLEXPORT	int	Meta_Query(char	*ifvers, plugin_info_t **pPlugInfo,	mutil_funcs_
 	return (TRUE);
 }
 
-bool m_api_rehlds = false;
 static META_FUNCTIONS gMetaFunctionTable;
 
 C_DLLEXPORT	int	Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, meta_globals_t *pMGlobals, gamedll_funcs_t *pGamedllFuncs)
@@ -1502,9 +1504,9 @@ C_DLLEXPORT	int	Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 		return (FALSE);
 	}
 
-	m_api_rehlds = RehldsApi_Init();
+	g_bReHLDS = RehldsApi_Init();
 
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		LOG_ERROR(PLID, "Can't load	ReHLDS");
 		return (FALSE);
@@ -1587,8 +1589,6 @@ C_DLLEXPORT	int	Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 
 	g_CvarManager.CreateCvarHook();
 
-	void *address = nullptr;
-
 	g_RehldsHookchains->SV_DropClient()->registerHook(&SV_DropClient_Hook);
 
 	GET_IFACE<IFileSystem>("filesystem_stdio", g_FileSystem, FILESYSTEM_INTERFACE_VERSION);
@@ -1636,7 +1636,10 @@ C_DLLEXPORT	int	Meta_Detach(PLUG_LOADTIME now, PL_UNLOAD_REASON	reason)
 	ClearLibraries(LibSource_Plugin);
 	ClearLibraries(LibSource_Module);
 
-	g_RehldsHookchains->SV_DropClient()->unregisterHook(&SV_DropClient_Hook);
+	if (g_bReHLDS)
+	{
+		g_RehldsHookchains->SV_DropClient()->unregisterHook(&SV_DropClient_Hook);
+	}
 
 	return (TRUE);
 }

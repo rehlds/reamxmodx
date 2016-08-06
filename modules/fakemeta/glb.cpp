@@ -64,6 +64,7 @@ static cell AMX_NATIVE_CALL amx_glb(AMX *amx, cell *params)
 	}
 
 	int offset = g_glob_offset_table[iSwitch];
+
 	if (offset == -1)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "Undefined global index: %d", iSwitch);

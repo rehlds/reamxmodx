@@ -129,12 +129,6 @@
     <ClCompile Include="..\messages.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sdk\interface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\sdk\mod_rehlds_api.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\meta_api.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -199,6 +193,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\sdk\amxxmodule.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sdk\mod_rehlds_api.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sdk\interface.cpp">
       <Filter>SDK</Filter>
     </ClCompile>
     <ClCompile Include="..\memtools\CDetour\detours.cpp">
@@ -414,6 +414,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sdk\amxxmodule.h">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sdk\mod_rehlds_api.h">
       <Filter>SDK</Filter>
     </ClInclude>
     <ClInclude Include="..\sdk\moduleconfig.h">

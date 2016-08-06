@@ -108,8 +108,8 @@
     <ClCompile Include="..\forwards.cpp" />
     <ClCompile Include="..\globals.cpp" />
     <ClCompile Include="..\sdk\amxxmodule.cpp" />
-    <ClCompile Include="..\sdk\interface.cpp" />
     <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
+    <ClCompile Include="..\sdk\interface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\public\HLTypeConversion.h" />
@@ -122,6 +122,7 @@
     <ClInclude Include="..\gpglobals.h" />
     <ClInclude Include="..\moduleconfig.h" />
     <ClInclude Include="..\sdk\amxxmodule.h" />
+    <ClInclude Include="..\sdk\mod_rehlds_api.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\plugins\include\engine.inc" />

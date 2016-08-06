@@ -147,8 +147,8 @@
     <ClCompile Include="..\rank.cpp" />
     <ClCompile Include="..\usermsg.cpp" />
     <ClCompile Include="..\sdk\amxxmodule.cpp" />
-    <ClCompile Include="..\sdk\interface.cpp" />
     <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
+    <ClCompile Include="..\sdk\interface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CMisc.h" />
@@ -156,6 +156,7 @@
     <ClInclude Include="..\rank.h" />
     <ClInclude Include="..\moduleconfig.h" />
     <ClInclude Include="..\sdk\amxxmodule.h" />
+    <ClInclude Include="..\sdk\mod_rehlds_api.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\plugins\include\csstats.inc" />

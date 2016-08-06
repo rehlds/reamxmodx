@@ -18,7 +18,6 @@
 extern ke::Vector<Hook*> hooks[HAM_LAST_ENTRY_DONT_USE_ME_LOL];
 extern hook_t hooklist[];
 
-
 CRegisterHamParams::CRegisterHamParams(AMX *arg_amx, int &arg_func, const char *arg_function, int &arg_post, Forward *arg_pfwd)
 {
 	amx = arg_amx;
@@ -34,7 +33,6 @@ CRegisterHamParams::~CRegisterHamParams()
 	delete[] function;
 }
 
-
 CHamSpecialBotHandler::CHamSpecialBotHandler()
 {
 	m_specialbot_vtable = NULL;
@@ -46,6 +44,7 @@ void CHamSpecialBotHandler::CheckClientKeyValue(int &clientIndex, char *infobuff
 		return;
 
 	edict_t *pEdict = MF_GetPlayerEdict(clientIndex);
+
 	if((pEdict->v.flags & FL_FAKECLIENT) != FL_FAKECLIENT)
 	{
 		const char *auth = GETPLAYERAUTHID(pEdict); 	 
@@ -87,9 +86,9 @@ void CHamSpecialBotHandler::RegisterChecked(AMX *amx, int &func, const char *fun
 	pfwd->AddRef();
 
 	void **vtable = m_specialbot_vtable;
-	int **ivtable=(int **)vtable;
+	int **ivtable = (int **)vtable;
 
-	void *vfunction=(void *)ivtable[hooklist[func].vtid];
+	void *vfunction = (void *)ivtable[hooklist[func].vtid];
 
 	for (size_t i = 0; i < hooks[func].length(); ++i)
 	{

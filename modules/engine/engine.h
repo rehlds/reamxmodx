@@ -28,6 +28,8 @@
 #include <CDetour/detours.h>
 #include <HLTypeConversion.h>
 
+#include "mod_rehlds_api.h"
+
 extern DLL_FUNCTIONS *g_pFunctionTable;
 extern DLL_FUNCTIONS *g_pFunctionTable_Post;
 extern enginefuncs_t *g_pengfuncsTable;

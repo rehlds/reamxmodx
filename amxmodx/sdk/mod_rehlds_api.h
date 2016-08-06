@@ -13,6 +13,6 @@ extern IRehldsServerStatic* g_RehldsSvs;
 
 extern bool RehldsApi_Init();
 
-extern bool m_api_rehlds;
+extern bool g_bReHLDS;
 
 #endif //_AMX_REHLDS_INCLUDE_H_

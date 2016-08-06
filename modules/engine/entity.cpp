@@ -1433,7 +1433,8 @@ static cell AMX_NATIVE_CALL find_ent_by_target(AMX *amx, cell *params)
 	return 0;
 }
 
-static cell AMX_NATIVE_CALL find_ent_by_model(AMX *amx, cell *params) { 
+static cell AMX_NATIVE_CALL find_ent_by_model(AMX *amx, cell *params)
+{
 	int iStart = params[1];
 	int iLength, iLength2;
 	char *szClass = MF_GetAmxString(amx, params[2], 0, &iLength);
@@ -1452,7 +1453,8 @@ static cell AMX_NATIVE_CALL find_ent_by_model(AMX *amx, cell *params) {
 	return 0;
 }
 
-static cell AMX_NATIVE_CALL find_ent_by_tname(AMX *amx, cell *params) {
+static cell AMX_NATIVE_CALL find_ent_by_tname(AMX *amx, cell *params)
+{
 	int iStart = params[1];
 	int iLength;
 	char *szValue = MF_GetAmxString(amx, params[2], 0, &iLength);
@@ -1471,6 +1473,7 @@ static cell AMX_NATIVE_CALL find_ent_by_owner(AMX *amx, cell *params)  // native
 {
 	int iEnt = params[1];
 	int oEnt = params[3];
+
 	CHECK_ENTITY_SIMPLE(oEnt);
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);

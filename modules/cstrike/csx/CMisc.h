@@ -45,10 +45,10 @@ struct CPlayer {
 		int	clip;
 	};
 
-	PlayerWeapon	weapons[MAX_WEAPONS+MAX_CWEAPONS];
+	PlayerWeapon	weapons[MAX_WEAPONS + MAX_CWEAPONS];
 	PlayerWeapon	attackers[33];
 	PlayerWeapon	victims[33];
-	Stats			weaponsRnd[MAX_WEAPONS+MAX_CWEAPONS]; // DEC-Weapon (Round) stats
+	Stats			weaponsRnd[MAX_WEAPONS + MAX_CWEAPONS]; // DEC-Weapon (Round) stats
 	Stats			life;
 
 	int teamId;
@@ -67,12 +67,14 @@ struct CPlayer {
 	void saveBDefused();
 
 	void restartStats(bool all = true);
-	inline bool IsBot(){
+
+	inline bool IsBot() {
 		const char* auth= (*g_engfuncs.pfnGetPlayerAuthId)(pEdict);
 		return ( (auth && !strcmp( auth , "BOT" )) || // AuthID of "BOT"
 				 (pEdict->v.flags & FL_FAKECLIENT));  // FL_FAKECLIENT flag set
 	}
-	inline bool IsAlive(){
+
+	inline bool IsAlive() {
 		return (pEdict->v.deadflag == DEAD_NO && pEdict->v.health > 0);
 	}
 };
@@ -96,8 +98,8 @@ class Grenades
 public:
   Grenades() { head = 0; }
   ~Grenades() { clear(); }
-  void put( edict_t* grenade, float time, int type, CPlayer* player  );
-  bool find( edict_t* enemy, CPlayer** p, int* type );
+  void put(edict_t* grenade, float time, int type, CPlayer* player);
+  bool find(edict_t* enemy, CPlayer** p, int* type);
   void clear();
 };
 

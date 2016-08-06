@@ -65,14 +65,14 @@ int lex(char*& buffer)
 
 	size_t len;
 
-	for (int i=0; i<LEX_END; i++)
+	for (int i = 0; i < LEX_END; i++)
 	{
-		if (tokens[i]!=NULL && *(tokens[i])!='\0')
+		if (tokens[i] != NULL && *(tokens[i]) != '\0')
 		{
-			len=strlen(tokens[i]);
-			if (strncmp(buffer,tokens[i],len)==0)
+			len = strlen(tokens[i]);
+			if (strncmp(buffer,tokens[i],len) == 0)
 			{
-				buffer+=len+1;
+				buffer += len + 1;
 				return i;
 			}
 		}
@@ -90,50 +90,51 @@ char CurrentModName[64];
 
 static void read_mirror(char *input)
 {
-	char *data=input;
+	char *data = input;
 	char *data2;
 
 	char source[64];
 	char dest[64];
 
 	char old;
-	while ( *data!=' ' &&
-			*data!='\t' &&
-			*data!='\0')
-	{
 
+	while ( *data != ' ' &&
+			*data != '\t' &&
+			*data != '\0')
+	{
 		data++;
 	}
 
-	old=*data;
-	*data='\0';
+	old = *data;
+	*data = '\0';
 
 	// mark down the source
 	ke::SafeSprintf(source, sizeof(source), "%s", input);
 
-	*data=old;
+	*data = old;
 
-	while ( *data==' ' ||
-			*data=='\t')
+	while (*data==' ' || *data=='\t')
 	{
 		data++;
 	}
-	data2=data;
 
-	while ( *data!=' ' &&
-			*data!='\t' &&
-			*data!='\0')
+	data2 = data;
+
+	while ( *data != ' ' &&
+			*data != '\t' &&
+			*data != '\0')
 	{
 		data++;
 	}
-	old=*data;
-	*data='\0';
+
+	old = *data;
+	*data = '\0';
 
 	ke::SafeSprintf(dest, sizeof(dest), "%s", data2);
 
-	*data=old;
+	*data = old;
 
-	if (strcmp(dest, CurrentModName)==0)
+	if (strcmp(dest, CurrentModName) == 0)
 	{
 		ke::SafeSprintf(CurrentModName, sizeof(CurrentModName), "%s", source);
 	}
@@ -142,13 +143,13 @@ static void read_mirror(char *input)
 
 static void trim_line(char *input)
 {
-	char *oldinput=input;
-	char *start=input;
+	char *oldinput = input;
+	char *start = input;
 
-	while ( *start==' ' ||
-			*start=='\t' ||
-			*start=='\r' ||
-			*start=='\n')
+	while ( *start == ' ' ||
+			*start == '\t' ||
+			*start == '\r' ||
+			*start == '\n')
 	{
 		start++;
 	}
@@ -157,13 +158,13 @@ static void trim_line(char *input)
 
 	if (start != input)
 	{
-		while ((*input++=*start++)!='\0')
+		while ((*input++=*start++) != '\0')
 			/* do nothing */ ;
 	}
 
-	start=oldinput;
+	start = oldinput;
 
-	start+=strlen(start) - 1;
+	start += strlen(start) - 1;
 
 	while ( start >= oldinput &&
 			( *start == '\0' ||
@@ -174,8 +175,9 @@ static void trim_line(char *input)
 	{
 		start--;
 	}
+
 	start++;
-	*start='\0';
+	*start = '\0';
 
 	// Now find any comments and cut off at the start
 
@@ -183,7 +185,7 @@ static void trim_line(char *input)
 	{
 		if (*start == ';')
 		{
-			*start='\0';
+			*start = '\0';
 			break;
 		}
 
@@ -197,20 +199,21 @@ void skip_to_end_of_section(FILE *fp)
 
 	while (!feof(fp))
 	{
-		buffer[0]='\0';
+		buffer[0] = '\0';
 
 		fgets(buffer, sizeof(buffer)-1, fp);
 
 		trim_line(buffer);
 
-		char *b=&buffer[0];
-		if (lex(b)==LEX_END_SEC)
+		char *b = &buffer[0];
+		if (lex(b) == LEX_END_SEC)
 		{
 			break;
 		}
 	}
 }
-static const char* get_localinfo( const char* name , const char* def = 0 )
+
+static const char* get_localinfo(const char* name , const char* def = 0)
 {
 	const char* b = LOCALINFO( (char*)name );
 	if (((b==0)||(*b==0)) && def )
@@ -219,9 +222,9 @@ static const char* get_localinfo( const char* name , const char* def = 0 )
 }
 int read_start_section(char *data)
 {
-	if (strncasecmp(data, CurrentModName, strlen(CurrentModName))==0)
+	if (strncasecmp(data, CurrentModName, strlen(CurrentModName)) == 0)
 	{
-		data+=strlen(CurrentModName)+1;
+		data += strlen(CurrentModName) + 1;
 		trim_line(data);
 
 #ifdef _WIN32
@@ -237,13 +240,13 @@ int read_start_section(char *data)
 	}
 	return 0;
 }
+
 int read_number(char *input)
 {
 	char *end; /* Temporary pointer, needed for strtoul(). */
 
 	// if begins with 0x or 0X it's to be interpretted as hex
-	if (*input=='0' && 
-		(*(input+1)=='x' || *(input+1)=='X'))
+	if (*input == '0' && (*(input + 1) == 'x' || *(input+1) == 'X'))
 	{
 		return strtoul(input,&end,16);
 	}
@@ -251,21 +254,24 @@ int read_number(char *input)
 	// otherwise it's to be interpretted as base 10
 	return strtoul(input,&end,10);
 }
+
 void process_pev(char *data)
 {
 	trim_line(data);
 	Offsets.SetPev(read_number(data));
 }
+
 void process_base(char *data)
 {
 	trim_line(data);
 	Offsets.SetBase(read_number(data));
 }
+
 void process_key(char *data)
 {
-	size_t size=0;
+	size_t size = 0;
 
-	char *a=data;
+	char *a = data;
 
 	while (*a != ' ' && *a != '\t' && *a != '\0')
 	{
@@ -273,36 +279,37 @@ void process_key(char *data)
 		size++;
 	}
 
-	if (size==0)
+	if (size == 0)
 	{
 		return;
 	}
-	int set=0;
-	for (int i=0; i< HAM_LAST_ENTRY_DONT_USE_ME_LOL; i++)
+
+	int set = 0;
+
+	for (int i = 0; i < HAM_LAST_ENTRY_DONT_USE_ME_LOL; i++)
 	{
-		if (strncmp(data, hooklist[i].name, size)==0)
+		if (strncmp(data, hooklist[i].name, size) == 0)
 		{
-			data+=size+1;
+			data += size + 1;
 
 			trim_line(data);
-			int value=read_number(data);
+			int value = read_number(data);
 
-			hooklist[i].isset=1;
-			hooklist[i].vtid=value;
+			hooklist[i].isset = 1;
+			hooklist[i].vtid = value;
 
-
-			set=1;
+			set = 1;
 			break;
-
 		}
 	}
 
-	if (set==0)
+	if (set == 0)
 	{
 		printf("stray key in process_key: %s\n", data);
 	}
 
 }
+
 int ReadConfig(void)
 {
 	char FileName[512];
@@ -311,8 +318,7 @@ int ReadConfig(void)
 
 	strncat(FileName,"/hamdata.ini",sizeof(FileName)-1);
 
-	FILE *fp=fopen(FileName,"r");
-
+	FILE *fp = fopen(FileName,"r");
 
 	ke::SafeSprintf(CurrentModName, sizeof(CurrentModName), "%s", MF_GetModname());
 
@@ -325,15 +331,15 @@ int ReadConfig(void)
 
 	char data[2048];
 
-	int insec=0;
+	int insec = 0;
 
 	while (!feof(fp))
 	{
-		data[0]='\0';
+		data[0] = '\0';
 
 		fgets(data, sizeof(data)-1, fp);
 
-		char *b=&data[0];
+		char *b = &data[0];
 
 		switch(lex(b))
 		{
@@ -360,7 +366,7 @@ int ReadConfig(void)
 			};
 		case LEX_START_SEC:
 			{
-				insec=read_start_section(b);
+				insec = read_start_section(b);
 
 				if (!insec)
 				{
@@ -370,7 +376,7 @@ int ReadConfig(void)
 			};
 		case LEX_END_SEC:
 			{
-				insec=0;
+				insec = 0;
 				break;
 			};
 		case LEX_UNKNOWN:
@@ -381,7 +387,6 @@ int ReadConfig(void)
 				}
 			};
 		}
-
 
 	}
 

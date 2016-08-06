@@ -16,7 +16,7 @@
 
 #include "mod_rehlds_api.h"
 
-bool m_api_rehlds = false;
+bool g_bReHLDS = false;
 
 funEventCall modMsgsEnd[MAX_REG_MSGS];
 funEventCall modMsgs[MAX_REG_MSGS];
@@ -103,18 +103,19 @@ struct sUserMsg
 
 int RegUserMsg_Post(const char *pszName, int iSize)
 {
-	for (int i = 0; g_user_msg[ i ].name; ++i )
+	for (int i = 0; g_user_msg[i].name; ++i)
 	{
-		if ( !*g_user_msg[i].id && strcmp( g_user_msg[ i ].name , pszName  ) == 0 )
+		if (!*g_user_msg[i].id && strcmp(g_user_msg[i].name , pszName) == 0)
 		{
-			int id = META_RESULT_ORIG_RET( int );
+			int id = META_RESULT_ORIG_RET(int);
 
-			*g_user_msg[ i ].id = id;
+			*g_user_msg[i].id = id;
 		
-			if ( g_user_msg[ i ].endmsg )
-				modMsgsEnd[ id  ] = g_user_msg[ i ].func;
+			if (g_user_msg[i].endmsg)
+				modMsgsEnd[id] = g_user_msg[i].func;
 			else
-				modMsgs[ id  ] = g_user_msg[ i ].func;
+				modMsgs[id] = g_user_msg[i].func;
+
 			//break;
 		}
 	}
@@ -123,9 +124,11 @@ int RegUserMsg_Post(const char *pszName, int iSize)
 
 const char* get_localinfo( const char* name , const char* def = 0 )
 {
-	const char* b = LOCALINFO( (char*)name );
-	if (((b==0)||(*b==0)) && def )
-		SET_LOCALINFO((char*)name,(char*)(b = def) );
+	const char* b = LOCALINFO((char*)name);
+
+	if (((b == 0) || (*b == 0)) && def)
+		SET_LOCALINFO((char*)name, (char*)(b = def));
+
 	return b;
 }
 
@@ -133,23 +136,23 @@ void ClientKill_Post(edict_t *pEntity)
 {
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
 
-	if ( pPlayer->IsAlive())
+	if (pPlayer->IsAlive())
 		RETURN_META(MRES_IGNORED);
 
-	MF_ExecuteForward( iFDamage,static_cast<cell>(pPlayer->index), static_cast<cell>(pPlayer->index) , 
-		static_cast<cell>(0), static_cast<cell>(0), static_cast<cell>(0), static_cast<cell>(0) );		// he would
+	MF_ExecuteForward(iFDamage,static_cast<cell>(pPlayer->index), static_cast<cell>(pPlayer->index), 
+		static_cast<cell>(0), static_cast<cell>(0), static_cast<cell>(0), static_cast<cell>(0));		// he would
 	
 	pPlayer->saveKill(pPlayer,0,0,0);
 	
-	MF_ExecuteForward( iFDeath,static_cast<cell>(pPlayer->index), static_cast<cell>(pPlayer->index),
-		static_cast<cell>(0), static_cast<cell>(0), static_cast<cell>(0) );
+	MF_ExecuteForward(iFDeath,static_cast<cell>(pPlayer->index), static_cast<cell>(pPlayer->index),
+		static_cast<cell>(0), static_cast<cell>(0), static_cast<cell>(0));
 
 	RETURN_META(MRES_IGNORED);
 }
 
 void ServerActivate_Post( edict_t *pEdictList, int edictCount, int clientMax )
 {
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		return;
 	}
@@ -167,19 +170,24 @@ void ServerActivate_Post( edict_t *pEdictList, int edictCount, int clientMax )
 void PlayerPreThink_Post(edict_t *pEntity)
 {
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
+
 	if (pPlayer->clearStats && pPlayer->clearStats < gpGlobals->time)
 	{
 		if (!isModuleActive() || ignoreBots(pEntity))
 		{
 			RETURN_META(MRES_IGNORED);
 		}
+
 		pPlayer->clearStats = 0.0f;
+
 		if (pPlayer->rank)
 		{
 			pPlayer->rank->updatePosition(&pPlayer->life);
 		}
+
 		pPlayer->restartStats(false);
 	}
+
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -187,19 +195,19 @@ void ServerDeactivate()
 {
 	int i;
 
-	for( i = 1;i<=gpGlobals->maxClients; ++i)
+	for(i = 1; i <= gpGlobals->maxClients; ++i)
 	{
 		CPlayer *pPlayer = GET_PLAYER_POINTER_I(i);
 		if (pPlayer->rank) pPlayer->Disconnect();
 	}
 
-	if ((g_rank.getRankNum() >= (int)csstats_maxsize->value) || ((int)csstats_reset->value == 1 ))
+	if ((g_rank.getRankNum() >= (int)csstats_maxsize->value) || ((int)csstats_reset->value == 1))
 	{
 		CVAR_SET_FLOAT("csstats_reset",0.0);
 		g_rank.clear(); // clear before save to file
 	}
 
-	g_rank.saveRank( MF_BuildPathname("%s",get_localinfo("csstats")) );	
+	g_rank.saveRank( MF_BuildPathname("%s", get_localinfo("csstats")));	
 
 	// clear custom weapons info
 	for (i = MAX_WEAPONS; i < MAX_WEAPONS + MAX_CWEAPONS; i++)
@@ -210,7 +218,7 @@ void ServerDeactivate()
 	RETURN_META(MRES_IGNORED);
 }
 
-BOOL ClientConnect_Post( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ])
+BOOL ClientConnect_Post(edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ])
 {
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
 	
@@ -224,20 +232,20 @@ BOOL ClientConnect_Post( edict_t *pEntity, const char *pszName, const char *pszA
 	RETURN_META_VALUE(MRES_IGNORED, TRUE);
 }
 
-void ClientDisconnect( edict_t *pEntity )
+void ClientDisconnect(edict_t *pEntity)
 {
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
 	if (pPlayer->rank) pPlayer->Disconnect();
 	RETURN_META(MRES_IGNORED);
 }
 
-void ClientPutInServer_Post( edict_t *pEntity )
+void ClientPutInServer_Post(edict_t *pEntity)
 {
 	GET_PLAYER_POINTER(pEntity)->PutInServer();
 	RETURN_META(MRES_IGNORED);
 }
 
-void ClientUserInfoChanged_Post( edict_t *pEntity, char *infobuffer )
+void ClientUserInfoChanged_Post(edict_t *pEntity, char *infobuffer)
 {
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
 
@@ -251,19 +259,20 @@ void ClientUserInfoChanged_Post( edict_t *pEntity, char *infobuffer )
 
 	if (pPlayer->rank)
 	{
-		if ( strcmp(oldname,name) != 0 )
+		if (strcmp(oldname,name) != 0)
 		{
 			if ((int)csstats_rank->value == 0)
-				pPlayer->rank = g_rank.findEntryInRank( name, name );
+				pPlayer->rank = g_rank.findEntryInRank(name, name);
 			else
-				pPlayer->rank->setName( name );
+				pPlayer->rank->setName(name);
 		}
 	}
 	else if (pPlayer->IsBot())
 	{
-		pPlayer->Connect( "127.0.0.1" );
+		pPlayer->Connect("127.0.0.1");
 		pPlayer->PutInServer();
 	}
+
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -277,14 +286,18 @@ void MessageBegin_Post(int msg_dest, int msg_type, const float *pOrigin, edict_t
 		mPlayerIndex = 0;
 		mPlayer = 0;
 	}
+
 	mState = 0;
 	g_CurrentMsg = msg_type;
+
 	if (g_CurrentMsg < 0 || g_CurrentMsg >= MAX_REG_MSGS)
 	{
 		g_CurrentMsg = 0;
 	}
+
 	function = modMsgs[g_CurrentMsg];
 	endfunction = modMsgsEnd[g_CurrentMsg];
+
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -349,23 +362,23 @@ void StartFrame_Post()
 		switch (g_bombAnnounce)
 		{
 		case BOMB_PLANTING:
-			MF_ExecuteForward( iFBPlanting, static_cast<cell>(g_Planter) );
+			MF_ExecuteForward(iFBPlanting, static_cast<cell>(g_Planter));
 			break;
 
 		case BOMB_PLANTED:
-			MF_ExecuteForward( iFBPlanted, static_cast<cell>(g_Planter) );
+			MF_ExecuteForward(iFBPlanted, static_cast<cell>(g_Planter));
 			break;
 
 		case BOMB_EXPLODE:
-			MF_ExecuteForward( iFBExplode, static_cast<cell>(g_Planter), static_cast<cell>(g_Defuser) );
+			MF_ExecuteForward(iFBExplode, static_cast<cell>(g_Planter), static_cast<cell>(g_Defuser));
 			break;
 
 		case BOMB_DEFUSING:
-			MF_ExecuteForward( iFBDefusing, static_cast<cell>(g_Defuser) );
+			MF_ExecuteForward(iFBDefusing, static_cast<cell>(g_Defuser));
 			break;
 
 		case BOMB_DEFUSED:
-			MF_ExecuteForward( iFBDefused, static_cast<cell>(g_Defuser) );
+			MF_ExecuteForward(iFBDefused, static_cast<cell>(g_Defuser));
 			break;
 		}
 
@@ -377,21 +390,18 @@ void StartFrame_Post()
 
 void SetModel_Post(edict_t *e, const char *m)
 {
-	if ( m[7] == 'w' )
+	if (m[7] != 'w' || m[8] != '_' || !isModuleActive())
 	{
-		if (e->v.owner && m[8] == '_')
+		RETURN_META(MRES_IGNORED);
+	}
+	if (e->v.owner)
+	{
+		int w_id = 0;
+
+		CPlayer *pPlayer = GET_PLAYER_POINTER(e->v.owner);
+
+		switch (m[9])
 		{
-
-			if (!isModuleActive())
-			{
-				RETURN_META(MRES_IGNORED);
-			}
-
-			int w_id = 0;
-			CPlayer *pPlayer = GET_PLAYER_POINTER(e->v.owner);
-
-			switch (m[9])
-			{
 			case 'h':
 				w_id = CSW_HEGRENADE;
 				g_grenades.put(e, 2.0, 4, pPlayer);
@@ -405,28 +415,28 @@ void SetModel_Post(edict_t *e, const char *m)
 			case 's':
 				if (m[10] == 'm') w_id = CSW_SMOKEGRENADE;
 				break;
-			}
-			if (w_id)
-			{
-				MF_ExecuteForward(iFGrenade, static_cast<cell>(pPlayer->index),
-					static_cast<cell>(ENTINDEX(e)), static_cast<cell>(w_id));
-			}
+		}
+
+		if (w_id)
+		{
+			MF_ExecuteForward(iFGrenade, static_cast<cell>(pPlayer->index),
+				static_cast<cell>(ENTINDEX(e)), static_cast<cell>(w_id));
 		}
 	}
-
+	
 	RETURN_META(MRES_IGNORED);
 }
 
 void EmitSound_Post(edict_t *entity, int channel, const char *sample, /*int*/float volume, float attenuation, int fFlags, int pitch)
 {
-	if (sample[9] == 'n')
+	if (sample[9] != 'n' || sample[8] != 'k' || sample[1] != 'e' || sample[0] != 'w' || sample[14] == 'd')
 	{
-		if (sample[0] == 'w' && sample[1] == 'e' && sample[8] == 'k' && sample[14] != 'd')
-		{
-			CPlayer*pPlayer = GET_PLAYER_POINTER(entity);
-			pPlayer->saveShot(pPlayer->current);
-		}
+		RETURN_META(MRES_IGNORED);
 	}
+
+	CPlayer*pPlayer = GET_PLAYER_POINTER(entity);
+	pPlayer->saveShot(pPlayer->current);
+
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -478,9 +488,9 @@ int AmxxCheckGame(const char *game)
 
 void OnAmxxAttach()
 {
-	m_api_rehlds = RehldsApi_Init();
+	g_bReHLDS = RehldsApi_Init();
 
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		MF_Log("Error load ReHLDS");
 		return;
@@ -488,17 +498,17 @@ void OnAmxxAttach()
 
 	MF_AddNatives(stats_Natives);
 
-	const char* path =  get_localinfo("csstats_score");
+	const char* path = get_localinfo("csstats_score");
 
-	if ( path && *path )
+	if (path && *path)
 	{
 		char error[128];
-		g_rank.loadCalc( MF_BuildPathname("%s", path) , error);
+		g_rank.loadCalc(MF_BuildPathname("%s", path) , error);
 	}
 	
-	if ( !g_rank.begin() )
+	if (!g_rank.begin())
 	{		
-		g_rank.loadRank( MF_BuildPathname("%s", get_localinfo("csstats")));
+		g_rank.loadRank(MF_BuildPathname("%s", get_localinfo("csstats")));
 	}
 }
 
@@ -511,7 +521,7 @@ void OnAmxxDetach()
 
 void OnPluginsLoaded()
 {
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		return;
 	}

@@ -25,6 +25,7 @@ CStack< Data * > ReturnStack;
 CStack< Data * > OrigReturnStack;
 CStack< ke::Vector< Data * > * > ParamStack;
 CStack< int * > ReturnStatus;
+
 #define CHECK_STACK(__STACK__)								\
 	if (  ( __STACK__ ).size() <= 0)						\
 	{																	\
@@ -33,11 +34,11 @@ CStack< int * > ReturnStatus;
 	}
 
 #define PARSE_RETURN()										\
-	if (ret==-2)											\
+	if (ret == -2)											\
 	{														\
 		MF_LogError(amx, AMX_ERR_NATIVE, "Data pointer is NULL!");	\
 	}														\
-	else if (ret==-1)										\
+	else if (ret == -1)										\
 	{														\
 		MF_LogError(amx, AMX_ERR_NATIVE, "Wrong data type (data is of type %s)", returntypes[dat->GetType()]);	\
 	}														\

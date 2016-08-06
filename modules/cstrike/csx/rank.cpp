@@ -14,15 +14,19 @@
 #include "amxxmodule.h"
 #include "rank.h"
 
-
 static cell AMX_NATIVE_CALL get_user_astats(AMX *amx, cell *params) /* 6 param */
 {
 	int index = params[1];
+
 	CHECK_PLAYERRANGE(index);
+
 	int attacker = params[2];
+
 	CHECK_PLAYERRANGE(attacker);
+
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
-	if (pPlayer->attackers[attacker].hits){
+
+	if (pPlayer->attackers[attacker].hits) {
 		cell *cpStats = MF_GetAmxAddr(amx,params[3]);
 		cell *cpBodyHits = MF_GetAmxAddr(amx,params[4]);
 		CPlayer::PlayerWeapon* stats = &pPlayer->attackers[attacker];
@@ -35,8 +39,10 @@ static cell AMX_NATIVE_CALL get_user_astats(AMX *amx, cell *params) /* 6 param *
 		cpStats[6] = stats->damage;
 		for(int i = 1; i < 8; ++i)
 			cpBodyHits[i] = stats->bodyHits[i];
-		if (params[6] && attacker && stats->name )
+
+		if (params[6] && attacker && stats->name)
 			MF_SetAmxString(amx,params[5],stats->name,params[6]);
+
 		return 1;
 	}
 	return 0;
@@ -45,11 +51,16 @@ static cell AMX_NATIVE_CALL get_user_astats(AMX *amx, cell *params) /* 6 param *
 static cell AMX_NATIVE_CALL get_user_vstats(AMX *amx, cell *params) /* 6 param */
 {
 	int index = params[1];
+
 	CHECK_PLAYERRANGE(index);
+
 	int victim = params[2];
+
 	CHECK_PLAYERRANGE(victim);
+
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
-	if (pPlayer->victims[victim].hits){
+
+	if (pPlayer->victims[victim].hits) {
 		cell *cpStats = MF_GetAmxAddr(amx,params[3]);
 		cell *cpBodyHits = MF_GetAmxAddr(amx,params[4]);
 		CPlayer::PlayerWeapon* stats = &pPlayer->victims[victim];
@@ -62,8 +73,10 @@ static cell AMX_NATIVE_CALL get_user_vstats(AMX *amx, cell *params) /* 6 param *
 		cpStats[6] = stats->damage;
 		for(int i = 1; i < 8; ++i)
 			cpBodyHits[i] = stats->bodyHits[i];
+
 		if (params[6] && victim && stats->name)
 			MF_SetAmxString(amx,params[5],stats->name,params[6]);
+
 		return 1;
 	}
 	return 0;
@@ -72,14 +85,19 @@ static cell AMX_NATIVE_CALL get_user_vstats(AMX *amx, cell *params) /* 6 param *
 static cell AMX_NATIVE_CALL get_user_wrstats(AMX *amx, cell *params) /* 4 param */ // DEC-Weapon (round) stats (end)
 {
 	int index = params[1];
+
 	CHECK_PLAYERRANGE(index);
+
 	int weapon = params[2];
-	if (weapon<0||weapon>=MAX_WEAPONS+MAX_CWEAPONS){
+
+	if (weapon < 0||weapon >= MAX_WEAPONS+MAX_CWEAPONS) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", weapon);
 		return 0;
 	}
+
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
-	if (pPlayer->weaponsRnd[weapon].shots){
+
+	if (pPlayer->weaponsRnd[weapon].shots) {
 		cell *cpStats = MF_GetAmxAddr(amx,params[3]);
 		cell *cpBodyHits = MF_GetAmxAddr(amx,params[4]);
 		Stats* stats = &pPlayer->weaponsRnd[weapon];
@@ -90,8 +108,10 @@ static cell AMX_NATIVE_CALL get_user_wrstats(AMX *amx, cell *params) /* 4 param 
 		cpStats[4] = stats->shots;
 		cpStats[5] = stats->hits;
 		cpStats[6] = stats->damage;
+
 		for(int i = 1; i < 8; ++i)
 			cpBodyHits[i] = stats->bodyHits[i];
+
 		return 1;
 	}
 	return 0;
@@ -100,14 +120,19 @@ static cell AMX_NATIVE_CALL get_user_wrstats(AMX *amx, cell *params) /* 4 param 
 static cell AMX_NATIVE_CALL get_user_wstats(AMX *amx, cell *params) /* 4 param */
 {
 	int index = params[1];
+
 	CHECK_PLAYERRANGE(index);
+
 	int weapon = params[2];
-	if (weapon<0||weapon>=MAX_WEAPONS+MAX_CWEAPONS){
+
+	if (weapon < 0 || weapon >= MAX_WEAPONS+MAX_CWEAPONS) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", weapon);
 		return 0;
 	}
+
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
-	if (pPlayer->weapons[weapon].shots){
+
+	if (pPlayer->weapons[weapon].shots) {
 		cell *cpStats = MF_GetAmxAddr(amx,params[3]);
 		cell *cpBodyHits = MF_GetAmxAddr(amx,params[4]);
 		CPlayer::PlayerWeapon* stats = &pPlayer->weapons[weapon];
@@ -118,8 +143,10 @@ static cell AMX_NATIVE_CALL get_user_wstats(AMX *amx, cell *params) /* 4 param *
 		cpStats[4] = stats->shots;
 		cpStats[5] = stats->hits;
 		cpStats[6] = stats->damage;
+
 		for(int i = 1; i < 8; ++i)
 			cpBodyHits[i] = stats->bodyHits[i];
+
 		return 1;
 	}
 	return 0;
@@ -128,7 +155,9 @@ static cell AMX_NATIVE_CALL get_user_wstats(AMX *amx, cell *params) /* 4 param *
 static cell AMX_NATIVE_CALL reset_user_wstats(AMX *amx, cell *params) /* 6 param */
 {
 	int index = params[1];
+
 	CHECK_PLAYER(index);
+
 	GET_PLAYER_POINTER_I(index)->restartStats();
 	return 1;
 }
@@ -136,9 +165,12 @@ static cell AMX_NATIVE_CALL reset_user_wstats(AMX *amx, cell *params) /* 6 param
 static cell AMX_NATIVE_CALL get_user_rstats(AMX *amx, cell *params) /* 3 param */
 {
 	int index = params[1];
+
 	CHECK_PLAYERRANGE(index);
+
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
-	if (pPlayer->rank){
+
+	if (pPlayer->rank) {
 		cell *cpStats = MF_GetAmxAddr(amx,params[2]);
 		cell *cpBodyHits = MF_GetAmxAddr(amx,params[3]);
 		cpStats[0] = pPlayer->life.kills;
@@ -148,8 +180,10 @@ static cell AMX_NATIVE_CALL get_user_rstats(AMX *amx, cell *params) /* 3 param *
 		cpStats[4] = pPlayer->life.shots;
 		cpStats[5] = pPlayer->life.hits;
 		cpStats[6] = pPlayer->life.damage;
+
 		for(int i = 1; i < 8; ++i)
 			cpBodyHits[i] = pPlayer->life.bodyHits[i];
+
 		return 1;
 	}
 	return 0;
@@ -158,9 +192,12 @@ static cell AMX_NATIVE_CALL get_user_rstats(AMX *amx, cell *params) /* 3 param *
 static cell AMX_NATIVE_CALL get_user_stats(AMX *amx, cell *params) /* 3 param */
 {
 	int index = params[1];
+
 	CHECK_PLAYERRANGE(index);
+
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
-	if ( pPlayer->rank ){
+
+	if (pPlayer->rank) {
 		cell *cpStats = MF_GetAmxAddr(amx,params[2]);
 		cell *cpBodyHits = MF_GetAmxAddr(amx,params[3]);
 		cpStats[0] = pPlayer->rank->kills;
@@ -175,6 +212,7 @@ static cell AMX_NATIVE_CALL get_user_stats(AMX *amx, cell *params) /* 3 param */
 
 		for(int i = 1; i < 8; ++i)
 			cpBodyHits[i] = pPlayer->rank->bodyHits[i];
+
 		return pPlayer->rank->getPosition();
 	}
 	return 0;
@@ -184,9 +222,12 @@ static cell AMX_NATIVE_CALL get_user_stats(AMX *amx, cell *params) /* 3 param */
 static cell AMX_NATIVE_CALL get_user_stats2(AMX *amx, cell *params) /* 3 param */
 {
 	int index = params[1];
+
 	CHECK_PLAYERRANGE(index);
+
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
-	if ( pPlayer->rank ){
+
+	if (pPlayer->rank) {
 		cell *cpStats = MF_GetAmxAddr(amx,params[2]);
 
 		cpStats[0] = pPlayer->rank->bDefusions;
@@ -201,11 +242,11 @@ static cell AMX_NATIVE_CALL get_user_stats2(AMX *amx, cell *params) /* 3 param *
 
 static cell AMX_NATIVE_CALL get_stats(AMX *amx, cell *params) /* 7 param */
 {
-	
 	int index = params[1] + 1;
 
-	for(RankSystem::iterator a = g_rank.front(); a ;--a){
-		if ((*a).getPosition() == index)  {
+	for(RankSystem::iterator a = g_rank.front(); a ;--a) {
+		if ((*a).getPosition() == index)
+		{
 			cell *cpStats = MF_GetAmxAddr(amx,params[2]);
 			cell *cpBodyHits = MF_GetAmxAddr(amx,params[3]);
 			cpStats[0] = (*a).kills;
@@ -219,10 +260,13 @@ static cell AMX_NATIVE_CALL get_stats(AMX *amx, cell *params) /* 7 param */
 			cpStats[7] = (*a).getPosition();
 
 			MF_SetAmxString(amx,params[4],(*a).getName(),params[5]);
+
 			if (params[6] > 0)
 				MF_SetAmxString(amx, params[6], (*a).getUnique(), params[7]);
+
 			for(int i = 1; i < 8; ++i)
 				cpBodyHits[i] = (*a).bodyHits[i];
+
 			return --a ? index : 0;
 		}	
 	}
@@ -232,12 +276,13 @@ static cell AMX_NATIVE_CALL get_stats(AMX *amx, cell *params) /* 7 param */
 
 static cell AMX_NATIVE_CALL get_stats2(AMX *amx, cell *params) /* 4 param */
 {
-	
 	int index = params[1] + 1;
 
-	for(RankSystem::iterator a = g_rank.front(); a ;--a){
-		if ((*a).getPosition() == index)  {
+	for(RankSystem::iterator a = g_rank.front(); a ;--a) {
+		if ((*a).getPosition() == index)
+		{
 			cell *cpStats = MF_GetAmxAddr(amx,params[2]);
+
 			if (params[4] > 0)
 				MF_SetAmxString(amx, params[3], (*a).getUnique(), params[4]);
 
@@ -258,11 +303,13 @@ static cell AMX_NATIVE_CALL get_statsnum(AMX *amx, cell *params)
 	return g_rank.getRankNum();
 }
 
-static cell AMX_NATIVE_CALL register_cwpn(AMX *amx, cell *params){ // name,melee=0,logname 
-	int i,iLen;
-	for ( i=MAX_WEAPONS;i<MAX_WEAPONS+MAX_CWEAPONS;i++){
-		if ( !weaponData[i].used ){
+static cell AMX_NATIVE_CALL register_cwpn(AMX *amx, cell *params)
+{ // name,melee=0,logname 
+	int i, iLen;
 
+	for (i = MAX_WEAPONS; i < MAX_WEAPONS + MAX_CWEAPONS; i++) {
+		if (!weaponData[i].used)
+		{
 			char* szName = MF_GetAmxString(amx, params[1], 0, &iLen);
 			char *szLog = MF_GetAmxString(amx, params[3], 0, &iLen);
 
@@ -276,12 +323,15 @@ static cell AMX_NATIVE_CALL register_cwpn(AMX *amx, cell *params){ // name,melee
 	}
 
 	MF_PrintSrvConsole("No More Custom Weapon Slots!\n");
+
 	return 0;
 }
 
-static cell AMX_NATIVE_CALL custom_wpn_dmg(AMX *amx, cell *params){ // wid,att,vic,dmg,hp=0
+static cell AMX_NATIVE_CALL custom_wpn_dmg(AMX *amx, cell *params)
+{ // wid,att,vic,dmg,hp=0
 	int weapon = params[1];
-	if (  weapon < MAX_WEAPONS || weapon >= MAX_WEAPONS+MAX_CWEAPONS ||  !weaponData[weapon].used ){ // only for custom weapons
+
+	if (weapon < MAX_WEAPONS || weapon >= MAX_WEAPONS+MAX_CWEAPONS || !weaponData[weapon].used ){ // only for custom weapons
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", weapon);
 		return 0;
 	}
@@ -293,13 +343,15 @@ static cell AMX_NATIVE_CALL custom_wpn_dmg(AMX *amx, cell *params){ // wid,att,v
 	CHECK_PLAYERRANGE(vic);
 	
 	int dmg = params[4];
-	if ( dmg<1 ){
+
+	if (dmg < 1) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid damage %d", dmg);
 		return 0;
 	}
 	
 	int aim = params[5];
-	if ( aim < 0 || aim > 7 ){
+
+	if (aim < 0 || aim > 7) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid aim %d", aim);
 		return 0;
 	}
@@ -311,73 +363,93 @@ static cell AMX_NATIVE_CALL custom_wpn_dmg(AMX *amx, cell *params){ // wid,att,v
 	pAtt->saveHit( pVic , weapon , dmg, aim );
 
 	if ( !pAtt ) pAtt = pVic;
+
 	int TA = 0;
+
 	if ( (pVic->teamId == pAtt->teamId) && ( pVic != pAtt) )
 		TA = 1;
-	MF_ExecuteForward( iFDamage, static_cast<cell>(pAtt->index),
+
+	MF_ExecuteForward(iFDamage, static_cast<cell>(pAtt->index),
 		static_cast<cell>(pVic->index), static_cast<cell>(dmg), static_cast<cell>(weapon),
-		static_cast<cell>(aim), static_cast<cell>(TA) );
+		static_cast<cell>(aim), static_cast<cell>(TA));
 	
-	if ( pVic->IsAlive() )
+	if (pVic->IsAlive())
 		return 1;
 
 	pAtt->saveKill(pVic,weapon,( aim == 1 ) ? 1:0 ,TA);
-	MF_ExecuteForward( iFDeath, static_cast<cell>(pAtt->index), static_cast<cell>(pVic->index),
-		static_cast<cell>(weapon), static_cast<cell>(aim), static_cast<cell>(TA) );
+
+	MF_ExecuteForward(iFDeath, static_cast<cell>(pAtt->index), static_cast<cell>(pVic->index),
+		static_cast<cell>(weapon), static_cast<cell>(aim), static_cast<cell>(TA));
 
 	return 1;
 }
 
-static cell AMX_NATIVE_CALL custom_wpn_shot(AMX *amx, cell *params){ // player,wid
+static cell AMX_NATIVE_CALL custom_wpn_shot(AMX *amx, cell *params)
+{ // player,wid
 	int index = params[2];
+
 	CHECK_PLAYERRANGE(index);
 
 	int weapon = params[1];
-	if (  weapon < MAX_WEAPONS  || weapon >= MAX_WEAPONS+MAX_CWEAPONS || !weaponData[weapon].used ){
+
+	if (weapon < MAX_WEAPONS || weapon >= MAX_WEAPONS + MAX_CWEAPONS || !weaponData[weapon].used) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", weapon);
 		return 0;
 	}
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
+
 	pPlayer->saveShot(weapon);
 
 	return 1;
 }
 
-static cell AMX_NATIVE_CALL get_wpnname(AMX *amx, cell *params){ 
+static cell AMX_NATIVE_CALL get_wpnname(AMX *amx, cell *params)
+{
 	int id = params[1];
-	if (id<1 || id>=MAX_WEAPONS+MAX_CWEAPONS ){ 
+
+	if (id < 1 || id >= MAX_WEAPONS + MAX_CWEAPONS) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", id);
 		return 0;
 	}
+
 	return MF_SetAmxString(amx,params[2],weaponData[id].name,params[3]);
 }
 
-static cell AMX_NATIVE_CALL get_wpnlogname(AMX *amx, cell *params){ 
+static cell AMX_NATIVE_CALL get_wpnlogname(AMX *amx, cell *params)
+{
 	int id = params[1];
-	if (id<1 || id>=MAX_WEAPONS+MAX_CWEAPONS ){ 
+
+	if (id < 1 || id >= MAX_WEAPONS + MAX_CWEAPONS) { 
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", id);
 		return 0;
 	}
+
 	return MF_SetAmxString(amx,params[2],weaponData[id].logname,params[3]);
 }
 
-static cell AMX_NATIVE_CALL is_melee(AMX *amx, cell *params){ 
+static cell AMX_NATIVE_CALL is_melee(AMX *amx, cell *params)
+{
 	int id = params[1];
-	if (id<1 || id>=MAX_WEAPONS+MAX_CWEAPONS ){ 
+
+	if (id < 1 || id>= MAX_WEAPONS + MAX_CWEAPONS) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", id);
 		return 0;
 	}
-	if ( id == 29 )
+
+	if (id == 29)
 		return 1;
+
 	return weaponData[id].melee ? 1:0;
 }
 
-static cell AMX_NATIVE_CALL get_maxweapons(AMX *amx, cell *params){
-	return MAX_WEAPONS+MAX_CWEAPONS;
+static cell AMX_NATIVE_CALL get_maxweapons(AMX *amx, cell *params)
+{
+	return MAX_WEAPONS + MAX_CWEAPONS;
 }
 
-static cell AMX_NATIVE_CALL get_stats_size(AMX *amx, cell *params){
+static cell AMX_NATIVE_CALL get_stats_size(AMX *amx, cell *params)
+{
 	return 8;
 }
 

@@ -185,8 +185,8 @@ enum {
 
 extern ke::Vector<int> Engine[];
 extern ke::Vector<int> EnginePost[];
-extern void *EngineAddrs[ENGFUNC_NUM+10];
-extern void *EngineAddrsPost[ENGFUNC_NUM+10];
+extern void *EngineAddrs[ENGFUNC_NUM + 10];
+extern void *EngineAddrsPost[ENGFUNC_NUM + 10];
 extern cell mCellResult;
 extern float mFloatResult;
 extern const char *mStringResult;

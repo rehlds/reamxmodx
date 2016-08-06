@@ -25,9 +25,7 @@
 #include "hook_specialbot.h"
 #include <HLTypeConversion.h>
 
-#include "mod_rehlds_api.h"
-
-bool m_api_rehlds = false;
+bool g_bReHLDS = false;
 
 HLTypeConversion TypeConversion;
 
@@ -45,9 +43,9 @@ int ReadConfig(void);
 
 void OnAmxxAttach(void)
 {
-	m_api_rehlds = RehldsApi_Init();
+	g_bReHLDS = RehldsApi_Init();
 
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		MF_Log("Error load ReHLDS");
 		return;
@@ -91,8 +89,6 @@ void OnAmxxAttach(void)
 			MF_Log("Error: pev and base not set for section \"%s windows\", cannot register natives.", MF_GetModname());
 #elif defined(__linux__)
 			MF_Log("Error: pev and base not set for section \"%s linux\", cannot register natives.", MF_GetModname());
-#elif defined(__APPLE__)
-			MF_Log("Error: pev and base not set for section \"%s mac\", cannot register natives.", MF_GetModname());
 #endif
 		}
 	}
@@ -129,7 +125,7 @@ void OnPluginsUnloaded(void)
 
 void OnPluginsLoaded(void)
 {
-	if (m_api_rehlds == false)
+	if (g_bReHLDS == false)
 	{
 		return;
 	}

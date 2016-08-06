@@ -282,8 +282,6 @@
     <ClCompile Include="..\gameconfigs.cpp" />
     <ClCompile Include="..\libraries.cpp" />
     <ClCompile Include="..\messages.cpp" />
-    <ClCompile Include="..\sdk\interface.cpp" />
-    <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
     <ClCompile Include="..\meta_api.cpp" />
     <ClCompile Include="..\modules.cpp" />
     <ClCompile Include="..\natives.cpp" />
@@ -308,6 +306,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='JITDebug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
+    <ClCompile Include="..\sdk\interface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\memtools\CDetour\asm\asm.h" />
@@ -378,6 +378,7 @@
     <ClInclude Include="..\textparse.h" />
     <ClInclude Include="..\trie_natives.h" />
     <ClInclude Include="..\sdk\amxxmodule.h" />
+    <ClInclude Include="..\sdk\mod_rehlds_api.h" />
     <ClInclude Include="..\sdk\moduleconfig.h" />
   </ItemGroup>
   <ItemGroup>
