@@ -228,11 +228,9 @@ int read_start_section(char *data)
 		trim_line(data);
 
 #ifdef _WIN32
-		if (strcmp(data, "windows")==0)
+		if (strcmp(data, "windows") == 0)
 #elif defined(__linux__)
-		if (strcmp(data, "linux")==0)
-#elif defined(__APPLE__)
-		if (strcmp(data, "mac")==0)
+		if (strcmp(data, "linux") == 0)
 #endif
 		{
 			return 1;
