@@ -144,6 +144,11 @@ hook_t hooklist[] =
 	{ V("weapon_shouldweaponidle",	Int_Void) },
 	{ V("weapon_usedecrement",		Int_Void) },
 
+	/* fix old compile*/
+	{ V("null_1", Void_Void) },
+	{ V("null_1", Void_Void) },
+	{ V("null_1", Void_Void) },
+
 	/* Counter-Strike */
 	{ V("cstrike_restart",			Void_Void) },
 	{ V("cstrike_roundrespawn",		Void_Void) },
@@ -190,17 +195,100 @@ void FailPlugin(AMX *amx, int id, int err, const char *reason)
 	MF_UnregisterSPForward(fwd);
 }
 
+int checkTable(int NumFunc)
+{
+	if (NumFunc == 130) {
+		NumFunc = 101;
+		//MF_Log("--- fix ChangeYaw");
+	} else if (NumFunc == 131) {
+		NumFunc = 102;
+		//MF_Log("--- fix HasHumanGibs");
+	} else if (NumFunc == 132) {
+		NumFunc = 103;
+		//MF_Log("--- fix HasAlienGibs");
+	} else if (NumFunc == 133) {
+		NumFunc = 104;
+		//MF_Log("--- fix FadeMonster");
+	} else if (NumFunc == 134) {
+		NumFunc = 105;
+		//MF_Log("--- fix GibMonster");
+	} else if (NumFunc == 135) {
+		NumFunc = 106;
+		//MF_Log("--- fix BecomeDead");
+	} else if (NumFunc == 136) {
+		NumFunc = 107;
+		//MF_Log("--- fix IRelationship");
+	} else if (NumFunc == 137) {
+		NumFunc = 108;
+		//MF_Log("--- fix PainSound");
+	} else if (NumFunc == 138) {
+		NumFunc = 109;
+		//MF_Log("--- fix ReportAIState");
+	} else if (NumFunc == 139) {
+		NumFunc = 110;
+		//MF_Log("--- fix MonsterInitDead");
+	} else if (NumFunc == 140) {
+		NumFunc = 111;
+		//MF_Log("--- fix Look");
+	} else if (NumFunc == 141) {
+		NumFunc = 112;
+		//MF_Log("--- fix BestVisibleEnemy");
+	} else if (NumFunc == 142) {
+		NumFunc = 113;
+		//MF_Log("--- fix FInViewCone");
+	} else if (NumFunc == 143) {
+		NumFunc = 114;
+		//MF_Log("--- fix FVecInViewCone");
+	} else if (NumFunc == 144) {
+		NumFunc = 115;
+		//MF_Log("--- fix GetDeathActivity");
+	} else if (NumFunc == 186) {
+		NumFunc = 116;
+		//MF_Log("--- fix Weapon_SendWeaponAnim");
+	} else if (NumFunc == 187) {
+		NumFunc = 117;
+		//MF_Log("--- fix Player_ResetMaxSpeed");
+	} else if (NumFunc == 188) {
+		NumFunc = 118;
+		//MF_Log("--- fix Player_IsBot");
+	} else if (NumFunc == 189) {
+		NumFunc = 119;
+		//MF_Log("--- fix Player_GetAutoaimVector");
+	} else if (NumFunc == 190) {
+		NumFunc = 120;
+		//MF_Log("--- fix Player_Blind");
+	} else if (NumFunc == 191) {
+		NumFunc = 121;
+		//MF_Log("--- fix Player_OnTouchingWeapon");
+	} else if (NumFunc == 415) {
+		NumFunc = 122;
+		//MF_Log("--- fix Item_IsWeapon");
+	}
+	return NumFunc;
+}
+
 static cell AMX_NATIVE_CALL RegisterHam(AMX *amx, cell *params)
 {
 	// Make sure the function we're requesting is within bounds
 	int func = params[1];
 	int post = params[4];
 
+	/// check table fix old compile
+
+	if (func > 129 && func < 145
+		|| func > 185 && func < 192
+		|| func == 415)
+	{
+		func = checkTable(func);
+	}
+
+	///
+
 	CHECK_FUNCTION(func);
 
 	char *function = MF_GetAmxString(amx, params[3], 0, NULL);
 	char *classname = MF_GetAmxString(amx, params[2], 1, NULL);
-	
+
 	// Check the entity
 
 	// create an entity, assign it the gamedll's class, hook it and destroy it

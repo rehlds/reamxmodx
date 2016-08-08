@@ -124,7 +124,7 @@ enum
 	Ham_Weapon_ShouldWeaponIdle,
 	Ham_Weapon_UseDecrement,
 
-	Ham_CS_Restart,
+	Ham_CS_Restart = 97,
 	Ham_CS_RoundRespawn,
 	Ham_CS_Item_CanDrop,
 	Ham_CS_Item_GetMaxSpeed,

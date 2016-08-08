@@ -862,7 +862,7 @@ enum Ham
 	 * Return type:		None.
 	 * Execute params:	ExecuteHam(Ham_CS_Restart, this);
 	 */
-	Ham_CS_Restart,
+	Ham_CS_Restart = 97,
 
 	/**
 	 * Description:		Respawn function for players/bots only! Do not use this on non player/bot entities!
