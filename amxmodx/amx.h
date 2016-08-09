@@ -94,10 +94,20 @@ extern  "C" {
   #endif
 #endif
 
+
+#if !defined EXT_FUNC
+	#ifdef _WIN32
+		#define EXT_FUNC
+	#else
+		#define EXT_FUNC __attribute__((force_align_arg_pointer))
+	#endif
+#endif
+
 /* calling convention for native functions */
 #if !defined AMX_NATIVE_CALL
-  #define AMX_NATIVE_CALL
+	#define AMX_NATIVE_CALL EXT_FUNC
 #endif
+
 /* calling convention for all interface functions and callback functions */
 #if !defined AMXAPI
   #if defined STDECL
@@ -151,7 +161,7 @@ extern  "C" {
 #define UNLIMITED     (~1u >> 1)
 
 struct tagAMX;
-typedef cell (AMX_NATIVE_CALL *AMX_NATIVE)(struct tagAMX *amx, cell *params);
+typedef cell (/*AMX_NATIVE_CALL*/ *AMX_NATIVE)(struct tagAMX *amx, cell *params);
 typedef int (AMXAPI *AMX_CALLBACK)(struct tagAMX *amx, cell index,
                                    cell *result, cell *params);
 typedef int (AMXAPI *AMX_DEBUG)(struct tagAMX *amx);

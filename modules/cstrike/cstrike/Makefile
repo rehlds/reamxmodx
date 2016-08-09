@@ -25,7 +25,7 @@ BIN_DIR = Release
 CFLAGS = $(OPT_FLAGS)
 
 CFLAGS += -g -DNDEBUG -Dlinux -D__linux__ -std=c++0x -shared -wd147,274 -fasm-blocks \
--DPAWN_CELL_SIZE=32 -DJIT -DASM32 -DHAVE_STDINT_H -D_vsnprintf=vsnprintf -fno-strict-aliasing -m32 -Wall -Werror -Wno-invalid-offsetof
+-DPAWN_CELL_SIZE=32 -DJIT -DASM32 -DHAVE_STDINT_H -D_vsnprintf=vsnprintf -fno-strict-aliasing -m32 -Wall -Werror
 
 OBJ_LINUX := $(OBJECTS:%.c=$(BIN_DIR)/%.o)
 

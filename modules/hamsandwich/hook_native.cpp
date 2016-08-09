@@ -390,6 +390,17 @@ static cell AMX_NATIVE_CALL RegisterHamFromEntity(AMX *amx, cell *params)
 	int func = params[1];
 	int post = params[4];
 
+	/// check table fix old compile
+
+	if (func > 129 && func < 145
+		|| func > 185 && func < 192
+		|| func == 415)
+	{
+		func = checkTable(func);
+	}
+
+	///
+
 	CHECK_FUNCTION(func);
 
 	char *function = MF_GetAmxString(amx, params[3], 0, NULL);
@@ -481,6 +492,17 @@ static cell AMX_NATIVE_CALL ExecuteHam(AMX *amx, cell *params)
 {
 	int func = params[1];
 
+	/// check table fix old compile
+
+	if (func > 129 && func < 145
+		|| func > 185 && func < 192
+		|| func == 415)
+	{
+		func = checkTable(func);
+	}
+
+	///
+
 	CHECK_FUNCTION(func);
 
 	gDoForwards = false;
@@ -490,7 +512,18 @@ static cell AMX_NATIVE_CALL ExecuteHam(AMX *amx, cell *params)
 
 static cell AMX_NATIVE_CALL ExecuteHamB(AMX *amx, cell *params)
 {
-	int func=params[1];
+	int func = params[1];
+
+	/// check table fix old compile
+
+	if (func > 129 && func < 145
+		|| func > 185 && func < 192
+		|| func == 415)
+	{
+		func = checkTable(func);
+	}
+
+	///
 
 	CHECK_FUNCTION(func);
 
@@ -502,6 +535,17 @@ static cell AMX_NATIVE_CALL ExecuteHamB(AMX *amx, cell *params)
 static cell AMX_NATIVE_CALL IsHamValid(AMX *amx, cell *params)
 {
 	int func = params[1];
+
+	/// check table fix old compile
+
+	if (func > 129 && func < 145
+		|| func > 185 && func < 192
+		|| func == 415)
+	{
+		func = checkTable(func);
+	}
+
+	///
 
 	if (func >= 0 && 
 		func < HAM_LAST_ENTRY_DONT_USE_ME_LOL &&

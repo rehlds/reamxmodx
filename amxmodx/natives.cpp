@@ -38,7 +38,7 @@ AMX *g_pCaller = NULL;
 cell g_Params[CALLFUNC_MAXPARAMS + 1];
 int g_CurError = AMX_ERR_NONE;
 
-int amxx_DynaCallback(int idx, AMX *amx, cell *params)
+int EXT_FUNC amxx_DynaCallback(int idx, AMX *amx, cell *params)
 {
 	if (idx < 0 || idx >= (int)g_RegNatives.length())
 	{

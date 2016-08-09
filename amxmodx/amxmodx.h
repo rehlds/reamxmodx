@@ -10,6 +10,8 @@
 #ifndef AMXMODX_H
 #define AMXMODX_H
 
+#undef EXT_FUNC
+
 #if defined(__linux__) || defined(__APPLE__)
 #include <unistd.h>
 #include <stdlib.h>
@@ -304,7 +306,12 @@ void* alloc_amxmemory(void**, int size);
 void free_amxmemory(void **ptr);
 // get_localinfo
 const char* get_localinfo(const char* name, const char* def);
-cell AMX_NATIVE_CALL require_module(AMX *amx, cell *params);
+
+/* calling convention for native functions */
+#if !defined AMX_NATIVE_CALL
+  #define AMX_NATIVE_CALL EXT_FUNC
+#endif
+
 extern "C" void LogError(AMX *amx, int err, const char *fmt, ...);
 
 enum ModuleCallReason

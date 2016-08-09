@@ -30,7 +30,7 @@ LINK = -lm -ldl -static-intel -static-libgcc -no-intel-extensions -Lzlib -L$(AMX
 
 OPT_FLAGS = -O3 -msse3 -no-prec-div -fp-model fast=2 -funroll-loops -fomit-frame-pointer -fno-stack-protector -fno-builtin -fno-strict-aliasing -fno-rtti -pipe
 
-OPT_FLAGS += -no-vec
+#OPT_FLAGS += -no-vec
 
 INCLUDE = -I. -I$(AMXX_SDK) -Isdk -I$(HLSDK) -I$(HLSDK)/common -I$(HLSDK)/dlls -I$(HLSDK)/engine -I$(HLSDK)/game_shared \
 	  -I$(HLSDK)/pm_shared -I$(HLSDK)/public -I$(MM_ROOT) -I$(AMXX_HASHER) -I$(AMXX_MEMTOOLS)
@@ -38,9 +38,9 @@ INCLUDE = -I. -I$(AMXX_SDK) -Isdk -I$(HLSDK) -I$(HLSDK)/common -I$(HLSDK)/dlls -
 BIN_DIR = Release
 CFLAGS = $(OPT_FLAGS)
 
-CFLAGS += -g -DNDEBUG -DLINUX -D__linux__ -Dlinux -std=c++11 -wd147,274 -fasm-blocks \
+CFLAGS += -g -DNDEBUG -DLINUX -D__linux__ -Dlinux -std=c++0x -wd147,274 -fasm-blocks \
 	-DJIT -DASM32 -DAMX_NOPROPLIST -DPAWN_CELL_SIZE=32 -DHAVE_STDINT_H \
-	-D_vsnprintf=vsnprintf -m32 -Werror -Wno-attributes -Wno-write-strings
+	-D_vsnprintf=vsnprintf -m32 -Werror -Wno-write-strings
 
 LIB_EXT = so
 

@@ -52,7 +52,6 @@ else
         #
         CFLAGS += -std=gnu++11
         #CFLAGS += -std=c11
-        #CFLAGS += -std=c++0x
         #
 	LINK += -shared
 endif

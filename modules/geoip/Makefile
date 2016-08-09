@@ -51,7 +51,6 @@ else
 	LIB_SUFFIX = _amxx_i386
 	CFLAGS += -DLINUX -D__linux__ 
         CFLAGS += -std=gnu++11
-        #CFLAGS += -std=c++0x
         #CFLAGS += -std=c11
 	LINK += -shared
 endif
@@ -59,7 +58,7 @@ endif
 LINK += -m32 -lm -ldl
 
 
-CFLAGS += -g -DJIT -DASM32 -DHAVE_STDINT_H -m32 -Werror -Wno-attributes -Wno-write-strings
+CFLAGS += -g -DPAWN_CELL_SIZE=32 -DJIT -DASM32 -DHAVE_STDINT_H -m32 -Werror -Wno-attributes -Wno-write-strings
 #CFLAGS += -DAMX_NOPROPLIST -DPAWN_CELL_SIZE=32 -fno-strict-aliasing -Wall
 
 CPPFLAGS += -fno-exceptions -fno-rtti
