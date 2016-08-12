@@ -165,6 +165,7 @@ void amx_command()
 		print_srvconsole("\tFelix \"SniperBeamer\" Geyer, Jonny \"Got His Gun\" Bergstrom\n");
 		print_srvconsole("\tLukasz \"SidLuke\" Wlasinski, Christian \"Basic-Master\" Hammacher\n");
 		print_srvconsole("\tBorja \"faluco\" Ferrer, Scott \"DS\" Ehlert\n");
+		print_srvconsole("\nAuthors (ReHLDS Team):\n\t \"Adidasman\", \"s1lent\" \n");
 		print_srvconsole("Compiled: %s\n", AMXX_BUILD_TIME);
 #if defined(AMXX_GENERATED_BUILD)
 		print_srvconsole("Built from: https://github.com/alliedmodders/amxmodx/commit/%s\n", AMXX_SHA);
@@ -176,7 +177,7 @@ void amx_command()
 #elif !defined JIT && defined ASM32
 		print_srvconsole("Core mode: ASM32 Only\n");
 #elif defined JIT && defined ASM32
-		print_srvconsole("Core mode: JIT+ASM32\n");
+		print_srvconsole("Core mode: JIT + ASM32\n");
 #else
 		print_srvconsole("Core mode: Normal\n");
 #endif

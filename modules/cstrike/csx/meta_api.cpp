@@ -33,6 +33,8 @@ int mState;
 
 RankSystem g_rank;
 
+Stats null;
+
 Grenades g_grenades;
 
 int iFGrenade;
@@ -49,7 +51,7 @@ int g_bombAnnounce;
 int g_Planter;
 int g_Defuser;
 
-bool rankBots;
+bool g_rankBots = false;
 
 int gmsgCurWeapon;
 int gmsgDeathMsg;
@@ -66,17 +68,17 @@ int gmsgBarTime;
 
 int g_CurrentMsg;
 
-cvar_t init_csstats_maxsize ={"csstats_maxsize","3500", 0 , 3500.0 };
-cvar_t init_csstats_reset ={"csstats_reset","0"};
-cvar_t init_csstats_rank ={"csstats_rank","1"};
+cvar_t init_csstats_maxsize = { "csstats_maxsize","3500", 0 , 3500.0 };
+cvar_t init_csstats_reset = { "csstats_reset","0" };
+cvar_t init_csstats_rank = { "csstats_rank","1" };
 cvar_t *csstats_maxsize;
 cvar_t *csstats_reset;
 cvar_t *csstats_rank;
 
 cvar_t* csstats_rankbots;
 cvar_t* csstats_pause;
-cvar_t init_csstats_rankbots ={"csstats_rankbots","0"};
-cvar_t init_csstats_pause = {"csstats_pause","0"};
+cvar_t init_csstats_rankbots = { "csstats_rankbots","0" };
+cvar_t init_csstats_pause = { "csstats_pause","0" };
 
 struct sUserMsg
 {
@@ -122,7 +124,7 @@ int RegUserMsg_Post(const char *pszName, int iSize)
 	RETURN_META_VALUE(MRES_IGNORED, 0);
 }
 
-const char* get_localinfo( const char* name , const char* def = 0 )
+const char* get_localinfo(const char* name, const char* def)
 {
 	const char* b = LOCALINFO((char*)name);
 
@@ -139,53 +141,29 @@ void ClientKill_Post(edict_t *pEntity)
 	if (pPlayer->IsAlive())
 		RETURN_META(MRES_IGNORED);
 
-	MF_ExecuteForward(iFDamage,static_cast<cell>(pPlayer->index), static_cast<cell>(pPlayer->index), 
+	MF_ExecuteForward(iFDamage, static_cast<cell>(pPlayer->index), static_cast<cell>(pPlayer->index), 
 		static_cast<cell>(0), static_cast<cell>(0), static_cast<cell>(0), static_cast<cell>(0));		// he would
 	
-	pPlayer->saveKill(pPlayer,0,0,0);
-	
-	MF_ExecuteForward(iFDeath,static_cast<cell>(pPlayer->index), static_cast<cell>(pPlayer->index),
+	pPlayer->saveKill(pPlayer, 0, 0, 0);
+
+	MF_ExecuteForward(iFDeath, static_cast<cell>(pPlayer->index), static_cast<cell>(pPlayer->index),
 		static_cast<cell>(0), static_cast<cell>(0), static_cast<cell>(0));
 
 	RETURN_META(MRES_IGNORED);
 }
 
-void ServerActivate_Post( edict_t *pEdictList, int edictCount, int clientMax )
+void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
 {
 	if (g_bReHLDS == false)
 	{
 		return;
 	}
 
-	rankBots = (int)csstats_rankbots->value ? true:false;
+	g_rankBots = (int)csstats_rankbots->value ? true:false;
 
-	for (int i = 1; i <= gpGlobals->maxClients; ++i)
+	for (int i = 1; i <= gpGlobals->maxClients; i++)
 	{
 		GET_PLAYER_POINTER_I(i)->Init(i, pEdictList + i);
-	}
-
-	RETURN_META(MRES_IGNORED);
-}
-
-void PlayerPreThink_Post(edict_t *pEntity)
-{
-	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
-
-	if (pPlayer->clearStats && pPlayer->clearStats < gpGlobals->time)
-	{
-		if (!isModuleActive() || ignoreBots(pEntity))
-		{
-			RETURN_META(MRES_IGNORED);
-		}
-
-		pPlayer->clearStats = 0.0f;
-
-		if (pPlayer->rank)
-		{
-			pPlayer->rank->updatePosition(&pPlayer->life);
-		}
-
-		pPlayer->restartStats(false);
 	}
 
 	RETURN_META(MRES_IGNORED);
@@ -195,19 +173,20 @@ void ServerDeactivate()
 {
 	int i;
 
-	for(i = 1; i <= gpGlobals->maxClients; ++i)
+	for(i = 1; i <= gpGlobals->maxClients; i++)
 	{
-		CPlayer *pPlayer = GET_PLAYER_POINTER_I(i);
-		if (pPlayer->rank) pPlayer->Disconnect();
+		GET_PLAYER_POINTER_I(i)->Disconnect();
 	}
 
-	if ((g_rank.getRankNum() >= (int)csstats_maxsize->value) || ((int)csstats_reset->value == 1))
+	if (!(int)csstats_maxsize->value
+		|| (int)csstats_maxsize->value > 0 && g_rank.getRankNum() >= (int)csstats_maxsize->value
+		|| (int)csstats_reset->value != 0)
 	{
-		CVAR_SET_FLOAT("csstats_reset",0.0);
+		CVAR_SET_FLOAT("csstats_reset", 0.0);
 		g_rank.clear(); // clear before save to file
 	}
 
-	g_rank.saveRank( MF_BuildPathname("%s", get_localinfo("csstats")));	
+	g_rank.saveRank(MF_BuildPathname("%s", get_localinfo("csstats")));	
 
 	// clear custom weapons info
 	for (i = MAX_WEAPONS; i < MAX_WEAPONS + MAX_CWEAPONS; i++)
@@ -222,11 +201,6 @@ BOOL ClientConnect_Post(edict_t *pEntity, const char *pszName, const char *pszAd
 {
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
 	
-	if (pPlayer->pEdict == NULL)
-	{
-		pPlayer->Init(ENTINDEX(pEntity), pEntity);
-	}
-	
 	pPlayer->Connect(pszAddress);
 
 	RETURN_META_VALUE(MRES_IGNORED, TRUE);
@@ -234,14 +208,20 @@ BOOL ClientConnect_Post(edict_t *pEntity, const char *pszName, const char *pszAd
 
 void ClientDisconnect(edict_t *pEntity)
 {
-	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
-	if (pPlayer->rank) pPlayer->Disconnect();
+	GET_PLAYER_POINTER(pEntity)->Disconnect();
+
 	RETURN_META(MRES_IGNORED);
 }
 
-void ClientPutInServer_Post(edict_t *pEntity)
+void ClientPutInServer(edict_t *pEntity)
 {
-	GET_PLAYER_POINTER(pEntity)->PutInServer();
+	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
+
+	if (pPlayer->m_bInit)
+	{
+		pPlayer->PutInServer();
+	}
+
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -249,28 +229,49 @@ void ClientUserInfoChanged_Post(edict_t *pEntity, char *infobuffer)
 {
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
 
-	if (pPlayer->pEdict == NULL)
+	if (!pPlayer->m_bInit)
 	{
-		pPlayer->Init(ENTINDEX(pEntity), pEntity);
+		g_rankBots = (int)csstats_rankbots->value ? true : false;
+
+		if (g_rankBots == true)
+		{
+			pPlayer->m_bIsBot = pPlayer->IsBot();
+
+			if (pPlayer->m_bIsBot)
+			{
+				pPlayer->Connect("127.0.0.1");
+				pPlayer->PutInServer();
+			}
+		}
+
+		if (!pPlayer->m_bInit)
+		{
+			RETURN_META(MRES_IGNORED);
+		}
 	}
 
-	const char* name = INFOKEY_VALUE(infobuffer,"name");
+	const char* name = INFOKEY_VALUE(infobuffer, "name");
 	const char* oldname = STRING(pEntity->v.netname);
+	const char* authid = GETPLAYERAUTHID(pPlayer->pEdict);
 
 	if (pPlayer->rank)
 	{
-		if (strcmp(oldname,name) != 0)
+		if (strcmp(oldname, name) != 0)
 		{
-			if ((int)csstats_rank->value == 0)
+			if ((int)csstats_rank->value == 0 || ((int)csstats_rank->value == 1 && (!authid || !IsValidAuth(authid))))
+			{
 				pPlayer->rank = g_rank.findEntryInRank(name, name);
-			else
+
+				if (!pPlayer->rank)
+				{
+					pPlayer->rank = g_rank.newEntryInRank(name, name);
+
+					if (pPlayer->rank) pPlayer->rank->updatePosition(&null);
+				}
+			} else {
 				pPlayer->rank->setName(name);
+			}
 		}
-	}
-	else if (pPlayer->IsBot())
-	{
-		pPlayer->Connect("127.0.0.1");
-		pPlayer->PutInServer();
 	}
 
 	RETURN_META(MRES_IGNORED);
@@ -380,6 +381,9 @@ void StartFrame_Post()
 		case BOMB_DEFUSED:
 			MF_ExecuteForward(iFBDefused, static_cast<cell>(g_Defuser));
 			break;
+
+		default:
+			break;
 		}
 
 		g_bombAnnounce = 0;
@@ -394,13 +398,19 @@ void SetModel_Post(edict_t *e, const char *m)
 	{
 		RETURN_META(MRES_IGNORED);
 	}
+
 	if (e->v.owner)
 	{
-		int w_id = 0;
-
 		CPlayer *pPlayer = GET_PLAYER_POINTER(e->v.owner);
 
-		switch (m[9])
+		if (!pPlayer->m_bIngame)
+		{
+			RETURN_META(MRES_IGNORED);
+		}
+
+		int w_id = 0;
+
+		switch(m[9])
 		{
 			case 'h':
 				w_id = CSW_HEGRENADE;
@@ -415,6 +425,9 @@ void SetModel_Post(edict_t *e, const char *m)
 			case 's':
 				if (m[10] == 'm') w_id = CSW_SMOKEGRENADE;
 				break;
+
+			default:
+				break;
 		}
 
 		if (w_id)
@@ -427,7 +440,8 @@ void SetModel_Post(edict_t *e, const char *m)
 	RETURN_META(MRES_IGNORED);
 }
 
-void EmitSound_Post(edict_t *entity, int channel, const char *sample, /*int*/float volume, float attenuation, int fFlags, int pitch)
+/*
+void EmitSound_Post(edict_t *entity, int channel, const char *sample, float volume, float attenuation, int fFlags, int pitch)
 {
 	if (sample[9] != 'n' || sample[8] != 'k' || sample[1] != 'e' || sample[0] != 'w' || sample[14] == 'd')
 	{
@@ -435,10 +449,12 @@ void EmitSound_Post(edict_t *entity, int channel, const char *sample, /*int*/flo
 	}
 
 	CPlayer*pPlayer = GET_PLAYER_POINTER(entity);
+
 	pPlayer->saveShot(pPlayer->current);
 
 	RETURN_META(MRES_IGNORED);
 }
+*/
 
 void TraceLine_Post(const float *v1, const float *v2, int fNoMonsters, edict_t *e, TraceResult *ptr)
 {
@@ -446,6 +462,7 @@ void TraceLine_Post(const float *v1, const float *v2, int fNoMonsters, edict_t *
 	{
 		RETURN_META(MRES_IGNORED);
 	}
+
 	if (ptr->pHit->v.flags & (FL_CLIENT | FL_FAKECLIENT))
 	{
 		if (e->v.flags & (FL_CLIENT | FL_FAKECLIENT))
@@ -457,6 +474,7 @@ void TraceLine_Post(const float *v1, const float *v2, int fNoMonsters, edict_t *
 			}
 		}
 	}
+
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -503,7 +521,7 @@ void OnAmxxAttach()
 	if (path && *path)
 	{
 		char error[128];
-		g_rank.loadCalc(MF_BuildPathname("%s", path) , error);
+		g_rank.loadCalc(MF_BuildPathname("%s", path), error);
 	}
 	
 	if (!g_rank.begin())
@@ -526,12 +544,26 @@ void OnPluginsLoaded()
 		return;
 	}
 
-	iFDeath = MF_RegisterForward("client_death",ET_IGNORE,FP_CELL,FP_CELL,FP_CELL,FP_CELL,FP_CELL,FP_DONE);
-	iFDamage = MF_RegisterForward("client_damage",ET_IGNORE,FP_CELL,FP_CELL,FP_CELL,FP_CELL,FP_CELL,FP_CELL,FP_DONE);
-	iFBPlanted = MF_RegisterForward("bomb_planted",ET_IGNORE,FP_CELL,FP_DONE);
-	iFBDefused = MF_RegisterForward("bomb_defused",ET_IGNORE,FP_CELL,FP_DONE);
-	iFBPlanting = MF_RegisterForward("bomb_planting",ET_IGNORE,FP_CELL,FP_DONE);
-	iFBDefusing = MF_RegisterForward("bomb_defusing",ET_IGNORE,FP_CELL,FP_DONE);
-	iFBExplode = MF_RegisterForward("bomb_explode",ET_IGNORE,FP_CELL,FP_CELL,FP_DONE);
-	iFGrenade = MF_RegisterForward("grenade_throw",ET_IGNORE,FP_CELL,FP_CELL,FP_CELL,FP_DONE);
+	iFDeath = MF_RegisterForward("client_death", ET_IGNORE,FP_CELL,FP_CELL,FP_CELL,FP_CELL,FP_CELL,FP_DONE);
+	iFDamage = MF_RegisterForward("client_damage", ET_IGNORE,FP_CELL,FP_CELL,FP_CELL,FP_CELL,FP_CELL,FP_CELL,FP_DONE);
+	iFBPlanted = MF_RegisterForward("bomb_planted", ET_IGNORE,FP_CELL,FP_DONE);
+	iFBDefused = MF_RegisterForward("bomb_defused", ET_IGNORE,FP_CELL,FP_DONE);
+	iFBPlanting = MF_RegisterForward("bomb_planting", ET_IGNORE,FP_CELL,FP_DONE);
+	iFBDefusing = MF_RegisterForward("bomb_defusing", ET_IGNORE,FP_CELL,FP_DONE);
+	iFBExplode = MF_RegisterForward("bomb_explode", ET_IGNORE,FP_CELL,FP_CELL,FP_DONE);
+	iFGrenade = MF_RegisterForward("grenade_throw", ET_IGNORE,FP_CELL,FP_CELL,FP_CELL,FP_DONE);
+}
+
+bool IsValidAuth(const char* authid)
+{
+	static int i;
+	i = -1;
+	while (authid[++i])
+	{
+		if (isdigit(authid[i]))
+		{
+			return 1;
+		}
+	}
+	return 0;
 }

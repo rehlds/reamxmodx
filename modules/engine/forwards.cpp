@@ -32,21 +32,22 @@ ke::Vector<Impulse *> Impulses;
 ke::Vector<EntClass *> Thinks;
 ke::Vector<Touch *> Touches;
 KeyValueData *g_pkvd;
-bool g_inKeyValue=false;
+bool g_inKeyValue = false;
 bool g_precachedStuff = false;
 
 int fstrcmp(const char *s1, const char *s2)
 {
-	int i=0;
+	int i = 0;
 	int len1 = strlen(s1);
 	int len2 = strlen(s2);
-	if (len1 != len2)
-		return 0;
-	for (i=0; i<len1; i++)
+
+	if (len1 != len2) return 0;
+
+	for (i = 0; i < len1; i++)
 	{
-		if (s1[i] != s2[i])
-			return 0;
+		if (s1[i] != s2[i]) return 0;
 	}
+
 	return 1;
 }
 
@@ -57,6 +58,7 @@ int Spawn(edict_t *pEntity)
 		PRECACHE_MODEL("models/rpgrocket.mdl");
 		g_precachedStuff = true;
 	}
+
 	if (SpawnForward != -1)
 	{
 		int id = TypeConversion.edict_to_id(pEntity);
@@ -87,11 +89,9 @@ void PlaybackEvent(int flags, const edict_t *pInvoker, unsigned short eventindex
 		cAngles[2] = amx_ftoc(vAngles.z);
 		cell CellOrigin = MF_PrepareCellArray(cOrigin, 3);
 		cell CellAngles = MF_PrepareCellArray(cAngles, 3);
-		if (!FNullEnt(e))
-			invoker = TypeConversion.edict_to_id(e);
+		if (!FNullEnt(e)) invoker = TypeConversion.edict_to_id(e);
 		retVal = MF_ExecuteForward(PlaybackForward, (cell)flags, (cell)invoker, (cell)eventindex, delay, CellOrigin, CellAngles, fparam1, fparam2, (cell)iparam1, (cell)iparam2, (cell)bparam1, (cell)bparam2);
-		if (retVal)
-			RETURN_META(MRES_SUPERCEDE);
+		if (retVal) RETURN_META(MRES_SUPERCEDE);
 	}
 	RETURN_META(MRES_IGNORED);
 
@@ -100,15 +100,14 @@ void PlaybackEvent(int flags, const edict_t *pInvoker, unsigned short eventindex
 void KeyValue(edict_t *pEntity, KeyValueData *pkvd)
 {
 	int retVal = 0;
-	g_inKeyValue=true;
-	g_pkvd=pkvd;
+	g_inKeyValue = true;
+	g_pkvd = pkvd;
 	if (DispatchKeyForward != -1) {
 		retVal = MF_ExecuteForward(DispatchKeyForward, (cell)TypeConversion.edict_to_id(pEntity));
-		g_inKeyValue=false;
-		if (retVal)
-			RETURN_META(MRES_SUPERCEDE);
+		g_inKeyValue = false;
+		if (retVal) RETURN_META(MRES_SUPERCEDE);
 	}
-	g_inKeyValue=false;
+	g_inKeyValue = false;
 	RETURN_META(MRES_IGNORED);
 }
 
@@ -132,7 +131,7 @@ void CmdStart(const edict_t *player, const struct usercmd_s *_cmd, unsigned int 
 
 	auto index = TypeConversion.edict_to_id(pEntity);
 
-	for (i=0; i<Impulses.length(); i++)
+	for (i = 0; i < Impulses.length(); i++)
 	{
 		if (Impulses[i]->Check == g_cmd->impulse)
 		{
@@ -140,8 +139,7 @@ void CmdStart(const edict_t *player, const struct usercmd_s *_cmd, unsigned int 
 			
 			// don't return SUPERCEDE in any way here, 
 			// we don't want to break client_impulse forward and access to cmd with [g/s]et_usercmd
-			if (retVal)
-				g_cmd->impulse = 0;
+			if (retVal) g_cmd->impulse = 0;
 		}
 	}
 
@@ -150,8 +148,7 @@ void CmdStart(const edict_t *player, const struct usercmd_s *_cmd, unsigned int 
 	{
 		retVal = MF_ExecuteForward(ClientImpulseForward, (cell)index, (cell)origImpulse);
 
-		if (retVal)
-			g_cmd->impulse = 0;
+		if (retVal) g_cmd->impulse = 0;
 	}
 
 	// client_CmdStart
@@ -161,8 +158,7 @@ void CmdStart(const edict_t *player, const struct usercmd_s *_cmd, unsigned int 
 		retVal = MF_ExecuteForward(CmdStartForward, (cell)index);
 		incmd = false;
 
-		if (retVal)
-			RETURN_META(MRES_SUPERCEDE);
+		if (retVal) RETURN_META(MRES_SUPERCEDE);
 	}
 
 	RETURN_META(MRES_IGNORED);
@@ -197,6 +193,10 @@ void PlayerPostThink_Post(edict_t *pEntity)
 
 	if(plinfo[index].pViewEnt) {
 		edict_t *pCamEnt = plinfo[index].pViewEnt;
+		if (!pCamEnt)
+		{
+			RETURN_META(MRES_IGNORED);
+		}
 
 		MAKE_VECTORS(pEntity->v.v_angle + pEntity->v.punchangle);
 		Vector vecSrc	 = pEntity->v.origin + pEntity->v.view_ofs;
@@ -210,12 +210,14 @@ void PlayerPostThink_Post(edict_t *pEntity)
 				pCamEnt->v.origin = tr.vecEndPos;
 				pCamEnt->v.angles = pEntity->v.v_angle;
 				break;
+
 			case CAMERA_UPLEFT:
 				TRACE_LINE(vecSrc, vecSrc - ((vecAiming * 32) - ((gpGlobals->v_right * 15) + (gpGlobals->v_up * 15))), ignore_monsters, ENT(&pEntity->v), &tr);
 				SET_VIEW(pEntity, pCamEnt);
 				pCamEnt->v.origin = tr.vecEndPos;
 				pCamEnt->v.angles = pEntity->v.v_angle;
 				break;
+
 			case CAMERA_TOPDOWN:
 				TRACE_LINE(vecSrc, vecSrc + Vector(0,0,2048), dont_ignore_monsters, ENT(&pEntity->v), &tr);
 				SET_VIEW(pEntity, pCamEnt);
@@ -223,6 +225,7 @@ void PlayerPostThink_Post(edict_t *pEntity)
 				pCamEnt->v.origin.z -= 40;
 				pCamEnt->v.angles = Vector(90,pEntity->v.v_angle.y,0);
 				break;
+
 			default:
 				SET_VIEW(pEntity, pEntity);
 				REMOVE_ENTITY(plinfo[index].pViewEnt);
@@ -249,8 +252,8 @@ void pfnTouch(edict_t *pToucher, edict_t *pTouched)
 	const char *ptdClass = STRING(pTouched->v.classname);
 	int ptrIndex = TypeConversion.edict_to_id(pToucher);
 	int ptdIndex = TypeConversion.edict_to_id(pTouched);
-	META_RES res=MRES_IGNORED;
-	for (i=0; i<Touches.length(); i++)
+	META_RES res = MRES_IGNORED;
+	for (i = 0; i < Touches.length(); i++)
 	{
 		if (Touches[i]->Toucher.length() == 0)
 		{
@@ -260,41 +263,40 @@ void pfnTouch(edict_t *pToucher, edict_t *pTouched)
 				if (retVal & 2/*PLUGIN_HANDLED_MAIN*/)
 					RETURN_META(MRES_SUPERCEDE);
 				else if (retVal)
-					res=MRES_SUPERCEDE;
-			} else if (Touches[i]->Touched.compare(ptdClass)==0) {
+					res = MRES_SUPERCEDE;
+			} else if (Touches[i]->Touched.compare(ptdClass) == 0) {
 				retVal = MF_ExecuteForward(Touches[i]->Forward, (cell)ptrIndex, (cell)ptdIndex);
 				if (retVal & 2/*PLUGIN_HANDLED_MAIN*/)
 					RETURN_META(MRES_SUPERCEDE);
 				else if (retVal)
-					res=MRES_SUPERCEDE;
+					res = MRES_SUPERCEDE;
 			}
-		} else if (Touches[i]->Toucher.compare(ptrClass)==0) {
+		} else if (Touches[i]->Toucher.compare(ptrClass) == 0) {
 			if (Touches[i]->Touched.length() == 0)
 			{
 				retVal = MF_ExecuteForward(Touches[i]->Forward, (cell)ptrIndex, (cell)ptdIndex);
 				if (retVal & 2/*PLUGIN_HANDLED_MAIN*/)
 					RETURN_META(MRES_SUPERCEDE);
 				else if (retVal)
-					res=MRES_SUPERCEDE;
+					res = MRES_SUPERCEDE;
 			} else if (Touches[i]->Touched.compare(ptdClass)==0) {
 				retVal = MF_ExecuteForward(Touches[i]->Forward, (cell)ptrIndex, (cell)ptdIndex);
 				if (retVal & 2/*PLUGIN_HANDLED_MAIN*/)
 					RETURN_META(MRES_SUPERCEDE);
 				else if (retVal)
-					res=MRES_SUPERCEDE;
+					res = MRES_SUPERCEDE;
 			}
 		}
 	}
 	/* Execute pfnTouch forwards */
 	if (pfnTouchForward != -1) {
 		retVal = MF_ExecuteForward(pfnTouchForward, (cell)ptrIndex, (cell)ptdIndex);
-		if (retVal)
-			RETURN_META(MRES_SUPERCEDE);
+		if (retVal) RETURN_META(MRES_SUPERCEDE);
 	}
+
 	if (VexdTouchForward != -1) {
 		retVal = MF_ExecuteForward(VexdTouchForward, (cell)ptrIndex, (cell)ptdIndex);
-		if (retVal)
-			RETURN_META(MRES_SUPERCEDE);
+		if (retVal) RETURN_META(MRES_SUPERCEDE);
 	}
 
 	RETURN_META(res);
@@ -304,22 +306,23 @@ void Think(edict_t *pent)
 {
 	unsigned int i = 0;
 	const char *cls = STRING(pent->v.classname);
-	META_RES res=MRES_IGNORED;
-	int retVal=0;
-	for (i=0; i<Thinks.length(); i++)
+	META_RES res = MRES_IGNORED;
+	int retVal = 0;
+	for (i = 0; i < Thinks.length(); i++)
 	{
-		if (Thinks[i]->Class.compare(cls)==0)
+		if (Thinks[i]->Class.compare(cls) == 0)
 		{
-			retVal=MF_ExecuteForward(Thinks[i]->Forward, (cell)TypeConversion.edict_to_id(pent));
+			retVal = MF_ExecuteForward(Thinks[i]->Forward, (cell)TypeConversion.edict_to_id(pent));
 			if (retVal & 2/*PLUGIN_HANDLED_MAIN*/)
 				RETURN_META(MRES_SUPERCEDE);
 			else if (retVal)
-				res=MRES_SUPERCEDE;
+				res = MRES_SUPERCEDE;
 		}
 	}
-	retVal=MF_ExecuteForward(pfnThinkForward, (cell)TypeConversion.edict_to_id(pent));
-	if (retVal)
-		res=MRES_SUPERCEDE;
+
+	retVal = MF_ExecuteForward(pfnThinkForward, (cell)TypeConversion.edict_to_id(pent));
+
+	if (retVal) res = MRES_SUPERCEDE;
 
 	RETURN_META(res);
 }

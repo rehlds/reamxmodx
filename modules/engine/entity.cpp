@@ -15,20 +15,15 @@
 
 int is_ent_valid(int iEnt)
 {
-	if (iEnt < 1 || iEnt > gpGlobals->maxEntities) 
-		return 0;
+	if (iEnt < 1 || iEnt > gpGlobals->maxEntities)  return 0;
 
 	if (iEnt <= gpGlobals->maxClients)
 	{
-		if (!MF_IsPlayerIngame(iEnt))
-		{
-			return 0;
-		}
-	} else {
-		if (FNullEnt(TypeConversion.id_to_edict(iEnt)))
-		{
-			return 0;
-		}
+		if (!MF_IsPlayerIngame(iEnt)) return 0;
+	}
+	else
+	{
+		if (FNullEnt(TypeConversion.id_to_edict(iEnt))) return 0;
 	}
 
 	return 1;
@@ -70,7 +65,6 @@ static cell AMX_NATIVE_CALL call_think(AMX *amx, cell *params)
 
 	return 1;
 }
-
 
 static cell AMX_NATIVE_CALL fake_touch(AMX *amx, cell *params)
 {
@@ -163,8 +157,14 @@ static cell AMX_NATIVE_CALL DispatchKeyValue(AMX *amx, cell *params)
 		CHECK_ENTITY_SIMPLE(iValue);
 
 		edict_t *pEntity = TypeConversion.id_to_edict(iValue);
+
+		if (!pEntity)
+		{
+			return 0;
+		}
+
 		KeyValueData kvd;
-		int iLength=0;
+		int iLength = 0;
 		char *char1 = MF_GetAmxString(amx, params[2], 0, &iLength);
 		char *char2 = MF_GetAmxString(amx, params[3], 1, &iLength);
 
@@ -198,7 +198,7 @@ static cell AMX_NATIVE_CALL get_keyvalue(AMX *amx, cell *params)
 	int idx = params[1];
 	CHECK_ENTITY(idx);
 	edict_t *pEntity = TypeConversion.id_to_edict(idx);
-	int iLength=0;
+	int iLength = 0;
 	char *char1 = MF_GetAmxString(amx, params[2], 1, &iLength);
 	char *val = INFO_KEY_VALUE(INFO_KEY_BUFFER(pEntity), char1);
 	return MF_SetAmxStringUTF8Char(amx, params[3], val, strlen(val), params[4]); 
@@ -211,8 +211,10 @@ static cell AMX_NATIVE_CALL copy_keyvalue(AMX *amx, cell *params)
 
 	if (g_pkvd->szClassName)
 		MF_SetAmxStringUTF8Char(amx, params[1], g_pkvd->szClassName, strlen(g_pkvd->szClassName), params[2]);
+	
 	if (g_pkvd->szKeyName)
 		MF_SetAmxStringUTF8Char(amx, params[3], g_pkvd->szKeyName, strlen(g_pkvd->szKeyName), params[4]);
+	
 	if (g_pkvd->szValue)
 		MF_SetAmxStringUTF8Char(amx, params[5], g_pkvd->szValue, strlen(g_pkvd->szValue), params[6]);
 
@@ -245,6 +247,11 @@ static cell AMX_NATIVE_CALL entity_get_float(AMX *amx, cell *params)
 	CHECK_ENTITY_SIMPLE(iEnt);
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
+
+	if (!pEnt)
+	{
+		return 0;
+	}
 
 	switch (idx)
 	{
@@ -377,6 +384,11 @@ static cell AMX_NATIVE_CALL entity_set_float(AMX *amx, cell *params)
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
 
+	if (!pEnt)
+	{
+		return 0;
+	}
+
 	switch (idx)
 	{
 		case impacttime:
@@ -508,6 +520,11 @@ static cell AMX_NATIVE_CALL entity_get_int(AMX *amx, cell *params)
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
 
+	if (!pEnt)
+	{
+		return 0;
+	}
+
 	switch (idx)
 	{
 		case gamestate:
@@ -638,6 +655,11 @@ static cell AMX_NATIVE_CALL entity_set_int(AMX *amx, cell *params)
 	CHECK_ENTITY_SIMPLE(iEnt);
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
+
+	if (!pEnt)
+	{
+		return 0;
+	}
 
 	switch (idx)
 	{
@@ -771,6 +793,11 @@ static cell AMX_NATIVE_CALL entity_get_vector(AMX *amx, cell *params)
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
 
+	if (!pEnt)
+	{
+		return 0;
+	}
+
 	switch (idx)
 	{
 		case origin:
@@ -868,6 +895,11 @@ static cell AMX_NATIVE_CALL entity_set_vector(AMX *amx, cell *params)
 	Vector vSet = Vector(fX, fY, fZ);
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
 
+	if (!pEnt)
+	{
+		return 0;
+	}
+
 	switch (idx)
 	{
 		case origin:
@@ -958,6 +990,11 @@ static cell AMX_NATIVE_CALL entity_get_string(AMX *amx, cell *params)
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
 
+	if (!pEnt)
+	{
+		return 0;
+	}
+
 	switch (idx)
 	{
 		case classname:
@@ -1020,6 +1057,11 @@ static cell AMX_NATIVE_CALL entity_set_string(AMX *amx, cell *params)
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
 	
+	if (!pEnt)
+	{
+		return 0;
+	}
+
 	switch (idx)
 	{
 		case classname:
@@ -1078,6 +1120,11 @@ static cell AMX_NATIVE_CALL entity_get_edict2(AMX *amx, cell *params)
 	CHECK_ENTITY_SIMPLE(iEnt);
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
+
+	if (!pEnt)
+	{
+		return 0;
+	}
 
 	switch (idx)
 	{
@@ -1144,7 +1191,18 @@ static cell AMX_NATIVE_CALL entity_set_edict(AMX *amx, cell *params)
 	CHECK_ENTITY_SIMPLE(iEnt);
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
+
+	if (!pEnt)
+	{
+		return 0;
+	}
+
 	edict_t *pSetEnt = TypeConversion.id_to_edict(iSetEnt);
+
+	if (!pSetEnt)
+	{
+		return 0;
+	}
 
 	switch (idx)
 	{
@@ -1199,6 +1257,11 @@ static cell AMX_NATIVE_CALL entity_get_byte(AMX *amx, cell *params)
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
 
+	if (!pEnt)
+	{
+		return 0;
+	}
+
 	switch (idx)
 	{
 		case controller1:
@@ -1235,12 +1298,15 @@ static cell AMX_NATIVE_CALL entity_set_byte(AMX *amx, cell *params)
 
 	CHECK_ENTITY_SIMPLE(iEnt);
 
-	if(iNewValue > 255)
-			iNewValue = 255;
-	if(iNewValue < 0)
-			iNewValue = 0;
-
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
+
+	if (!pEnt)
+	{
+		return 0;
+	}
+
+	if (iNewValue > 255) iNewValue = 255;
+	if (iNewValue < 0) iNewValue = 0;
 
 	switch (idx)
 	{
@@ -1277,6 +1343,12 @@ static cell AMX_NATIVE_CALL entity_set_origin(AMX *amx, cell *params)
 	CHECK_ENTITY_SIMPLE(iEnt);
 	
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
+
+	if (!pEnt)
+	{
+		return 0;
+	}
+
 	cell *vVector = MF_GetAmxAddr(amx, params[2]);
 	REAL fX = amx_ctof(vVector[0]);
 	REAL fY = amx_ctof(vVector[1]);
@@ -1296,6 +1368,12 @@ static cell AMX_NATIVE_CALL entity_set_model(AMX *amx, cell *params)
 	CHECK_ENTITY_SIMPLE(iEnt);
 	
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
+
+	if (!pEnt)
+	{
+		return 0;
+	}
+
 	int iLen;
 	char *szModel = MF_GetAmxString(amx, params[2], 0, &iLen);
 	const char *szStatic = STRING(ALLOC_STRING(szModel));
@@ -1312,6 +1390,11 @@ static cell AMX_NATIVE_CALL entity_set_size(AMX *amx, cell *params)
 	CHECK_ENTITY_SIMPLE(iEnt);
 	
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
+
+	if (!pEnt)
+	{
+		return 0;
+	}
 
 	cell *cMin = MF_GetAmxAddr(amx, params[2]);
 	REAL x1 = amx_ctof(cMin[0]);
@@ -1344,6 +1427,7 @@ static cell AMX_NATIVE_CALL find_ent_in_sphere(AMX *amx, cell *params)
 	int idx = params[1];
 
 	edict_t *pEnt = TypeConversion.id_to_edict(idx);
+
 	cell *cAddr = MF_GetAmxAddr(amx, params[2]);
 	float origin[3] = {
 		amx_ctof(cAddr[0]),
@@ -1382,7 +1466,7 @@ static cell AMX_NATIVE_CALL find_sphere_class(AMX *amx, cell *params) // find_sp
 	int len;
 	char* classToFind = MF_GetAmxString(amx, params[2], 0, &len);
 	// params[3] = radius, float...
-	REAL radius =amx_ctof(params[3]);
+	REAL radius = amx_ctof(params[3]);
 	// params[4] = store ents in this list
 	cell *entList = MF_GetAmxAddr(amx, params[4]);
 	// params[5] = maximum ents to store in entlist[] in params[4]
@@ -1402,11 +1486,15 @@ static cell AMX_NATIVE_CALL find_sphere_class(AMX *amx, cell *params) // find_sp
 	int entsFound = 0;
 	edict_t* pSearchEnt = TypeConversion.id_to_edict(0);
 
-	while (entsFound < params[5]) {
+	while (entsFound < params[5])
+	{
 		pSearchEnt = FIND_ENTITY_IN_SPHERE(pSearchEnt, vecOrigin, radius); // takes const float origin
 		if (FNullEnt(pSearchEnt))
+		{
 			break;
-		else {
+		}
+		else
+		{
 			if (strcmp(STRING(pSearchEnt->v.classname), classToFind) == 0) {
 				// Add to entlist (params[4])
 				entList[entsFound++] = TypeConversion.edict_to_id(pSearchEnt); // raise entsFound
@@ -1477,11 +1565,18 @@ static cell AMX_NATIVE_CALL find_ent_by_owner(AMX *amx, cell *params)  // native
 	CHECK_ENTITY_SIMPLE(oEnt);
 
 	edict_t *pEnt = TypeConversion.id_to_edict(iEnt);
+
 	edict_t *entOwner = TypeConversion.id_to_edict(oEnt);
+
+	if (!entOwner)
+	{
+		return 0;
+	}
 
 	//optional fourth parameter is for jghg2 compatibility
 	const char* sCategory = NULL; 
-	switch(params[4]){ 
+	switch(params[4])
+	{ 
 		case 1: sCategory = "target"; break; 
 		case 2: sCategory = "targetname"; break; 
 		default: sCategory = "classname"; 
@@ -1517,8 +1612,9 @@ static cell AMX_NATIVE_CALL get_grenade_id(AMX *amx, cell *params)  /* 4 param *
 	edict_t* pentFind = TypeConversion.id_to_edict(params[4]);
 	edict_t* pentOwner = TypeConversion.id_to_edict(index);
 
-	pentFind = FIND_ENTITY_BY_CLASSNAME( pentFind, "grenade" );
-	while (!FNullEnt(pentFind)) {
+	pentFind = FIND_ENTITY_BY_CLASSNAME(pentFind, "grenade");
+	while (!FNullEnt(pentFind))
+	{
 		if (pentFind->v.owner == pentOwner) {
 			if (params[3]>0) {
 				szModel = (char*)STRING(pentFind->v.model);
@@ -1528,6 +1624,7 @@ static cell AMX_NATIVE_CALL get_grenade_id(AMX *amx, cell *params)  /* 4 param *
 		}
 		pentFind = FIND_ENTITY_BY_CLASSNAME( pentFind, "grenade" );
 	}
+
 	return 0;
 }
 
@@ -1544,6 +1641,11 @@ static cell AMX_NATIVE_CALL set_ent_rendering(AMX *amx, cell *params) // set_ent
 	CHECK_ENTITY_SIMPLE(params[1]);
 
 	edict_t *pEntity = TypeConversion.id_to_edict(params[1]);
+
+	if (!pEntity)
+	{
+		return 0;
+	}
 
 	pEntity->v.renderfx = params[2];
 	pEntity->v.rendercolor = Vector(float(params[3]), float(params[4]), float(params[5]));
@@ -1562,7 +1664,18 @@ static cell AMX_NATIVE_CALL entity_intersects(AMX *amx, cell *params) // bool:en
 	CHECK_ENTITY_SIMPLE(params[2]);
 
 	entvars_s *pevEntity = VARS(TypeConversion.id_to_edict(params[1]));
+
+	if (!pevEntity)
+	{
+		return 0;
+	}
+
 	entvars_s *pevOther = VARS(TypeConversion.id_to_edict(params[2]));
+
+	if (!pevOther)
+	{
+		return 0;
+	}
 
 	if (pevOther->absmin.x > pevEntity->absmax.x ||
 		pevOther->absmin.y > pevEntity->absmax.y ||

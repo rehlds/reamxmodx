@@ -1589,6 +1589,7 @@ static cell AMX_NATIVE_CALL cs_set_hostage_lastuse(AMX *amx, cell *params)
 		return amx_ftoc(get_pdata<float>(pImprov, m_behavior + 4 + m_stateTimer + 0)); // m_timestamp
 
 	}
+
 	set_pdata<float>(pHostage, m_flPathAcquired, amx_ctof(params[2]));
 
 	return 1;

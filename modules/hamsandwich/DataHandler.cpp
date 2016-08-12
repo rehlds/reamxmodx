@@ -310,6 +310,11 @@ static cell AMX_NATIVE_CALL GetHamItemInfo(AMX *amx, cell *params)
 
 	ItemInfo *pItem = reinterpret_cast<ItemInfo *>(params[1]);
 
+	if (!pItem)
+	{
+		return 0;
+	}
+
 	switch (type)
 	{
 		case ItemInfo_iSlot:
@@ -385,7 +390,6 @@ static cell AMX_NATIVE_CALL FreeHamItemInfo(AMX *amx, cell *params)
 	return 1;
 }
 
-
 static cell AMX_NATIVE_CALL SetHamItemInfo(AMX *amx, cell *params)
 {
 	if (params[1] == 0)
@@ -395,6 +399,12 @@ static cell AMX_NATIVE_CALL SetHamItemInfo(AMX *amx, cell *params)
 	}
 
 	ItemInfo *pItem = reinterpret_cast<ItemInfo *>(params[1]);
+
+	if (!pItem)
+	{
+		return 0;
+	}
+
 	cell *ptr = MF_GetAmxAddr(amx, params[3]);
 	int iLen;
 
@@ -455,7 +465,8 @@ static cell AMX_NATIVE_CALL SetHamItemInfo(AMX *amx, cell *params)
 static cell AMX_NATIVE_CALL GetHamReturnStatus(AMX *amx, cell *params)
 {
 	CHECK_STACK(ReturnStatus);
-	int *i=ReturnStatus.front();
+
+	int *i = ReturnStatus.front();
 
 	return *i;
 }

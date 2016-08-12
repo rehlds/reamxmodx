@@ -120,7 +120,7 @@
 // #define FN_ClientConnect				ClientConnect				/* pfnClientConnect()			(wd) Client has connected */
 #define FN_ClientDisconnect				ClientDisconnect			/* pfnClientDisconnect()		(wd) Player has left the game */
 // #define FN_ClientKill				ClientKill					/* pfnClientKill()				(wd) Player has typed "kill" */
-// #define FN_ClientPutInServer			ClientPutInServer			/* pfnClientPutInServer()		(wd) Client is entering the game */
+#define FN_ClientPutInServer			ClientPutInServer			/* pfnClientPutInServer()		(wd) Client is entering the game */
 // #define FN_ClientCommand				ClientCommand				/* pfnClientCommand()			(wd) Player has sent a command (typed or from a bind) */
 // #define FN_ClientUserInfoChanged		ClientUserInfoChanged		/* pfnClientUserInfoChanged()	(wd) Client has updated their setinfo structure */
 // #define FN_ServerActivate			ServerActivate				/* pfnServerActivate()			(wd) Server is starting a new map */
@@ -172,12 +172,12 @@
 #define FN_ClientConnect_Post					ClientConnect_Post
 // #define FN_ClientDisconnect_Post				ClientDisconnect_Post
 #define FN_ClientKill_Post						ClientKill_Post
-#define FN_ClientPutInServer_Post				ClientPutInServer_Post
+// #define FN_ClientPutInServer_Post			ClientPutInServer_Post
 // #define FN_ClientCommand_Post				ClientCommand_Post
 #define FN_ClientUserInfoChanged_Post			ClientUserInfoChanged_Post
 #define FN_ServerActivate_Post					ServerActivate_Post
 // #define FN_ServerDeactivate_Post				ServerDeactivate_Post
-#define FN_PlayerPreThink_Post					PlayerPreThink_Post
+// #define FN_PlayerPreThink_Post				PlayerPreThink_Post
 // #define FN_PlayerPostThink_Post				PlayerPostThink_Post
 #define FN_StartFrame_Post						StartFrame_Post
 // #define FN_ParmsNewLevel_Post				ParmsNewLevel_Post
@@ -381,7 +381,7 @@
 // #define FN_DropToFloor_Post					DropToFloor_Post
 // #define FN_WalkMove_Post						WalkMove_Post
 // #define FN_SetOrigin_Post					SetOrigin_Post
-#define FN_EmitSound_Post						EmitSound_Post
+// #define FN_EmitSound_Post					EmitSound_Post
 // #define FN_EmitAmbientSound_Post				EmitAmbientSound_Post
 #define FN_TraceLine_Post						TraceLine_Post
 // #define FN_TraceToss_Post					TraceToss_Post

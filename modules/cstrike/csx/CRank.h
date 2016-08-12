@@ -15,6 +15,7 @@
 #define CRANK_H
 
 #define RANK_VERSION 11
+#define BODY_HITS_MAX 8
 
 #include "amxxmodule.h"
 
@@ -23,20 +24,20 @@
 // *****************************************************
 
 struct Stats {
-	int hits;
-	int shots;
-	int damage;
-	int hs;
-	int tks;
-	int kills;
-	int deaths;
-	int bodyHits[9]; ////////////////////
+	long hits;
+	long shots;
+	long damage;
+	long hs;
+	long tks;
+	long kills;
+	long deaths;
+	long bodyHits[BODY_HITS_MAX + 1]; ////////////////////
 	
 	// SiDLuke start
-	int bPlants;
-	int bExplosions;
-	int bDefusions;
-	int bDefused;
+	long bPlants;
+	long bExplosions;
+	long bDefusions;
+	long bDefused;
 	// SiDLuke end :D
 
 	Stats();
@@ -80,6 +81,9 @@ public:
 		inline void updatePosition(Stats* points) {
 			parent->updatePos(this , points);
 		}
+		inline void deletePosition() {
+			parent->deletePos(this);
+		}
 	};
 
 private:
@@ -100,7 +104,8 @@ private:
 	void put_before(RankStats* a, RankStats* ptr);
 	void put_after(RankStats* a, RankStats* ptr);
 	void unlink(RankStats* ptr);
-	void updatePos(RankStats* r ,  Stats* s);
+	void updatePos(RankStats* r, Stats* s);
+	void deletePos(RankStats* r);
 	
 public:
 
@@ -110,6 +115,7 @@ public:
 	void saveRank(const char* filename);
 	void loadRank(const char* filename);
 	RankStats* findEntryInRank(const char* unique, const char* name, bool isip = false);
+	RankStats* newEntryInRank(const char* unique, const char* name);
 	bool loadCalc(const char* filename, char* error);
 	inline int getRankNum() const { return rankNum; }
 	void clear();
@@ -117,12 +123,17 @@ public:
 
 	class iterator {
 		RankStats* ptr;
+
 	public:
+		iterator() {}
 		iterator(RankStats* a): ptr(a){}
 		inline iterator& operator--() { ptr = ptr->prev; return *this; }
 		inline iterator& operator++() {	ptr = ptr->next; return *this; }
 		inline RankStats& operator*() {	return *ptr; }
 		operator bool () { return (ptr != 0); }
+		iterator subs(const iterator& it, int a);
+		iterator add(const iterator& it, int a);
+		void getEntryByRank(const int rank);
 	};
 
 	inline iterator front() { return iterator(head); }

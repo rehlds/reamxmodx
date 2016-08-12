@@ -1261,6 +1261,7 @@ static cell AMX_NATIVE_CALL create_tr2(AMX *amx, cell *params)
 static cell AMX_NATIVE_CALL free_tr2(AMX *amx, cell *params)
 {
 	TraceResult *tr = reinterpret_cast<TraceResult *>(params[1]);
+
 	if (!tr)
 	{
 		return 0;
@@ -1293,14 +1294,14 @@ static cell AMX_NATIVE_CALL create_kvd(AMX *amx, cell *params)
 	return reinterpret_cast<cell>(kvdw);
 }
 
-static cell AMX_NATIVE_CALL free_kvd(AMX *amx, cell *params) {
-	if (params[1] == 0) {
-		return 0;
-	}
+static cell AMX_NATIVE_CALL free_kvd(AMX *amx, cell *params)
+{
+	if (params[1] == 0) return 0;
 
 	KVD_Wrapper *kvdw = reinterpret_cast<KVD_Wrapper *>(params[1]);
 
-	for (size_t i = 0; i < g_KVDWs.length(); ++i) {
+	for (size_t i = 0; i < g_KVDWs.length(); ++i)
+	{
 		if (g_KVDWs[i] == kvdw) {
 			g_KVDWs.remove(i);
 			g_FreeKVDWs.append(kvdw);

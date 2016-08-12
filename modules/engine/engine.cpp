@@ -35,6 +35,7 @@ edict_t *UTIL_FindEntityInSphere(edict_t *pStart, const Vector &vecCenter, float
 	pStart = FIND_ENTITY_IN_SPHERE(pStart, vecCenter, flRadius);
 
 	if (!FNullEnt(pStart)) return pStart;
+
 	return NULL;
 }
 
@@ -51,7 +52,7 @@ static cell AMX_NATIVE_CALL register_think(AMX *amx, cell *params)
 	Thinks.append(p);
 
 	if (!g_pFunctionTable->pfnThink)
-		g_pFunctionTable->pfnThink=Think;
+		g_pFunctionTable->pfnThink = Think;
 
 	return p->Forward;
 }
@@ -59,6 +60,7 @@ static cell AMX_NATIVE_CALL register_think(AMX *amx, cell *params)
 static cell AMX_NATIVE_CALL unregister_think(AMX *amx, cell *params)
 {
 	int fwd = params[1];
+
 	for (size_t i = 0; i < Thinks.length(); ++i)
 	{
 		EntClass *p = Thinks.at(i);
@@ -89,7 +91,7 @@ static cell AMX_NATIVE_CALL register_impulse(AMX *amx, cell *params)
 	Impulses.append(p);
 
 	if (!g_pFunctionTable->pfnCmdStart)
-		g_pFunctionTable->pfnCmdStart=CmdStart;
+		g_pFunctionTable->pfnCmdStart = CmdStart;
 
 	return p->Forward;
 }
@@ -101,6 +103,7 @@ static cell AMX_NATIVE_CALL unregister_impulse(AMX *amx, cell *params)
 	for (size_t i = 0; i < Impulses.length(); ++i)
 	{
 		Impulse *p = Impulses.at(i);
+
 		if (p->Forward == fwd)
 		{
 			Impulses.remove(i);
@@ -125,12 +128,12 @@ static cell AMX_NATIVE_CALL register_touch(AMX *amx, cell *params)
 
 	Touch *p = new Touch;
 
-	if (!strlen(Toucher) || strcmp(Toucher, "*")==0) {
+	if (!strlen(Toucher) || strcmp(Toucher, "*") == 0) {
 		p->Toucher = "";
 	} else {
 		p->Toucher = Toucher;
 	}
-	if (!strlen(Touched) || strcmp(Touched, "*")==0) {
+	if (!strlen(Touched) || strcmp(Touched, "*") == 0) {
 		p->Touched = "";
 	} else {
 		p->Touched = Touched;
@@ -141,7 +144,7 @@ static cell AMX_NATIVE_CALL register_touch(AMX *amx, cell *params)
 	Touches.append(p);
 
 	if (!g_pFunctionTable->pfnTouch)
-		g_pFunctionTable->pfnTouch=pfnTouch;
+		g_pFunctionTable->pfnTouch = pfnTouch;
 
 	return p->Forward;
 }
@@ -153,6 +156,7 @@ static cell AMX_NATIVE_CALL unregister_touch(AMX *amx, cell *params)
 	for (size_t i = 0; i < Touches.length(); ++i)
 	{
 		Touch *p = Touches.at(i);
+
 		if (p->Forward == fwd)
 		{
 			Touches.remove(i);
@@ -341,7 +345,8 @@ static cell AMX_NATIVE_CALL trace_line(AMX *amx, cell *params)
 	return TypeConversion.edict_to_id(pHit);
 }
 
-static cell AMX_NATIVE_CALL set_speak(AMX *amx, cell *params) { 
+static cell AMX_NATIVE_CALL set_speak(AMX *amx, cell *params)
+{
 	int iIndex = params[1];
 	int iNewSpeakFlags = params[2];
 
@@ -355,7 +360,8 @@ static cell AMX_NATIVE_CALL set_speak(AMX *amx, cell *params) {
 	return 1;
 }
 
-static cell AMX_NATIVE_CALL get_speak(AMX *amx, cell *params) {
+static cell AMX_NATIVE_CALL get_speak(AMX *amx, cell *params)
+{
 	int iIndex = params[1];
 
 	if (iIndex > gpGlobals->maxClients || !MF_IsPlayerIngame(iIndex)) {
@@ -428,6 +434,7 @@ static cell AMX_NATIVE_CALL set_view(AMX *amx, cell *params)
 	}
 
 	edict_t *pPlayer = TypeConversion.id_to_edict(iIndex);
+
 	edict_t *pNewCamera;
 
 	switch(iCameraType)
@@ -440,9 +447,8 @@ static cell AMX_NATIVE_CALL set_view(AMX *amx, cell *params)
 			if (plinfo[iIndex].iViewType != CAMERA_NONE) // Verify that they were originally in a modified view
 			{
 				g_CameraCount--;
-				if (g_CameraCount < 0)
-					g_CameraCount=0;
-				if (g_CameraCount==0) // Reset the AddToFullPack pointer if there's no more cameras in use...
+				if (g_CameraCount < 0) g_CameraCount = 0;
+				if (g_CameraCount == 0) // Reset the AddToFullPack pointer if there's no more cameras in use...
 					g_pFunctionTable_Post->pfnAddToFullPack = NULL;
 			}
 
@@ -450,17 +456,23 @@ static cell AMX_NATIVE_CALL set_view(AMX *amx, cell *params)
 			plinfo[iIndex].pViewEnt = NULL;
 			return 1;
 			break;
+
 		case CAMERA_3RDPERSON:
 			if(plinfo[iIndex].iViewType != CAMERA_NONE) {
 				plinfo[iIndex].iViewType = CAMERA_3RDPERSON;
 				return 1;
 			}
 			g_CameraCount++;
-			g_pFunctionTable_Post->pfnAddToFullPack=AddToFullPack_Post;
-			g_pFunctionTable_Post->pfnPlayerPostThink=PlayerPostThink_Post;
+			g_pFunctionTable_Post->pfnAddToFullPack = AddToFullPack_Post;
+			g_pFunctionTable_Post->pfnPlayerPostThink = PlayerPostThink_Post;
 
 			plinfo[iIndex].iViewType = CAMERA_3RDPERSON;
 			pNewCamera = CREATE_NAMED_ENTITY(MAKE_STRING("info_target"));
+			if (!pNewCamera)
+			{
+				return 0;
+			}
+
 			pNewCamera->v.classname = MAKE_STRING("VexdCam");
 
 			SET_MODEL(pNewCamera, "models/rpgrocket.mdl");
@@ -479,6 +491,7 @@ static cell AMX_NATIVE_CALL set_view(AMX *amx, cell *params)
 
 			plinfo[iIndex].pViewEnt = pNewCamera;
 			break;
+
 		case CAMERA_UPLEFT:
 			if(plinfo[iIndex].iViewType != CAMERA_NONE) {
 				plinfo[iIndex].iViewType = CAMERA_UPLEFT;
@@ -486,11 +499,16 @@ static cell AMX_NATIVE_CALL set_view(AMX *amx, cell *params)
 			}
 
 			g_CameraCount++;
-			g_pFunctionTable_Post->pfnAddToFullPack=AddToFullPack_Post;
-			g_pFunctionTable_Post->pfnPlayerPostThink=PlayerPostThink_Post;
+			g_pFunctionTable_Post->pfnAddToFullPack = AddToFullPack_Post;
+			g_pFunctionTable_Post->pfnPlayerPostThink = PlayerPostThink_Post;
 
 			plinfo[iIndex].iViewType = CAMERA_UPLEFT;
 			pNewCamera = CREATE_NAMED_ENTITY(MAKE_STRING("info_target"));
+			if (!pNewCamera)
+			{
+				return 0;
+			}
+
 			pNewCamera->v.classname = MAKE_STRING("VexdCam");
 
 			SET_MODEL(pNewCamera, "models/rpgrocket.mdl");
@@ -509,6 +527,7 @@ static cell AMX_NATIVE_CALL set_view(AMX *amx, cell *params)
 
 			plinfo[iIndex].pViewEnt = pNewCamera;
 			break;
+
 		case CAMERA_TOPDOWN:
 			if(plinfo[iIndex].iViewType != CAMERA_NONE) {
 				plinfo[iIndex].iViewType = CAMERA_TOPDOWN;
@@ -516,11 +535,16 @@ static cell AMX_NATIVE_CALL set_view(AMX *amx, cell *params)
 			}
 
 			g_CameraCount++;
-			g_pFunctionTable_Post->pfnAddToFullPack=AddToFullPack_Post;
-			g_pFunctionTable_Post->pfnPlayerPostThink=PlayerPostThink_Post;
+			g_pFunctionTable_Post->pfnAddToFullPack = AddToFullPack_Post;
+			g_pFunctionTable_Post->pfnPlayerPostThink = PlayerPostThink_Post;
 
 			plinfo[iIndex].iViewType = CAMERA_TOPDOWN;
 			pNewCamera = CREATE_NAMED_ENTITY(MAKE_STRING("info_target"));
+			if (!pNewCamera)
+			{
+				return 0;
+			}
+
 			pNewCamera->v.classname = MAKE_STRING("VexdCam");
 
 			SET_MODEL(pNewCamera, "models/rpgrocket.mdl");
@@ -587,7 +611,7 @@ static cell AMX_NATIVE_CALL trace_hull(AMX *amx,cell *params)
 		CHECK_ENTITY(iEnt);
 	}
 
-	int iResult=0;
+	int iResult = 0;
 	Vector vStart;
 	Vector vEnd;
 	cell *vCell;
@@ -608,18 +632,14 @@ static cell AMX_NATIVE_CALL trace_hull(AMX *amx,cell *params)
 	else
 		vEnd = vStart;
 
-
 	TRACE_HULL(vStart, vEnd, params[4], params[2], iEnt > 0 ? TypeConversion.id_to_edict(iEnt) : NULL, &g_tr);
 
-	if (g_tr.fStartSolid) {
-		iResult += 1;
-	}
-	if (g_tr.fAllSolid) {
-		iResult += 2;
-	}
-	if (!g_tr.fInOpen) {
-		iResult += 4;
-	}
+	if (g_tr.fStartSolid) iResult += 1;
+	
+	if (g_tr.fAllSolid) iResult += 2;
+	
+	if (!g_tr.fInOpen) iResult += 4;
+	
 	return iResult;
 }
 
@@ -646,23 +666,23 @@ static cell AMX_NATIVE_CALL playback_event(AMX *amx, cell *params)
 	if (params[2] > 0) {
 		CHECK_ENTITY(params[2]);
 	}
-	pInvoker=TypeConversion.id_to_edict(params[2]);
-	eventindex=params[3];
-	delay=amx_ctof(params[4]);
-	cell *cOrigin=MF_GetAmxAddr(amx, params[5]);
-	cell *cAngles=MF_GetAmxAddr(amx, params[6]);
-	origin.x=amx_ctof(cOrigin[0]);
-	origin.y=amx_ctof(cOrigin[1]);
-	origin.z=amx_ctof(cOrigin[2]);
-	angles.x=amx_ctof(cAngles[0]);
-	angles.y=amx_ctof(cAngles[1]);
-	angles.z=amx_ctof(cAngles[2]);
-	fparam1=amx_ctof(params[7]);
-	fparam2=amx_ctof(params[8]);
-	iparam1=params[9];
-	iparam2=params[10];
-	bparam1=params[11];
-	bparam2=params[12];
+	pInvoker = TypeConversion.id_to_edict(params[2]);
+	eventindex = params[3];
+	delay = amx_ctof(params[4]);
+	cell *cOrigin = MF_GetAmxAddr(amx, params[5]);
+	cell *cAngles = MF_GetAmxAddr(amx, params[6]);
+	origin.x = amx_ctof(cOrigin[0]);
+	origin.y = amx_ctof(cOrigin[1]);
+	origin.z = amx_ctof(cOrigin[2]);
+	angles.x = amx_ctof(cAngles[0]);
+	angles.y = amx_ctof(cAngles[1]);
+	angles.z = amx_ctof(cAngles[2]);
+	fparam1 = amx_ctof(params[7]);
+	fparam2 = amx_ctof(params[8]);
+	iparam1 = params[9];
+	iparam2 = params[10];
+	bparam1 = params[11];
+	bparam2 = params[12];
 	PLAYBACK_EVENT_FULL(flags, pInvoker,eventindex, delay, origin, angles, fparam1, fparam2, iparam1, iparam2, bparam1, bparam2);
 	return 1;
 }
@@ -670,9 +690,10 @@ static cell AMX_NATIVE_CALL playback_event(AMX *amx, cell *params)
 //(mahnsawce)
 static cell AMX_NATIVE_CALL get_usercmd(AMX *amx, cell *params)
 {
-	if (!incmd)
-		return 0;
+	if (!incmd) return 0;
+
 	int type = params[1];
+
 	if (type > usercmd_int_start && type < usercmd_int_end)
 	{
 		// Requesting an integer value...
@@ -740,9 +761,10 @@ static cell AMX_NATIVE_CALL get_usercmd(AMX *amx, cell *params)
 
 static cell AMX_NATIVE_CALL set_usercmd(AMX *amx, cell *params)
 {
-	if (!incmd)
-		return 0;
+	if (!incmd) return 0;
+
 	int type = params[1];
+
 	if (type > usercmd_int_start && type < usercmd_int_end)
 	{
 		// Setting an integer value...
@@ -828,8 +850,7 @@ static cell AMX_NATIVE_CALL is_visible(AMX *amx, cell *params)
 	edict_t *pEntity = TypeConversion.id_to_edict(src);
 	edict_t *pTarget = TypeConversion.id_to_edict(dest);
 
-	if (pTarget->v.flags & FL_NOTARGET)
-		return 0;
+	if (pTarget->v.flags & FL_NOTARGET) return 0;
 
 	Vector vLooker = pEntity->v.origin + pEntity->v.view_ofs;
 	Vector vTarget = pTarget->v.origin + pTarget->v.view_ofs;
@@ -1003,7 +1024,7 @@ static cell AMX_NATIVE_CALL trace_forward(AMX *amx, cell *params)
    REAL fRetY;
    REAL fRetZ;
 
-   for(int inum=-36;inum<=36;inum++)
+   for(int inum = -36; inum <= 36; inum++)
    {
 	  REAL fUseZ = fStartZ + (REAL)inum;
 	  Vector vStart =  Vector(fStartX, fStartY, fUseZ);
@@ -1013,6 +1034,7 @@ static cell AMX_NATIVE_CALL trace_forward(AMX *amx, cell *params)
 		  TRACE_LINE(vStart, vEnd, dont_ignore_monsters, TypeConversion.id_to_edict(iIgnoreEnt), &tr);
 	  else
 		  TRACE_LINE(vStart, vEnd, ignore_monsters, NULL, &tr);
+
 	  fRetX = tr.vecEndPos.x;
 	  fRetY = tr.vecEndPos.y;
 	  fRetZ = tr.vecEndPos.z;
@@ -1039,6 +1061,7 @@ static cell AMX_NATIVE_CALL trace_forward(AMX *amx, cell *params)
    *shortestDistance = amx_ftoc(fClosestDist);
    *shortestDistLow = amx_ftoc(fClosestLow);
    *shortestDistHigh = amx_ftoc(fClosestHigh);
+
    return 1;
 }
 

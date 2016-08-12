@@ -47,7 +47,7 @@ static cell AMX_NATIVE_CALL lookup_sequence(AMX* amx, cell* params)
 
 	for (int i = 0; i < pstudiohdr->numseq; i++)
 	{
-		if (strcasecmp( pseqdesc[i].label, label ) == 0)
+		if (strcasecmp(pseqdesc[i].label, label) == 0)
 		{
 			REAL* FrameRate = reinterpret_cast<REAL*>(MF_GetAmxAddr(amx, params[3]));
 			cell* Loops = MF_GetAmxAddr(amx, params[4]);
@@ -75,6 +75,7 @@ static cell AMX_NATIVE_CALL set_controller(AMX* amx, cell* params)
 //	SetController( void *pmodel, entvars_t *pev, int iController, float flValue )
 	int entindex = params[1];
 	CHECK_ENTITY(entindex);
+
 	edict_t* entity = TypeConversion.id_to_edict(entindex);
 
 	int iController = params[2];

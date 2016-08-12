@@ -549,7 +549,7 @@ static cell AMX_NATIVE_CALL IsHamValid(AMX *amx, cell *params)
 
 	if (func >= 0 && 
 		func < HAM_LAST_ENTRY_DONT_USE_ME_LOL &&
-		hooklist[func].isset!=0)
+		hooklist[func].isset != 0)
 	{
 		return 1;
 	}

@@ -206,7 +206,8 @@ static cell AMX_NATIVE_CALL give_item(AMX *amx, cell *params) // native give_ite
 		/* &&
 		strncmp(szItem, "tf_weapon_", 10)
 		*/
-	) {
+		)
+	{
 		return 0;
 	}
 
@@ -787,14 +788,6 @@ void OnPluginsLoaded()
 
 	g_pFunctionTable->pfnPlayerPreThink = NULL;
 }
-/*
-void ClientConnectFakeBot(int index)
-{
-	FUNUTIL_ResetPlayer(index);
-	//MF_Log("A bot connects, forwarded to fun! The bot is %d!", index);
-	//CPlayer* player;
-}
-*/
 
 void ServerDeactivate()
 {

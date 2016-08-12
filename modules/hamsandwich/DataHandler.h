@@ -61,8 +61,7 @@ private:
 
 	bool IsSet(void)
 	{
-		return (m_type != RET_VOID &&
-				m_data != NULL);
+		return (m_type != RET_VOID && m_data != NULL);
 	};
 	bool IsType(const int type)
 	{
@@ -98,7 +97,7 @@ public:
 		}
 		if (IsType(RET_INTEGER))
 		{
-			*(reinterpret_cast<int *>(m_data))=*data;
+			*(reinterpret_cast<int *>(m_data)) = *data;
 			return 0;
 		}
 		else if (IsType(RET_BOOL))
@@ -118,7 +117,7 @@ public:
 		}
 		else if (IsType(RET_TRACE))
 		{
-			*(reinterpret_cast<int *>(m_data))=*data;
+			*(reinterpret_cast<int *>(m_data)) = *data;
 			return 0;
 		}
 
@@ -127,28 +126,20 @@ public:
 
 	int SetFloat(cell *data)
 	{
-		if (!IsSet())
-		{
-			return -2;
-		}
-		if (!IsType(RET_FLOAT))
-		{
-			return -1;
-		}
-		*(reinterpret_cast<REAL *>(m_data))=amx_ctof(*data);
+		if (!IsSet()) return -2;
+		
+		if (!IsType(RET_FLOAT)) return -1;
+
+		*(reinterpret_cast<REAL *>(m_data)) = amx_ctof(*data);
 
 		return 0;
 	};
 	int SetVector(cell *data)
 	{
-		if (!IsSet())
-		{
-			return -2;
-		}
-		if (!IsType(RET_VECTOR))
-		{
-			return -1;
-		}
+		if (!IsSet()) return -2;
+		
+		if (!IsType(RET_VECTOR)) return -1;
+		
 		Vector *vec=reinterpret_cast<Vector *>(m_data);
 
 		vec->x=amx_ctof(data[0]);
@@ -159,30 +150,26 @@ public:
 	};
 	int SetString(cell *data)
 	{
-		if (!IsSet())
-		{
-			return -2;
-		}
-		if (!IsType(RET_STRING))
-		{
-			return -1;
-		}
-
+		if (!IsSet()) return -2;
+		
+		if (!IsType(RET_STRING)) return -1;
+		
 		ke::AString *str=reinterpret_cast<ke::AString *>(m_data);
 
-		cell *i=data;
-		size_t len=0;
+		cell *i = data;
+		size_t len = 0;
 
-		while (*i!=0)
+		while (*i != 0)
 		{
 			i++;
 			len++;
 		};
-		char *temp=new char[len+1];
-		i=data;
-		char *j=temp;
 
-		while ((*j++=*i++)!=0)
+		char *temp = new char[len + 1];
+		i = data;
+		char *j = temp;
+
+		while ((*j++=*i++) != 0)
 		{
 			/* nothing */
 		}
@@ -196,38 +183,30 @@ public:
 
 	int SetEntity(cell *data)
 	{
-		if (!IsSet())
-		{
-			return -2;
-		}
+		if (!IsSet()) return -2;
+		
 		if (IsType(RET_CBASE))
 		{
 			*(reinterpret_cast<void **>(m_data))= TypeConversion.id_to_cbase(*data);
-			if (m_index != 0)
-			{
-				*m_index=*data;
-			}
 
+			if (m_index != 0) *m_index=*data;
+			
 			return 0;
 		}
 		else if (IsType(RET_ENTVAR))
 		{
 			*(reinterpret_cast<entvars_t **>(m_data))= TypeConversion.id_to_entvars(*data);
-			if (m_index != 0)
-			{
-				*m_index=*data;
-			}
 
+			if (m_index != 0) *m_index=*data;
+			
 			return 0;
 		}
 		else if (IsType(RET_EDICT))
 		{
 			*(reinterpret_cast<edict_t **>(m_data)) = TypeConversion.id_to_edict(*data);
-			if (m_index != 0)
-			{
-				*m_index = *data;
-			}
 
+			if (m_index != 0) *m_index = *data;
+			
 			return 0;
 		}
 		return -1;
@@ -235,10 +214,8 @@ public:
 
 	int GetInt(cell *data)
 	{
-		if (!IsSet())
-		{
-			return -2;
-		}
+		if (!IsSet()) return -2;
+		
 		if (IsType(RET_INTEGER))
 		{
 			*data=*(reinterpret_cast<int *>(m_data));
@@ -275,28 +252,20 @@ public:
 	};
 	int GetFloat(cell *data)
 	{
-		if (!IsSet())
-		{
-			return -2;
-		}
-		if (!IsType(RET_FLOAT))
-		{
-			return -1;
-		}
+		if (!IsSet()) return -2;
+		
+		if (!IsType(RET_FLOAT)) return -1;
+		
 		*data=amx_ftoc(*(reinterpret_cast<REAL *>(m_data)));
 
 		return 0;
 	};
 	int GetVector(cell *data)
 	{
-		if (!IsSet())
-		{
-			return -2;
-		}
-		if (!IsType(RET_VECTOR))
-		{
-			return -1;
-		}
+		if (!IsSet()) return -2;
+		
+		if (!IsType(RET_VECTOR)) return -1;
+		
 		Vector *vec=reinterpret_cast<Vector *>(m_data);
 		data[0]=amx_ftoc(vec->x);
 		data[1]=amx_ftoc(vec->y);
@@ -306,18 +275,13 @@ public:
 	};
 	int GetString(cell *data, int len)
 	{
-		if (!IsSet())
-		{
-			return -2;
-		}
-		if (!IsType(RET_STRING))
-		{
-			return -1;
-		}
-		const char *i=(reinterpret_cast<ke::AString *>(m_data)->chars());
+		if (!IsSet()) return -2;
+		
+		if (!IsType(RET_STRING)) return -1;
+		
+		const char *i = (reinterpret_cast<ke::AString *>(m_data)->chars());
 
-		while (len-- &&
-			  (*data++=*i++)!='\0')
+		while (len-- && (*data++=*i++) != '\0')
 		{
 			/* nothing */
 		};
@@ -325,10 +289,8 @@ public:
 	};
 	int GetEntity(cell *data)
 	{
-		if (!IsSet())
-		{
-			return -2;
-		}
+		if (!IsSet()) return -2;
+		
 		if (IsType(RET_CBASE))
 		{
 			*data= TypeConversion.cbase_to_id(m_data);

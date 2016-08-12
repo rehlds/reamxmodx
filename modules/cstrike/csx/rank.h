@@ -18,8 +18,19 @@
 #include "CMisc.h"
 #include "CRank.h"
 
+#if defined(__linux__)
+	#define EXTRAOFFSET					5
+#else
+	#define EXTRAOFFSET					0
+#endif
+
+#define OFFSET_TEAM						114 + EXTRAOFFSET
+#define OFFSET_CSDEATHS					444 + EXTRAOFFSET
+
 #define GET_PLAYER_POINTER(e)   (&players[ENTINDEX(e)])
 #define GET_PLAYER_POINTER_I(i) (&players[i])
+
+const char* get_localinfo(const char* name, const char* def = 0);
 
 extern AMX_NATIVE_INFO stats_Natives[];
 
@@ -31,7 +42,7 @@ struct weaponsVault {
   bool melee;
 };
 
-extern bool rankBots;
+extern bool g_rankBots;
 extern cvar_t* csstats_rankbots;
 extern cvar_t* csstats_pause;
 
@@ -55,7 +66,7 @@ extern int g_Defuser;
 #define BOMB_DEFUSING	4
 #define BOMB_DEFUSED	5
 
-extern weaponsVault weaponData[MAX_WEAPONS+MAX_CWEAPONS];
+extern weaponsVault weaponData[MAX_WEAPONS + MAX_CWEAPONS];
 
 typedef void (*funEventCall)(void*);
 extern funEventCall modMsgsEnd[MAX_REG_MSGS];
@@ -71,6 +82,8 @@ extern cvar_t* csstats_reset;
 extern Grenades g_grenades;
 
 extern RankSystem g_rank;
+
+extern Stats null;
 
 extern CPlayer players[33];
 
@@ -106,8 +119,9 @@ void Client_TextMsg(void*);
 void Client_BarTime(void*);
 void Client_DeathMsg(void*);
 
-bool ignoreBots (edict_t *pEnt, edict_t *pOther = NULL );
+bool ignoreBots (edict_t *pEnt, edict_t *pOther = NULL);
 bool isModuleActive();
+bool IsValidAuth(const char *authid);
 
 #define CHECK_ENTITY(x) \
 	if (x < 0 || x > gpGlobals->maxEntities) { \
@@ -160,6 +174,3 @@ bool isModuleActive();
 	((n >= 1 && n <= gpGlobals->maxClients) ? MF_GetPlayerEdict(n) : INDEXENT(n))
 
 #endif // RANK_H
-
-
-

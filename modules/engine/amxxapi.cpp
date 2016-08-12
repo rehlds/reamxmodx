@@ -33,11 +33,13 @@ void ClearHooks()
 {
 	size_t i;
 
-	for (i=0; i<Touches.length(); i++)
+	for (i = 0; i < Touches.length(); i++)
 		delete Touches[i];
-	for (i=0; i<Impulses.length(); i++)
+
+	for (i = 0; i < Impulses.length(); i++)
 		delete Impulses[i];
-	for (i=0; i<Thinks.length(); i++)
+
+	for (i = 0; i < Thinks.length(); i++)
 		delete Thinks[i];
 
 	Touches.clear();
@@ -112,48 +114,48 @@ void OnPluginsLoaded()
 
 	g_pFunctionTable_Post->pfnAddToFullPack = NULL;
 
-	g_pFunctionTable->pfnKeyValue=NULL;
+	g_pFunctionTable->pfnKeyValue = NULL;
 	if (CheckForPublic("pfn_keyvalue"))
-		g_pFunctionTable->pfnKeyValue=KeyValue;
+		g_pFunctionTable->pfnKeyValue = KeyValue;
 
-	g_pengfuncsTable->pfnPlaybackEvent=NULL; // "pfn_playbackevent"
+	g_pengfuncsTable->pfnPlaybackEvent = NULL; // "pfn_playbackevent"
 	if (CheckForPublic("pfn_playbackevent"))
-		g_pengfuncsTable->pfnPlaybackEvent=PlaybackEvent;
+		g_pengfuncsTable->pfnPlaybackEvent = PlaybackEvent;
 
-	g_pFunctionTable->pfnPlayerPreThink=NULL; // "client_PreThink"
+	g_pFunctionTable->pfnPlayerPreThink = NULL; // "client_PreThink"
 	if (CheckForPublic("client_PreThink"))
-		g_pFunctionTable->pfnPlayerPreThink=PlayerPreThink;
+		g_pFunctionTable->pfnPlayerPreThink = PlayerPreThink;
 
-	g_pFunctionTable_Post->pfnPlayerPostThink=NULL; // "client_PostThink"
+	g_pFunctionTable_Post->pfnPlayerPostThink = NULL; // "client_PostThink"
 	if (CheckForPublic("client_PostThink"))
-		g_pFunctionTable->pfnPlayerPostThink=PlayerPostThink_Post;
+		g_pFunctionTable->pfnPlayerPostThink = PlayerPostThink_Post;
 
-	g_pFunctionTable->pfnSpawn=NULL; // "pfn_spawn"
+	g_pFunctionTable->pfnSpawn = NULL; // "pfn_spawn"
 	//if (CheckForPublic("pfn_spawn")) // JGHG: I commented this if out because we always need the Spawn to precache the rocket mdl used with SetView native
-	g_pFunctionTable->pfnSpawn=Spawn;
+	g_pFunctionTable->pfnSpawn = Spawn;
 
-	g_pFunctionTable->pfnClientKill=NULL; // "client_kill"
+	g_pFunctionTable->pfnClientKill = NULL; // "client_kill"
 	if (CheckForPublic("client_kill"))
-		g_pFunctionTable->pfnClientKill=ClientKill;
+		g_pFunctionTable->pfnClientKill = ClientKill;
 
-	g_pFunctionTable->pfnCmdStart=NULL; // "client_impulse","register_impulse","client_cmdStart"
+	g_pFunctionTable->pfnCmdStart = NULL; // "client_impulse","register_impulse","client_cmdStart"
 	if (CheckForPublic("client_impulse") || CheckForPublic("client_cmdStart"))
-		g_pFunctionTable->pfnCmdStart=CmdStart;
+		g_pFunctionTable->pfnCmdStart = CmdStart;
 	
-	g_pFunctionTable->pfnThink=NULL; // "pfn_think", "register_think"
+	g_pFunctionTable->pfnThink = NULL; // "pfn_think", "register_think"
 	if (CheckForPublic("pfn_think"))
-		g_pFunctionTable->pfnThink=Think;
+		g_pFunctionTable->pfnThink = Think;
 
-	g_pFunctionTable->pfnStartFrame=NULL; // "server_frame","ServerFrame"
+	g_pFunctionTable->pfnStartFrame = NULL; // "server_frame","ServerFrame"
 	if (CheckForPublic("server_frame") || CheckForPublic("ServerFrame"))
-		g_pFunctionTable->pfnStartFrame=StartFrame;
+		g_pFunctionTable->pfnStartFrame = StartFrame;
 
-	g_pFunctionTable->pfnTouch=NULL; // "pfn_touch","vexd_pfntouch"
+	g_pFunctionTable->pfnTouch = NULL; // "pfn_touch","vexd_pfntouch"
 	if (CheckForPublic("pfn_touch"))
-		g_pFunctionTable->pfnTouch=pfnTouch;
+		g_pFunctionTable->pfnTouch = pfnTouch;
 
 	if (CheckForPublic("vexd_pfntouch"))
-		g_pFunctionTable->pfnTouch=pfnTouch;
+		g_pFunctionTable->pfnTouch = pfnTouch;
 }
 
 qboolean Voice_SetClientListening(int iReceiver, int iSender, qboolean bListen)
@@ -178,7 +180,7 @@ qboolean Voice_SetClientListening(int iReceiver, int iSender, qboolean bListen)
 
 int AddToFullPack_Post(struct entity_state_s *state, int e, edict_t *ent, edict_t *host, int hostflags, int player, unsigned char *pSet)
 {
-	if( player && ent && ent == host && plinfo[TypeConversion.edict_to_id(ent)].iViewType != CAMERA_NONE )
+	if(player && ent && ent == host && plinfo[TypeConversion.edict_to_id(ent)].iViewType != CAMERA_NONE )
 	{
 		state->rendermode = kRenderTransTexture;
 		state->renderamt = 100;
@@ -194,9 +196,10 @@ void ClientDisconnect(edict_t *pEntity)
 	if (plinfo[id].iViewType != CAMERA_NONE) // Verify that they were originally in a modified view
 	{
 		g_CameraCount--;
-		if (g_CameraCount < 0)
-			g_CameraCount=0;
-		if (g_CameraCount==0) // Reset the AddToFullPack pointer if there's no more cameras in use...
+
+		if (g_CameraCount < 0) g_CameraCount = 0;
+
+		if (g_CameraCount == 0) // Reset the AddToFullPack pointer if there's no more cameras in use...
 			g_pFunctionTable_Post->pfnAddToFullPack = NULL;
 	}
 
@@ -225,16 +228,16 @@ void ServerDeactivate()
 	
 	// Reset all forwarding function tables (so that forwards won't be called before plugins are initialized)
 	g_pFunctionTable_Post->pfnAddToFullPack = NULL;
-	g_pFunctionTable->pfnKeyValue=NULL;
-	g_pengfuncsTable->pfnPlaybackEvent=NULL; // "pfn_playbackevent"
-	g_pFunctionTable->pfnPlayerPreThink=NULL; // "client_PreThink"
-	g_pFunctionTable_Post->pfnPlayerPostThink=NULL; // "client_PostThink"
-	g_pFunctionTable->pfnSpawn=NULL; // "pfn_spawn"
-	g_pFunctionTable->pfnClientKill=NULL; // "client_kill"
-	g_pFunctionTable->pfnCmdStart=NULL; // "client_impulse","register_impulse"
-	g_pFunctionTable->pfnThink=NULL; // "pfn_think", "register_think"
-	g_pFunctionTable->pfnStartFrame=NULL; // "server_frame","ServerFrame"
-	g_pFunctionTable->pfnTouch=NULL; // "pfn_touch","vexd_pfntouch"
+	g_pFunctionTable->pfnKeyValue = NULL;
+	g_pengfuncsTable->pfnPlaybackEvent = NULL; // "pfn_playbackevent"
+	g_pFunctionTable->pfnPlayerPreThink = NULL; // "client_PreThink"
+	g_pFunctionTable_Post->pfnPlayerPostThink = NULL; // "client_PostThink"
+	g_pFunctionTable->pfnSpawn = NULL; // "pfn_spawn"
+	g_pFunctionTable->pfnClientKill = NULL; // "client_kill"
+	g_pFunctionTable->pfnCmdStart = NULL; // "client_impulse","register_impulse"
+	g_pFunctionTable->pfnThink = NULL; // "pfn_think", "register_think"
+	g_pFunctionTable->pfnStartFrame = NULL; // "server_frame","ServerFrame"
+	g_pFunctionTable->pfnTouch = NULL; // "pfn_touch","vexd_pfntouch"
 
 	ClearHooks();
 
@@ -269,11 +272,12 @@ BOOL CheckForPublic(const char *publicname)
 {
 	AMX* amx;
 	char blah[64];
-	strncpy(blah,publicname,63);
+	strncpy(blah, publicname, 63);
 	int iFunctionIndex;
-	int i=0;
+	int i = 0;
+
 	// Loop through all running scripts
-	while((amx=MF_GetScriptAmx(i++))!=NULL)
+	while((amx = MF_GetScriptAmx(i++)) != NULL)
 	{ 
 		// Scan for public
 		if (MF_AmxFindPublic(amx, blah, &iFunctionIndex) == AMX_ERR_NONE)

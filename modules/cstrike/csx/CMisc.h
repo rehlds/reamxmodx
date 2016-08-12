@@ -35,9 +35,10 @@ struct CPlayer {
 	int index;
 	int aiming;
 	int current;
-	bool bot;
-	float clearStats;
-	RankSystem::RankStats*	rank;
+	bool m_bInit;
+	bool m_bIngame;
+	bool m_bIsBot;
+	RankSystem::RankStats* rank;
 
 	struct PlayerWeapon : Stats {
 		const char* name;
@@ -53,8 +54,8 @@ struct CPlayer {
 
 	int teamId;
 
-	void Init(  int pi, edict_t* pe );
-	void Connect(const char* ip );
+	void Init(int pi, edict_t* pe);
+	void Connect(const char* ip);
 	void PutInServer();
 	void Disconnect();
 	void saveKill(CPlayer* pVictim, int weapon, int hs, int tk);
@@ -67,15 +68,16 @@ struct CPlayer {
 	void saveBDefused();
 
 	void restartStats(bool all = true);
+	void setScore(int a = -1, int b = -1);
 
 	inline bool IsBot() {
 		const char* auth= (*g_engfuncs.pfnGetPlayerAuthId)(pEdict);
-		return ( (auth && !strcmp( auth , "BOT" )) || // AuthID of "BOT"
-				 (pEdict->v.flags & FL_FAKECLIENT));  // FL_FAKECLIENT flag set
+		return ((auth && *auth != '\0' && !strcmp(auth, "BOT"))
+			|| (pEdict->v.flags & FL_FAKECLIENT));			
 	}
 
 	inline bool IsAlive() {
-		return (pEdict->v.deadflag == DEAD_NO && pEdict->v.health > 0);
+		return (m_bIngame && pEdict->v.deadflag == DEAD_NO && pEdict->v.health > 0);
 	}
 };
 
@@ -104,6 +106,4 @@ public:
 };
 
 #endif // CMISC_H
-
-
 

@@ -21,7 +21,7 @@ void Grenades::put(edict_t* grenade, float time, int type, CPlayer* player)
 {
   Obj* a = new Obj;
 
-  if ( a == 0 ) return;
+  if (a == 0) return;
 
   a->player = player;
   a->grenade = grenade;
@@ -50,11 +50,14 @@ bool Grenades::find(edict_t* enemy, CPlayer** p, int* type)
         *type = a->type;
       }
     }
-    else {
+    else
+	{
       Obj* next = a->next;
 
-      if (a->prev)  a->prev->next = next;
-      else  head = next;
+      if (a->prev)
+		  a->prev->next = next;
+      else
+		  head = next;
 
       if (next) next->prev = a->prev;
 
@@ -83,50 +86,13 @@ void Grenades::clear()
 // class CPlayer
 // *****************************************************
 
-void CPlayer::Disconnect()
+void CPlayer::Connect(const char* address)
 {
-	if ( ignoreBots(pEdict) || !isModuleActive() ) // ignore if he is bot and bots rank is disabled or module is paused
-		return;
+	m_bInit = true;
+	m_bIngame = false;
+	m_bIsBot = false;
 
-	if (rank != 0) // Just a sanity check, FL_FAKECLIENT is notoriously unreliable.
-	{
-		rank->updatePosition(&life);
-	}
-
-	rank = 0;
-}
-
-void CPlayer::PutInServer()
-{
-	//if ( ignoreBots(pEdict) )
-	if ((int)csstats_rankbots->value == 0 && IsBot())
-		return;
-
-	restartStats();
-
-	const char* name = STRING(pEdict->v.netname);
-	const char* unique = name;
-	bool isip = false;
-
-	switch((int)csstats_rank->value)
-	{
-		case 1: 
-			if ((unique = GETPLAYERAUTHID(pEdict)) == 0)
-				unique = name; // failed to get authid
-			break;
-
-		case 2:
-			unique = ip;
-			isip = true;
-	}
-
-	rank = g_rank.findEntryInRank(unique , name , isip);
-}
-
-void CPlayer::Connect(const char* address )
-{
-	bot = IsBot();
-	strcpy(ip,address);
+	strcpy(ip, address);
 
 	// Strip the port from the ip
 	for (size_t i = 0; i < sizeof(ip); i++)
@@ -139,31 +105,102 @@ void CPlayer::Connect(const char* address )
 	}
 
 	rank = 0;
-	clearStats = 0.0f;
+}
+
+void CPlayer::PutInServer()
+{
+	if (m_bIsBot && g_rankBots == false) return;
+
+	m_bIngame = true;
+
+	restartStats();
+
+	const char* name = STRING(pEdict->v.netname);
+
+	if (name == NULL)
+	{
+		return;
+	}
+
+	const char* unique = name;
+	bool isip = false;
+
+	switch((int)csstats_rank->value)
+	{
+		case 1: 
+			unique = GETPLAYERAUTHID(pEdict);
+			if (!unique || !IsValidAuth(unique))
+			{
+				unique = name;
+			}
+			break;
+
+		case 2:
+			unique = ip;
+			isip = true;
+			break;
+
+		default:
+			break;
+	}
+
+	rank = g_rank.findEntryInRank(unique, name, isip);
+
+	if (!rank)
+	{
+		rank = g_rank.newEntryInRank(unique, name);
+
+		if (rank)
+		{
+			rank->updatePosition(&null);
+		}
+	}
+}
+
+void CPlayer::Disconnect()
+{
+	m_bInit = false;
+	m_bIngame = false;
+
+	if (m_bIsBot && g_rankBots == false)
+	{
+		m_bIsBot = false;
+		rank = 0;
+		return;
+	}
+
+	m_bIsBot = false;
+
+	if (rank == 0 || !isModuleActive()) return;
+
+	rank->updatePosition(&life);
+
+	rank = 0;
 }
 
 void CPlayer::restartStats(bool all)
 {
-	if ( all ) memset(weapons,0,sizeof(weapons));
-	memset(weaponsRnd,0,sizeof(weaponsRnd));   //DEC-Weapon (Round) stats
-	memset(attackers,0,sizeof(attackers));
-	memset(victims,0,sizeof(victims));
-	memset(&life,0,sizeof(life));
+	if (all) memset(weapons, 0, sizeof(weapons));
+	memset(weaponsRnd, 0, sizeof(weaponsRnd)); //DEC-Weapon (Round) stats
+	memset(attackers, 0, sizeof(attackers));
+	memset(victims, 0, sizeof(victims));
+	memset(&life, 0, sizeof(life));
 }
 
-void CPlayer::Init( int pi, edict_t* pe )
+void CPlayer::Init(int pi, edict_t* pe)
 {
+	m_bInit = false;
+	m_bIngame = false;
+	m_bIsBot = false;
     pEdict = pe;
     index = pi;
 	current = 0;
-	clearStats = 0.0f;
 	rank = 0;
 }
 
 void CPlayer::saveKill(CPlayer* pVictim, int wweapon, int hhs, int ttk)
 {
-	if (!isModuleActive() || ignoreBots(pEdict, pVictim->pEdict))
-		return;
+	if (!isModuleActive() || ignoreBots(pEdict, pVictim->pEdict)) return;
 
 	if (pVictim->index == index) { // killed self
 		pVictim->weapons[0].deaths++;
@@ -215,10 +252,9 @@ void CPlayer::saveKill(CPlayer* pVictim, int wweapon, int hhs, int ttk)
 
 void CPlayer::saveHit(CPlayer* pVictim, int wweapon, int ddamage, int bbody)
 {
-	if (!isModuleActive() || ignoreBots(pEdict, pVictim->pEdict))
-		return;
-
-	if (index == pVictim->index) return;
+	if (!isModuleActive()
+		|| ignoreBots(pEdict, pVictim->pEdict)
+		|| index == pVictim->index) return;
 
 	pVictim->attackers[index].hits++;
 	pVictim->attackers[index].damage += ddamage;
@@ -256,46 +292,40 @@ void CPlayer::saveHit(CPlayer* pVictim, int wweapon, int ddamage, int bbody)
 
 void CPlayer::saveShot(int weapon)
 {
-	if (!isModuleActive() || ignoreBots(pEdict))
-		return;
+	if (!isModuleActive() || ignoreBots(pEdict)) return;
 
 	victims[0].shots++;
 	weapons[weapon].shots++;
 	weapons[0].shots++;
 	life.shots++;
-	weaponsRnd[weapon].shots++;       // DEC-Weapon (round) stats
-	weaponsRnd[0].shots++;            // DEC-Weapon (round) stats
+	weaponsRnd[weapon].shots++; // DEC-Weapon (round) stats
+	weaponsRnd[0].shots++;		// DEC-Weapon (round) stats
 }
-
 
 void CPlayer::saveBPlant()
 {
-	if (!isModuleActive())
-		return;
+	if (!isModuleActive()) return;
 
 	life.bPlants++;
 }
 
 void CPlayer::saveBExplode()
 {
-	if (!isModuleActive())
-		return;
+	if (!isModuleActive()) return;
 
 	life.bExplosions++;
 }
 
 void CPlayer::saveBDefusing()
 {
-	if (!isModuleActive())
-		return;
+	if (!isModuleActive()) return;
 
 	life.bDefusions++;
 }
 
 void CPlayer::saveBDefused()
 {
-	if (!isModuleActive())
-		return;
+	if (!isModuleActive()) return;
 
 	life.bDefused++;
 }
@@ -304,9 +334,7 @@ void CPlayer::saveBDefused()
 
 bool ignoreBots(edict_t *pEnt, edict_t *pOther)
 {
-	rankBots = (int)csstats_rankbots->value ? true : false;
-
-	if (!rankBots && (pEnt->v.flags & FL_FAKECLIENT || (pOther && pOther->v.flags & FL_FAKECLIENT)))
+	if (g_rankBots == false && (pEnt->v.flags & FL_FAKECLIENT || (pOther && pOther->v.flags & FL_FAKECLIENT)))
 	{
 		return true;
 	}
@@ -316,8 +344,35 @@ bool ignoreBots(edict_t *pEnt, edict_t *pOther)
 
 bool isModuleActive()
 {
-	if (!(int)csstats_pause->value) {
+	if (!(int)csstats_pause->value)
+	{
 		return true;
 	}
 	return false;
+}
+
+void CPlayer::setScore(int a, int b)
+{
+	if (!pEdict || pEdict->pvPrivateData == NULL)
+	{
+		return;
+	}
+
+	if (a >= 0)
+	{
+		pEdict->v.frags = a;
+	}
+
+	if (b >= 0)
+	{
+		*((int *)pEdict->pvPrivateData + OFFSET_CSDEATHS) = b;
+	}
+
+	MESSAGE_BEGIN(MSG_BROADCAST, GET_USER_MSG_ID(PLID, "ScoreInfo", NULL));
+		WRITE_BYTE(index);
+		WRITE_SHORT((int)pEdict->v.frags);
+		WRITE_SHORT(*((int *)pEdict->pvPrivateData + OFFSET_CSDEATHS));
+		WRITE_SHORT(0);
+		WRITE_SHORT(*((int *)pEdict->pvPrivateData + OFFSET_TEAM));
+	MESSAGE_END();
 }

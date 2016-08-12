@@ -70,7 +70,7 @@ int lex(char*& buffer)
 		if (tokens[i] != NULL && *(tokens[i]) != '\0')
 		{
 			len = strlen(tokens[i]);
-			if (strncmp(buffer,tokens[i],len) == 0)
+			if (strncmp(buffer, tokens[i], len) == 0)
 			{
 				buffer += len + 1;
 				return i;
@@ -98,9 +98,7 @@ static void read_mirror(char *input)
 
 	char old;
 
-	while ( *data != ' ' &&
-			*data != '\t' &&
-			*data != '\0')
+	while (*data != ' ' && *data != '\t' && *data != '\0')
 	{
 		data++;
 	}
@@ -120,9 +118,7 @@ static void read_mirror(char *input)
 
 	data2 = data;
 
-	while ( *data != ' ' &&
-			*data != '\t' &&
-			*data != '\0')
+	while (*data != ' ' && *data != '\t' && *data != '\0')
 	{
 		data++;
 	}
@@ -146,10 +142,7 @@ static void trim_line(char *input)
 	char *oldinput = input;
 	char *start = input;
 
-	while ( *start == ' ' ||
-			*start == '\t' ||
-			*start == '\r' ||
-			*start == '\n')
+	while (*start == ' ' || *start == '\t' || *start == '\r' || *start == '\n')
 	{
 		start++;
 	}
@@ -166,7 +159,7 @@ static void trim_line(char *input)
 
 	start += strlen(start) - 1;
 
-	while ( start >= oldinput &&
+	while (start >= oldinput &&
 			( *start == '\0' ||
 			  *start == ' '  ||
 			  *start == '\r' ||
@@ -215,9 +208,10 @@ void skip_to_end_of_section(FILE *fp)
 
 static const char* get_localinfo(const char* name , const char* def = 0)
 {
-	const char* b = LOCALINFO( (char*)name );
-	if (((b==0)||(*b==0)) && def )
-		SET_LOCALINFO((char*)name,(char*)(b = def) );
+	const char* b = LOCALINFO((char*)name);
+
+	if (((b==0) || (*b==0)) && def)
+		SET_LOCALINFO((char*)name, (char*)(b = def));
 	return b;
 }
 int read_start_section(char *data)
@@ -244,13 +238,13 @@ int read_number(char *input)
 	char *end; /* Temporary pointer, needed for strtoul(). */
 
 	// if begins with 0x or 0X it's to be interpretted as hex
-	if (*input == '0' && (*(input + 1) == 'x' || *(input+1) == 'X'))
+	if (*input == '0' && (*(input + 1) == 'x' || *(input + 1) == 'X'))
 	{
-		return strtoul(input,&end,16);
+		return strtoul(input, &end, 16);
 	}
 
 	// otherwise it's to be interpretted as base 10
-	return strtoul(input,&end,10);
+	return strtoul(input, &end, 10);
 }
 
 void process_pev(char *data)
