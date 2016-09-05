@@ -45,7 +45,7 @@ namespace ke {
 template <typename K,
           typename HashPolicy,
           typename AllocPolicy = SystemAllocatorPolicy>
-class HashSet : public AllocPolicy
+class HashSet : private AllocPolicy
 {
   struct Policy {
     typedef K Payload;
@@ -64,8 +64,8 @@ class HashSet : public AllocPolicy
   typedef HashTable<Policy, AllocPolicy> Internal;
 
  public:
-  HashSet(AllocPolicy ap = AllocPolicy())
-    : table_(ap)
+  explicit HashSet(AllocPolicy ap = AllocPolicy())
+   : table_(ap)
   {
   }
 
@@ -140,6 +140,13 @@ class HashSet : public AllocPolicy
     Insert p = table_.findForAdd(key);
     if (!p.found())
       table_.add(p, ke::Forward<UK>(key));
+  }
+
+  AllocPolicy& allocPolicy() {
+    return *this;
+  }
+  const AllocPolicy& allocPolicy() const {
+    return *this;
   }
 
  private:

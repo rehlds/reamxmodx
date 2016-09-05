@@ -29,6 +29,7 @@
 #ifndef _include_amtl_algorithm_h_
 #define _include_amtl_algorithm_h_
 
+#include <amtl/am-cxx.h>
 #include <amtl/am-moveable.h>
 
 namespace ke {
@@ -52,6 +53,22 @@ Swap(T &left, T &right)
   left = Move(right);
   right = Move(tmp);
 }
+
+template <typename T>
+struct LessThan
+{
+  KE_CONSTEXPR bool operator ()(const T& left, const T& right) const {
+    return left < right;
+  }
+};
+
+template <typename T>
+struct GreaterThan
+{
+  KE_CONSTEXPR bool operator ()(const T& left, const T& right) const {
+    return left > right;
+  }
+};
 
 } // namespace ke
 

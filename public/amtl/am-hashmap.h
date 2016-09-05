@@ -49,7 +49,7 @@ template <typename K,
           typename V,
           typename HashPolicy,
           typename AllocPolicy = SystemAllocatorPolicy>
-class HashMap : public AllocPolicy
+class HashMap : private AllocPolicy
 {
  private:
   struct Entry
@@ -93,8 +93,8 @@ class HashMap : public AllocPolicy
   typedef HashTable<Policy, AllocPolicy> Internal;
 
  public:
-  HashMap(AllocPolicy ap = AllocPolicy())
-    : table_(ap)
+  explicit HashMap(AllocPolicy ap = AllocPolicy())
+   : table_(ap)
   {
   }
 
@@ -108,7 +108,7 @@ class HashMap : public AllocPolicy
   typedef typename Internal::iterator iterator;
 
   template <typename Lookup>
-  Result find(const Lookup &key) {
+  Result find(const Lookup &key) const {
     return table_.find(key);
   }
 
@@ -119,7 +119,7 @@ class HashMap : public AllocPolicy
 
   template <typename Lookup>
   void removeIfExists(const Lookup &key) {
-    return table_.remove(key);
+    return table_.removeIfExists(key);
   }
 
   void remove(Result &r) {
@@ -160,6 +160,13 @@ class HashMap : public AllocPolicy
 
   size_t estimateMemoryUse() const {
     return table_.estimateMemoryUse();
+  }
+
+  AllocPolicy& allocPolicy() {
+    return *this;
+  }
+  const AllocPolicy& allocPolicy() const {
+    return *this;
   }
 
  private:

@@ -1318,32 +1318,39 @@ native get_playersnum(flag = 0);
 native get_players(players[MAX_PLAYERS], &num, const flags[] = "", const team[] = "");
 
 /**
- * Retrieves argument of client command.
+ * Retrieves argument of client command as string.
  *
  * @note Should only be used inside of the client_command() forward.
- * @note Usage examples:
- *       value = read_argv(1);
- *       read_argv(2, floatvalue);
- *       written = read_argv(3, buffer, buffersize);
  *
  * @param id        Argument index starting from 1, 0 returns the command itself
- * @param ...       Changes the native's behavior depending on how many
- *                  additional parameters are provided:
- *                     0 - Return the argument integer value directly
- *                     1 - Store the argument float value in the variable passed
- *                         as the second parameter
- *                     2 - Copy the argument string value to the buffer provided
- *                         in the second parameter, using the third as the
- *                         maximum buffer size
+ * @param output    Buffer to copy command argument to
+ * @param len       Maximum buffer size
  *
- * @return          Changes depending on how many additional parameters are
- *                  provided:
- *                     0 - Returns the argument integer value
- *                     1 - Returns the argument float value, converted
- *                         (truncated) to an integer
- *                     2 - Returns the number of cells written to the buffer
+ * @return          Number of cells written to buffer
  */
-native read_argv(id, any:...);
+native read_argv(id, output[], len);
+
+/**
+ * Retrieves argument of client command as integer value.
+ *
+ * @note Should only be used inside of the client_command() forward.
+ *
+ * @param id        Argument index starting from 1
+ *
+ * @return          Integer value
+ */
+native read_argv_int(id);
+
+/**
+ * Retrieves argument of client command as float value.
+ *
+ * @note Should only be used inside of the client_command() forward.
+ *
+ * @param id        Argument index starting from 1
+ *
+ * @return          Float value
+ */
+native Float:read_argv_float(id);
 
 /**
  * Retrieves full client command string.
@@ -3139,7 +3146,7 @@ native PrepareArray(const array[], size, copyback = 0);
  * @note Passing arrays requires them to be prepared using PrepareArray()
  *
  * @param forward_handle    Forward handle
- * @param ret               Variable to store return value in
+ * @param ret             Optional variable to store return value in
  * @param ...               Variable number of parameters to pass through
  *
  * @return                  1 on success, 0 if forward can't be executed
@@ -3147,7 +3154,7 @@ native PrepareArray(const array[], size, copyback = 0);
  *                          of parameters that the forward was declared with,
  *                          an error is thrown.
  */
-native ExecuteForward(forward_handle, &ret, any:...);
+native ExecuteForward(forward_handle, &ret = 0, any:...);
 
 /**
  * Destroys and deallocates a forward.

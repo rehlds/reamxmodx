@@ -33,23 +33,25 @@
 #include <new>
 #include <stdlib.h>
 #include <amtl/am-allocator-policies.h>
-#include <amtl/am-utility.h>
+#include <amtl/am-bits.h>
 #include <amtl/am-moveable.h>
 
 namespace ke {
 
 template <typename T, typename AllocPolicy = SystemAllocatorPolicy>
-class Vector : public AllocPolicy
+class Vector : private AllocPolicy
 {
  public:
-  Vector(AllocPolicy = AllocPolicy())
+  explicit Vector(AllocPolicy = AllocPolicy())
    : data_(nullptr),
      nitems_(0),
      maxsize_(0)
   {
   }
 
-  Vector(Vector &&other) {
+  Vector(Vector &&other)
+   : AllocPolicy(Move(other))
+  {
     data_ = other.data_;
     nitems_ = other.nitems_;
     maxsize_ = other.maxsize_;
@@ -89,6 +91,13 @@ class Vector : public AllocPolicy
       return false;
     new (&data_[at]) T(ke::Forward<U>(item));
     return true;
+  }
+
+  AllocPolicy& allocPolicy() {
+    return *this;
+  }
+  const AllocPolicy& allocPolicy() const {
+    return *this;
   }
 
   // Shift all elements at the given position down, removing the given
@@ -189,11 +198,27 @@ class Vector : public AllocPolicy
     return *this;
   }
 
+ public:
+  // Support for C++11 iteration. Note that the vector length must not be
+  // mutated inside such an iterator.
+  T* begin() {
+    return data_;
+  }
+  const T* begin() const {
+    return data_;
+  }
+  T* end() {
+    return data_ + nitems_;
+  }
+  const T* end() const {
+    return data_ + nitems_;
+  }
+
  private:
   // These are disallowed because they basically violate the failure handling
   // model for AllocPolicies and are also likely to have abysmal performance.
-  Vector(const Vector<T> &other) = delete;
-  Vector &operator =(const Vector<T> &other) = delete;
+  Vector(const Vector &other) = delete;
+  Vector &operator =(const Vector &other) = delete;
 
  private:
   void destruct_live() {

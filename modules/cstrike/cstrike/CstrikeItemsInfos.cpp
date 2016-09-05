@@ -14,6 +14,7 @@
 #include "CstrikeItemsInfos.h"
 #include "CstrikeHacks.h"
 #include "CstrikeUtils.h"
+#include <amtl/am-utility.h>
 
 CsItemInfo ItemsManager;
 ItemInfo_AMX WeaponsList[MAX_WEAPONS];

@@ -16,14 +16,23 @@
 
 static cell power(AMX *amx, cell *params)
 {
-  /* power(value, exponent);
-   *   params[1] = value
-   *   params[2] = exponent
-   */
-  cell result = 1;
-  while (params[2]-- > 0)
-    result *= params[1];
-  return result;
+	/* power(value, exponent);
+	*   params[1] = value
+	*   params[2] = exponent
+	* Exponentiation by squaring
+	*/
+	cell result = 1;
+	cell value = params[1];
+	cell exp = params[2];
+	while (exp > 0) {
+		if (exp & 1) {
+			result *= value;
+		} /* if */
+		value *= value;
+		exp >>= 1;
+	} /* while */
+
+	return result;
 }
 
 static cell sqroot(AMX *amx, cell *params)

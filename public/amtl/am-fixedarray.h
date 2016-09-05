@@ -29,14 +29,13 @@
 #ifndef _include_amtl_fixedarray_h_
 #define _include_amtl_fixedarray_h_
 
-#include <amtl/am-utility.h>
 #include <amtl/am-allocator-policies.h>
 #include <amtl/am-moveable.h>
 
 namespace ke {
 
 template <typename T, typename AllocPolicy = SystemAllocatorPolicy>
-class FixedArray : public AllocPolicy
+class FixedArray : private AllocPolicy
 {
  public:
   FixedArray(size_t length, AllocPolicy = AllocPolicy()) {

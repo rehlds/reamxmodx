@@ -365,7 +365,6 @@ native push_stats(const unique[], const name[], stats[8], bodyhits[8], isip=0);
 /*
 * Removes and Deletes the Stats Entry. --> index = position. 
 *  Returns -1 if position is not found.
-*  Returns 0 if player with the position is connected to server.
 *  Returns 1 if successfully removed.
 */
 native remove_stats(index);
