@@ -109,17 +109,20 @@ extern  "C" {
 #endif
 
 /* calling convention for all interface functions and callback functions */
-#if !defined AMXAPI
-  #if defined STDECL
-    #define AMXAPI      __stdcall
-  #elif defined CDECL
-    #define AMXAPI      __cdecl
-  #elif defined GCC_HASCLASSVISIBILITY
-    #define AMXAPI __attribute__ ((visibility("default")))
-  #else
-    #define AMXAPI
-  #endif
+#if !defined AMXAPI_
+	#if defined STDECL
+		#define AMXAPI_      __stdcall
+	#elif defined CDECL
+		#define AMXAPI_      __cdecl
+	#elif defined GCC_HASCLASSVISIBILITY
+		#define AMXAPI_ __attribute__ ((visibility("default")))
+	#else
+		#define AMXAPI_
+	#endif
 #endif
+
+#define AMXAPI EXT_FUNC AMXAPI_
+
 #if !defined AMXEXPORT
   #define AMXEXPORT
 #endif
@@ -162,10 +165,9 @@ extern  "C" {
 
 struct tagAMX;
 typedef cell (/*AMX_NATIVE_CALL*/ *AMX_NATIVE)(struct tagAMX *amx, cell *params);
-typedef int (AMXAPI *AMX_CALLBACK)(struct tagAMX *amx, cell index,
-                                   cell *result, cell *params);
-typedef int (AMXAPI *AMX_DEBUG)(struct tagAMX *amx);
-typedef int (AMXAPI *AMX_NATIVE_FILTER)(struct tagAMX *amx, int index);
+typedef int (/*AMXAPI*/ *AMX_CALLBACK)(struct tagAMX *amx, cell index, cell *result, cell *params);
+typedef int (/*AMXAPI*/ *AMX_DEBUG)(struct tagAMX *amx);
+typedef int (/*AMXAPI*/ *AMX_NATIVE_FILTER)(struct tagAMX *amx, int index);
 #if !defined _FAR
   #define _FAR
 #endif
