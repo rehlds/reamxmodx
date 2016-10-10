@@ -90,7 +90,7 @@ public:
 	// This is ONLY used by the node graph to test movement through a door
 	virtual void SetToggleState(int state) = 0;
 	virtual void StartSneaking() = 0;
-	virtual void StopSneaking() = 0;
+	virtual void UpdateOnRemove() = 0;
 	virtual BOOL OnControls(entvars_t *onpev) = 0;
 	virtual BOOL IsSneaking() = 0;
 	virtual BOOL IsAlive() = 0;
@@ -269,6 +269,7 @@ class CBaseButton: public CBaseToggle {
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
+	virtual void Restart() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
 	virtual BOOL TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType) = 0;
 	virtual int Save(CSave &save) = 0;
@@ -299,6 +300,7 @@ public:
 class CMultiSource: public CPointEntity {
 public:
 	virtual void Spawn() = 0;
+	virtual void Restart() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
 	virtual int Save(CSave &save) = 0;
 	virtual int Restore(CRestore &restore) = 0;
