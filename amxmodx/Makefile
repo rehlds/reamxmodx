@@ -17,7 +17,7 @@ format.cpp messages.cpp libraries.cpp vector.cpp sorting.cpp nongpl_matches.cpp 
 trie_natives.cpp CDataPack.cpp datapacks.cpp stackstructs.cpp CTextParsers.cpp textparse.cpp CvarManager.cpp cvars.cpp \
 CLibrarySys.cpp CGameConfigs.cpp gameconfigs.cpp CoreConfig.cpp
 
-OBJECTS += sdk/mod_rehlds_api.cpp sdk/interface.cpp
+OBJECTS += sdk/mod_rehlds_api.cpp sdk/mod_gamedll_api.cpp sdk/interface.cpp
 
 OBJECTS += $(AMXX_MEMTOOLS)MemoryUtils.cpp $(AMXX_MEMTOOLS)CDetour/detours.cpp $(AMXX_MEMTOOLS)CDetour/asm/asm.c
 

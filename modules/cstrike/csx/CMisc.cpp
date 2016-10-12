@@ -368,7 +368,7 @@ void CPlayer::setScore(int a, int b)
 		*((int *)pEdict->pvPrivateData + OFFSET_CSDEATHS) = b;
 	}
 
-	MESSAGE_BEGIN(MSG_BROADCAST, GET_USER_MSG_ID(PLID, "ScoreInfo", NULL));
+	MESSAGE_BEGIN(MSG_ALL, GET_USER_MSG_ID(PLID, "ScoreInfo", NULL));
 		WRITE_BYTE(index);
 		WRITE_SHORT((int)pEdict->v.frags);
 		WRITE_SHORT(*((int *)pEdict->pvPrivateData + OFFSET_CSDEATHS));

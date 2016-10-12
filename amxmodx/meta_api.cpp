@@ -34,6 +34,7 @@
 
 
 #include "mod_rehlds_api.h"
+#include "mod_gamedll_api.h"
 
 #include "entity_state.h"
 #include "usercmd.h"
@@ -153,6 +154,7 @@ IFileSystem* g_FileSystem;
 HLTypeConversion TypeConversion;
 
 bool g_bReHLDS = false;
+bool g_bReGame = false;
 
 bool ColoredMenus(const char *ModName)
 {
@@ -953,12 +955,6 @@ void C_ClientUserInfoChanged_Post(edict_t *pEntity, char *infobuffer)
 void C_ClientCommand(edict_t *pEntity)
 {
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
-	
-	META_RES result = MRES_IGNORED;
-	cell ret = 0;
-	
-	const char* cmd = CMD_ARGV(0);
-	const char* arg = CMD_ARGV(1);
 
 	/*
 	// Handle "amxx" if not on listenserver
@@ -996,6 +992,12 @@ void C_ClientCommand(edict_t *pEntity)
 
 	if (executeForwards(FF_ClientCommand, static_cast<cell>(pPlayer->index)) > 0)
 		RETURN_META(MRES_SUPERCEDE);
+
+	META_RES result = MRES_IGNORED;
+	cell ret = 0;
+
+	const char* cmd = CMD_ARGV(0);
+	const char* arg = CMD_ARGV(1);
 
 	/* check for command and if needed also for first argument and call proper function */
 
@@ -1510,6 +1512,8 @@ C_DLLEXPORT	int	Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 		return (FALSE);
 	}
 
+	g_bReGame = RegamedllApi_Init();
+
 	gpMetaGlobals = pMGlobals;
 	gMetaFunctionTable.pfnGetEntityAPI2 = GetEntityAPI2;
 	gMetaFunctionTable.pfnGetEntityAPI2_Post = GetEntityAPI2_Post;
@@ -1520,7 +1524,7 @@ C_DLLEXPORT	int	Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 #endif
 
 	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
-	gpGamedllFuncs=pGamedllFuncs;
+	gpGamedllFuncs = pGamedllFuncs;
 
 	Module_CacheFunctions();
 

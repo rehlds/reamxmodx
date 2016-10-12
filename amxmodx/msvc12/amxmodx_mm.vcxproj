@@ -110,7 +110,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>..\;..\sdk;..\memtools;..\hashing;..\zlib;..\..\public;..\..\public\amtl;..\..\public\metamod;..\..\public\cssdk\common;..\..\public\cssdk\dlls;..\..\public\cssdk\engine;..\..\public\cssdk\pm_shared;..\..\public\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\sdk;..\memtools;..\hashing;..\zlib;..\..\public;..\..\public\amtl;..\..\public\metamod;..\..\public\cssdk\common;..\..\public\cssdk\dlls;..\..\public\cssdk\engine;..\..\public\cssdk\game_shared;..\..\public\cssdk\pm_shared;..\..\public\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;_WINDOWS;_USRDLL;amxmodx_EXPORTS;JIT;ASM32;PAWN_CELL_SIZE=32;HAVE_STDINT_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <StringPooling>true</StringPooling>
@@ -307,6 +307,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='JITRelease|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\sdk\mod_rehlds_api.cpp" />
+    <ClCompile Include="..\sdk\mod_gamedll_api.cpp" />
     <ClCompile Include="..\sdk\interface.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +380,7 @@
     <ClInclude Include="..\trie_natives.h" />
     <ClInclude Include="..\sdk\amxxmodule.h" />
     <ClInclude Include="..\sdk\mod_rehlds_api.h" />
+    <ClInclude Include="..\sdk\mod_gamedll_api.h" />
     <ClInclude Include="..\sdk\moduleconfig.h" />
   </ItemGroup>
   <ItemGroup>

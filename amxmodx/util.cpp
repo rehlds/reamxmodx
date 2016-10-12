@@ -10,6 +10,9 @@
 #include <time.h>
 #include "amxmodx.h"
 
+#include "mod_gamedll_api.h"
+#include "player.h"
+
 int UTIL_ReadFlags(const char* c) 
 {
 	int flags = 0;
@@ -272,7 +275,7 @@ void UTIL_ClientPrint(edict_t *pEntity, int msg_dest, char *msg)
 	if (pEntity)
 		MESSAGE_BEGIN(MSG_ONE, gmsgTextMsg, NULL, pEntity);
 	else
-		MESSAGE_BEGIN(MSG_BROADCAST, gmsgTextMsg);
+		MESSAGE_BEGIN(MSG_ALL, gmsgTextMsg);
 	
 	WRITE_BYTE(msg_dest);
 	WRITE_STRING(msg);
@@ -388,8 +391,26 @@ void UTIL_FakeClientCommand(edict_t *pEdict, const char *cmd, const char *arg1, 
 	
 	// set the global "fake" flag so the Cmd_Arg* functions will be superceded
 	g_fakecmd.fake = true;
+
 	// tell the GameDLL that the client sent a command
-	MDLL_ClientCommand(pEdict);
+	
+#if 0
+	if (g_bReGame)
+	{
+		CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(GET_PLAYER_POINTER(pEdict)->index);
+
+		if (pPlayer != nullptr && pPlayer->has_disconnected) {
+			pPlayer->CSPlayer()->ClientCommand(cmd, arg1, arg2);
+		}
+	}
+	else
+	{
+#endif
+		MDLL_ClientCommand(pEdict);
+#if 0
+	}
+#endif
+
 	// unset the global "fake" flag
 	g_fakecmd.fake = false;
 }
