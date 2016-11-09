@@ -9,7 +9,7 @@
 #define AMXX_VERSION_MAJOR      "1"
 #define AMXX_VERSION_MINOR      "8"
 #define AMXX_VERSION_RELEASE    "3"
-#define AMXX_VERSION_LOCAL_REV  "6"
+#define AMXX_VERSION_LOCAL_REV  "7"
 #define AMXX_VERSION            1.83
 #define AMXX_VERSION_NUM        183
 

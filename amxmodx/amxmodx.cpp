@@ -243,6 +243,7 @@ static cell AMX_NATIVE_CALL client_print(AMX *amx, cell *params) /* 3 param */
 {
 	int len = 0;
 	char *msg;
+	char safeMsg[126];
 
 	if (params[1] == 0)	// 0 = All players
 	{
@@ -269,7 +270,11 @@ static cell AMX_NATIVE_CALL client_print(AMX *amx, cell *params) /* 3 param */
 				msg[len++] = '\n';	// Client expects newline from the server
 				msg[len] = 0;
 
-				UTIL_ClientPrint(pPlayer->pEdict, params[2], msg);
+				auto len = localize_string(msg, safeMsg, sizeof(safeMsg));
+
+				memcpy(const_cast<char*>(msg), safeMsg, len + 1);
+
+				UTIL_ClientPrint(pPlayer->pEdict, params[2], safeMsg);
 			}
 		}
 	}
@@ -305,7 +310,11 @@ static cell AMX_NATIVE_CALL client_print(AMX *amx, cell *params) /* 3 param */
 			msg[len++] = '\n';	// Client expects newline from the server
 			msg[len] = 0;
 
-			UTIL_ClientPrint(pPlayer->pEdict, params[2], msg);
+			auto len = localize_string(msg, safeMsg, sizeof(safeMsg));
+
+			memcpy(const_cast<char*>(msg), safeMsg, len + 1);
+
+			UTIL_ClientPrint(pPlayer->pEdict, params[2], safeMsg);
 		}
 	}
 
@@ -316,6 +325,7 @@ static cell AMX_NATIVE_CALL client_print_color(AMX *amx, cell *params) /* 3 para
 {
 	int len = 0;
 	char *msg;
+	char safeMsg[190];
 	int index = params[1];
 	int sender = params[2];
 
@@ -358,7 +368,11 @@ static cell AMX_NATIVE_CALL client_print_color(AMX *amx, cell *params) /* 3 para
 				msg[len++] = '\n';
 				msg[len] = 0;
 
-				UTIL_ClientSayText(pPlayer->pEdict, sender ? sender : i, msg);
+				auto len = localize_string(msg, safeMsg, sizeof(safeMsg));
+
+				memcpy(const_cast<char*>(msg), safeMsg, len + 1);
+
+				UTIL_ClientSayText(pPlayer->pEdict, sender ? sender : i, safeMsg);
 			}
 		}
 	} 
@@ -396,8 +410,12 @@ static cell AMX_NATIVE_CALL client_print_color(AMX *amx, cell *params) /* 3 para
 
 			msg[len++] = '\n';
 			msg[len] = 0;
-		
-			UTIL_ClientSayText(pPlayer->pEdict, sender ? sender : index, msg);
+
+			auto len = localize_string(msg, safeMsg, sizeof(safeMsg));
+
+			memcpy(const_cast<char*>(msg), safeMsg, len + 1);
+
+			UTIL_ClientSayText(pPlayer->pEdict, sender ? sender : index, safeMsg);
 		}
 	}
 

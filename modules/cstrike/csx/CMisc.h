@@ -71,7 +71,7 @@ struct CPlayer {
 	void setScore(int a = -1, int b = -1);
 
 	inline bool IsBot() {
-		const char* auth= (*g_engfuncs.pfnGetPlayerAuthId)(pEdict);
+		const char* auth = (*g_engfuncs.pfnGetPlayerAuthId)(pEdict);
 		return ((auth && *auth != '\0' && !strcmp(auth, "BOT"))
 			|| (pEdict->v.flags & FL_FAKECLIENT));			
 	}
@@ -106,4 +106,3 @@ public:
 };
 
 #endif // CMISC_H
-

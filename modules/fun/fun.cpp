@@ -16,35 +16,9 @@
 #include <HLTypeConversion.h>
 
 bool g_bReHLDS = false;
-
-/*
-	JGHG says:
-
-	Ok this is what I use below, it may probably not be right with all natives etc but I try to maintain this style to natives.
-	Note that this is still very much subject to change, regarding return values etc!
-	(Ok I haven't checked all natives that they comply with this yet, this is just a model I'm working on and which I might implement soon.)
-
-	static cell AMX_NATIVE_CALL nativename(AMX *amx, cell *params) // nativename(argument1, argument2); = 2 params
-	{
-		// Description what this native does.					<--- Description what this native does
-		// params[1] = argument1								<--- Description of each argument, so we don't have to allocate new variables and can
-		// params[2] = argument2								<--- use the ones in params[n] directly, to save some time.
-
-		// Check receiver and sender validity.					<--- Check ents, maybe need to do this better and more proper later?
-		CHECK_PLAYER(params[1])
-		CHECK_PLAYER(params[2])
-
-		// Get * pointer.
-		edict_t *pPlayer = MF_GetPlayerEdict(params[1]);		<--- Players require a different function than INDEXENT because of an HLSDK bug
-
-		return 1												<--- If native succeeded, return 1, if the native isn't supposed to return a specific value.		
-																Note: Should be able to do: if (thenative()) and it should return false when it fails, and true when succeeds... is -1 treated as false, or is 0 a must?
-	}
-*/
-
 char g_bodyhits[33][33];	// where can the guy in the first dimension hit the people in the 2nd dimension? :-)
 bool g_silent[33];			// used for set_user_footsteps()
-bool SiletActive = false;
+bool SilentActive = false;
 
 HLTypeConversion TypeConversion;
 
@@ -66,20 +40,22 @@ void FUNUTIL_ResetPlayer(int index)
 	// Reset silent slippers
 	g_silent[index] = false;
 
-	if (SiletActive == true)
-	{
+	if (SilentActive == true) {
+
 		bool pfnActive = false;
+
 		for (int i = 1; i <= gpGlobals->maxClients; i++)
 		{
-			if (g_silent[i] == false)
-			{
+			if (g_silent[i] == false) {
 				continue;
 			}
+
 			pfnActive = true;
+
 			break;
 		}
-		if (pfnActive == false)
-		{
+
+		if (pfnActive == false) {
 			g_pFunctionTable->pfnPlayerPreThink = NULL;
 		}
 	}
@@ -130,8 +106,7 @@ static cell AMX_NATIVE_CALL set_user_godmode(AMX *amx, cell *params) // set_user
 	// Get player pointer.
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
@@ -157,15 +132,13 @@ static cell AMX_NATIVE_CALL get_user_godmode(AMX *amx, cell *params) // get_user
 	// Get player pointer.
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
 	int godmode = 0;
 
-	if (pPlayer->v.takedamage == 0.0)
-	{
+	if (pPlayer->v.takedamage == 0.0) {
 		// God mode is enabled
 		godmode = 1;
 	}
@@ -187,8 +160,7 @@ static cell AMX_NATIVE_CALL give_item(AMX *amx, cell *params) // native give_ite
 	// Get player pointer.
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
@@ -203,8 +175,8 @@ static cell AMX_NATIVE_CALL give_item(AMX *amx, cell *params) // native give_ite
 	if (strncmp(szItem, "weapon_", 7) && 
 		strncmp(szItem, "ammo_", 5) && 
 		strncmp(szItem, "item_", 5)
-		/* &&
-		strncmp(szItem, "tf_weapon_", 10)
+		/*
+		&& strncmp(szItem, "tf_weapon_", 10)
 		*/
 		)
 	{
@@ -260,8 +232,7 @@ static cell AMX_NATIVE_CALL spawn(AMX *amx, cell *params) // spawn(id) = 1 param
 
 	edict_t *pEnt = TypeConversion.id_to_edict(params[1]);
 
-	if (!pEnt)
-	{
+	if (!pEnt) {
 		return 0;
 	}
 
@@ -282,8 +253,7 @@ static cell AMX_NATIVE_CALL set_user_health(AMX *amx, cell *params) // set_user_
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
@@ -309,8 +279,7 @@ static cell AMX_NATIVE_CALL set_user_frags(AMX *amx, cell *params) // set_user_f
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
@@ -331,8 +300,7 @@ static cell AMX_NATIVE_CALL set_user_armor(AMX *amx, cell *params) // set_user_a
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
@@ -353,8 +321,7 @@ static cell AMX_NATIVE_CALL set_user_origin(AMX *amx, cell *params) // set_user_
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
@@ -383,13 +350,14 @@ static cell AMX_NATIVE_CALL set_user_rendering(AMX *amx, cell *params) // set_us
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
 	pPlayer->v.renderfx = params[2];
+
 	Vector newVector = Vector(float(params[3]), float(params[4]), float(params[5]));
+
 	pPlayer->v.rendercolor = newVector;
 	pPlayer->v.rendermode = params[6];
 	pPlayer->v.renderamt = params[7];
@@ -412,12 +380,12 @@ static cell AMX_NATIVE_CALL set_user_maxspeed(AMX *amx, cell *params) // set_use
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
 	SETCLIENTMAXSPEED(pPlayer, fNewSpeed);
+
 	pPlayer->v.maxspeed = fNewSpeed;
 
 	return 1;
@@ -434,8 +402,7 @@ static cell AMX_NATIVE_CALL get_user_maxspeed(AMX *amx, cell *params) // Float:g
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
@@ -453,8 +420,7 @@ static cell AMX_NATIVE_CALL set_user_gravity(AMX *amx, cell *params) // set_user
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
@@ -474,8 +440,7 @@ static cell AMX_NATIVE_CALL get_user_gravity(AMX *amx, cell *params) // Float:ge
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
@@ -500,28 +465,29 @@ static cell AMX_NATIVE_CALL set_user_hitzones(AMX *amx, cell *params) // set_use
 	{
 		for (int i = 1; i <= gpGlobals->maxClients; i++)
 		{
-			for (int j = 1; j <= gpGlobals->maxClients; j++)
-			{
+			for (int j = 1; j <= gpGlobals->maxClients; j++) {
 				g_bodyhits[i][j] = hitzones;
 			}
 			//g_zones_toHit[i] = hitzones;
 			//g_zones_getHit[i] = hitzones;
 		}
-	}
-	else if (shooter == 0 && gettingHit != 0) {
+
+	} else if (shooter == 0 && gettingHit != 0) {
 		// "All" shooters, target (gettingHit) should be existing player id
 		CHECK_PLAYER(gettingHit);
+
 		// Where can all hit gettingHit?
 		for (int i = 1; i <= gpGlobals->maxClients; i++)
 			g_bodyhits[i][gettingHit] = hitzones;
-	}
-	else if (shooter != 0 && gettingHit == 0) {
+
+	} else if (shooter != 0 && gettingHit == 0) {
 		// Shooter can hit all in bodyparts.
 		CHECK_PLAYER(shooter);
+
 		for (int i = 1; i <= gpGlobals->maxClients; i++)
 			g_bodyhits[shooter][i] = hitzones;
-	}
-	else {
+
+	} else {
 		// Specified, where can player A hit player B?
 		CHECK_PLAYER(shooter);
 		CHECK_PLAYER(gettingHit);
@@ -554,8 +520,7 @@ static cell AMX_NATIVE_CALL set_user_noclip(AMX *amx, cell *params) // set_user_
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
@@ -579,8 +544,7 @@ static cell AMX_NATIVE_CALL get_user_noclip(AMX *amx, cell *params) // get_user_
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
@@ -601,20 +565,19 @@ static cell AMX_NATIVE_CALL set_user_footsteps(AMX *amx, cell *params) // set_us
 	// Fetch player pointer
 	edict_t *pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
 	if (params[2]) {
 		pPlayer->v.flTimeStepSound = 999;
 		g_silent[params[1]] = true;
-		SiletActive = true;
+		SilentActive = true;
 		g_pFunctionTable->pfnPlayerPreThink = PlayerPreThink;
 	} else {
 		pPlayer->v.flTimeStepSound = STANDARDTIMESTEPSOUND;
 		g_silent[params[1]] = false;
-		SiletActive = false;
+		SilentActive = false;
 		g_pFunctionTable->pfnPlayerPreThink = NULL;
 	}
 
@@ -635,16 +598,14 @@ static cell AMX_NATIVE_CALL strip_user_weapons(AMX *amx, cell *params) // index
 
 	edict_t* pPlayer = TypeConversion.id_to_edict(params[1]);
 
-	if (!pPlayer)
-	{
+	if (!pPlayer) {
 		return 0;
 	}
 
 	string_t item = MAKE_STRING("player_weaponstrip");
 	edict_t *pent = CREATE_NAMED_ENTITY(item);
 
-	if (FNullEnt(pent))
-	{
+	if (FNullEnt(pent)) {
 		return 0;
 	}
 
@@ -703,62 +664,26 @@ int ClientConnect(edict_t *pPlayer, const char *pszName, const char *pszAddress,
 	RETURN_META_VALUE(MRES_IGNORED, 0);
 }
 
-void TraceLine(const float *v1, const float *v2, int fNoMonsters, edict_t *shooter, TraceResult *ptr)
+void TraceLine_Post(const float *v1, const float *v2, int fNoMonsters, edict_t *shooter, TraceResult *ptr)
 {
-	TRACE_LINE(v1, v2, fNoMonsters, shooter, ptr);
+	if (ptr->pHit && shooter && (ptr->pHit->v.flags & (FL_CLIENT | FL_FAKECLIENT))
+		&& (shooter->v.flags & (FL_CLIENT | FL_FAKECLIENT))) {
 
-	if (shooter && ptr->pHit && (ptr->pHit->v.flags & (FL_CLIENT | FL_FAKECLIENT))
-		&& (shooter->v.flags & (FL_CLIENT | FL_FAKECLIENT)))
-	{
 		int shooterIndex = ENTINDEX(shooter);
 
-		if (!(g_bodyhits[shooterIndex][ENTINDEX(ptr->pHit)] & (1 << ptr->iHitgroup)))
-		{
+		if (!(g_bodyhits[shooterIndex][ENTINDEX(ptr->pHit)] & (1 << ptr->iHitgroup))) {
 			ptr->flFraction = 1.0;
 		}
 	}
 
-	RETURN_META(MRES_SUPERCEDE);
+	RETURN_META(MRES_IGNORED);
 }
-
-
-//int g_hitIndex, g_canTargetGetHit, g_canShooterHitThere;
-//void TraceLine(const float *v1, const float *v2, int fNoMonsters, edict_t *shooter, TraceResult *ptr) {
-//	if (!pentToSkip || (pentToSkip->v.flags & (FL_CLIENT | FL_FAKECLIENT)) == false || pentToSkip->v.deadflag != DEAD_NO)
-//		RETURN_META(MRES_IGNORED);
-//
-//	TRACE_LINE(v1, v2, fNoMonsters, shooter, ptr); // Filter shooter
-//
-//	if (!ptr->pHit || (ptr->pHit->v.flags & (FL_CLIENT | FL_FAKECLIENT)) == false )
-//		RETURN_META(MRES_SUPERCEDE);
-//
-//	g_hitIndex = ENTINDEX(ptr->pHit);
-//	//bool blocked = false;
-//	g_canTargetGetHit = g_zones_getHit[g_hitIndex] & (1 << ptr->iHitgroup);
-//	g_canShooterHitThere = g_zones_toHit[ENTINDEX(shooter)] & (1 << ptr->iHitgroup);
-//
-//	if (!g_canTargetGetHit || !g_canShooterHitThere) {
-//		ptr->flFraction = 1.0;	// set to not hit anything (1.0 = shot doesn't hit anything)
-//		//blocked = true;
-//	}
-//	/*
-//	if (blocked) {
-//		MF_PrintSrvConsole("%s was blocked from hitting %s: %d and %d\n", MF_GetPlayerName(ENTINDEX(pentToSkip)), MF_GetPlayerName(hitIndex), canTargetGetHit, canShooterHitThere);
-//	}
-//	else {
-//		MF_PrintSrvConsole("%s was NOT blocked from hitting %s: %d and %d\n", MF_GetPlayerName(ENTINDEX(pentToSkip)), MF_GetPlayerName(hitIndex), canTargetGetHit, canShooterHitThere);
-//	}
-//	*/
-//
-//	RETURN_META(MRES_SUPERCEDE);
-//}
 
 void OnAmxxAttach()
 {
 	g_bReHLDS = RehldsApi_Init();
 
-	if (g_bReHLDS == false)
-	{
+	if (g_bReHLDS == false) {
 		MF_Log("Error load ReHLDS");
 		return;
 	}
@@ -770,28 +695,26 @@ void OnAmxxAttach()
 // initialized to its proper value until some time after OnAmxxAttach(). In OnAmxxAttach() it always showed 0. /JGHG
 void OnPluginsLoaded()
 {
-	if (g_bReHLDS == false)
-	{
+	if (g_bReHLDS == false) {
 		return;
 	}
 
 	// Reset stuff - hopefully this should
-	for (int i = 1; i <= gpGlobals->maxClients; i++)
-	{
+	for (int i = 1; i <= gpGlobals->maxClients; i++) {
 		// Reset all hitzones
 		FUNUTIL_ResetPlayer(i);
 	}
 
 	TypeConversion.init();
 
-	SiletActive = false;
+	SilentActive = false;
 
 	g_pFunctionTable->pfnPlayerPreThink = NULL;
 }
 
 void ServerDeactivate()
 {
-	SiletActive = false;
+	SilentActive = false;
 
 	g_pFunctionTable->pfnPlayerPreThink = NULL;
 

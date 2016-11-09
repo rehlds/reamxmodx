@@ -26,20 +26,14 @@ static cell AMX_NATIVE_CALL get_user_astats(AMX *amx, cell *params) /* 6 param *
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->attackers[attacker].hits)
-	{
-		return 0;
-	}
-
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank || !pPlayer->attackers[attacker].hits) {
 		return 0;
 	}
 
 	cell *cpStats = MF_GetAmxAddr(amx, params[3]);
 	cell *cpBodyHits = MF_GetAmxAddr(amx, params[4]);
 	CPlayer::PlayerWeapon* stats = &pPlayer->attackers[attacker];
+
 	cpStats[0] = stats->kills;
 	cpStats[1] = stats->deaths;
 	cpStats[2] = stats->hs;
@@ -69,20 +63,14 @@ static cell AMX_NATIVE_CALL get_user_vstats(AMX *amx, cell *params) /* 6 param *
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->victims[victim].hits)
-	{
-		return 0;
-	}
-
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank || !pPlayer->victims[victim].hits) {
 		return 0;
 	}
 
 	cell *cpStats = MF_GetAmxAddr(amx, params[3]);
 	cell *cpBodyHits = MF_GetAmxAddr(amx, params[4]);
 	CPlayer::PlayerWeapon* stats = &pPlayer->victims[victim];
+
 	cpStats[0] = stats->kills;
 	cpStats[1] = stats->deaths;
 	cpStats[2] = stats->hs;
@@ -115,20 +103,14 @@ static cell AMX_NATIVE_CALL get_user_wrstats(AMX *amx, cell *params) /* 4 param 
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->weaponsRnd[weapon].shots)
-	{
-		return 0;
-	}
-
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank || !pPlayer->weaponsRnd[weapon].shots) {
 		return 0;
 	}
 
 	cell *cpStats = MF_GetAmxAddr(amx, params[3]);
 	cell *cpBodyHits = MF_GetAmxAddr(amx, params[4]);
 	Stats* stats = &pPlayer->weaponsRnd[weapon];
+
 	cpStats[0] = stats->kills;
 	cpStats[1] = stats->deaths;
 	cpStats[2] = stats->hs;
@@ -158,20 +140,14 @@ static cell AMX_NATIVE_CALL get_user_wstats(AMX *amx, cell *params) /* 4 param *
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->weapons[weapon].shots)
-	{
-		return 0;
-	}
-
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank || !pPlayer->weapons[weapon].shots) {
 		return 0;
 	}
 
 	cell *cpStats = MF_GetAmxAddr(amx, params[3]);
 	cell *cpBodyHits = MF_GetAmxAddr(amx, params[4]);
 	CPlayer::PlayerWeapon* stats = &pPlayer->weapons[weapon];
+
 	cpStats[0] = stats->kills;
 	cpStats[1] = stats->deaths;
 	cpStats[2] = stats->hs;
@@ -194,9 +170,7 @@ static cell AMX_NATIVE_CALL reset_user_wstats(AMX *amx, cell *params) /* 6 param
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank) {
 		return 0;
 	}
 
@@ -213,19 +187,13 @@ static cell AMX_NATIVE_CALL get_user_rstats(AMX *amx, cell *params) /* 3 param *
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->rank)
-	{
-		return 0;
-	}
-
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank) {
 		return 0;
 	}
 
 	cell *cpStats = MF_GetAmxAddr(amx, params[2]);
 	cell *cpBodyHits = MF_GetAmxAddr(amx, params[3]);
+
 	cpStats[0] = pPlayer->life.kills;
 	cpStats[1] = pPlayer->life.deaths;
 	cpStats[2] = pPlayer->life.hs;
@@ -248,19 +216,13 @@ static cell AMX_NATIVE_CALL get_user_stats(AMX *amx, cell *params) /* 3 param */
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->rank)
-	{
-		return 0;
-	}
-
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank) {
 		return 0;
 	}
 
 	cell *cpStats = MF_GetAmxAddr(amx, params[2]);
 	cell *cpBodyHits = MF_GetAmxAddr(amx, params[3]);
+
 	cpStats[0] = pPlayer->rank->kills;
 	cpStats[1] = pPlayer->rank->deaths;
 	cpStats[2] = pPlayer->rank->hs;
@@ -285,14 +247,7 @@ static cell AMX_NATIVE_CALL get_user_stats2(AMX *amx, cell *params) /* 3 param *
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->rank)
-	{
-		return 0;
-	}
-
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank) {
 		return 0;
 	}
 
@@ -330,13 +285,11 @@ static cell AMX_NATIVE_CALL get_stats(AMX *amx, cell *params) /* 7 param */
 
 		MF_SetAmxString(amx, params[4], (*a).getName(), params[5]);
 
-		if (params[6] > 0)
-		{
+		if (params[6] > 0) {
 			MF_SetAmxString(amx, params[6], (*a).getUnique(), params[7]);
 		}
 
-		for (int i = 1; i < BODY_HITS_MAX; ++i)
-		{
+		for (int i = 1; i < BODY_HITS_MAX; ++i) {
 			cpBodyHits[i] = (*a).bodyHits[i];
 		}
 
@@ -358,8 +311,7 @@ static cell AMX_NATIVE_CALL get_stats2(AMX *amx, cell *params) /* 4 param */
 	{
 		cell *cpStats = MF_GetAmxAddr(amx, params[2]);
 
-		if (params[4] > 0)
-		{
+		if (params[4] > 0) {
 			MF_SetAmxString(amx, params[3], (*a).getUnique(), params[4]);
 		}
 
@@ -385,8 +337,8 @@ static cell AMX_NATIVE_CALL register_cwpn(AMX *amx, cell *params)
 
 	for (i = MAX_WEAPONS; i < MAX_WEAPONS + MAX_CWEAPONS; i++)
 	{
-		if (!weaponData[i].used)
-		{
+		if (!weaponData[i].used) {
+
 			char* szName = MF_GetAmxString(amx, params[1], 0, &iLen);
 			char *szLog = MF_GetAmxString(amx, params[3], 0, &iLen);
 
@@ -434,23 +386,9 @@ static cell AMX_NATIVE_CALL custom_wpn_dmg(AMX *amx, cell *params)
 	}
 
 	CPlayer* pAtt = GET_PLAYER_POINTER_I(att);
-	
-	if (!pAtt->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", att);
-		return 0;
-	}
-
 	CPlayer* pVic = GET_PLAYER_POINTER_I(vic);
 
-	if (!pVic->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", pVic);
-		return 0;
-	}
-
-	if (!pVic->pEdict || pVic->pEdict->pvPrivateData == NULL)
-	{
+	if (!pAtt->rank || !pVic->rank || !pVic->pEdict || pVic->pEdict->pvPrivateData == NULL) {
 		return 0;
 	}
 
@@ -492,9 +430,7 @@ static cell AMX_NATIVE_CALL custom_wpn_shot(AMX *amx, cell *params)
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank) {
 		return 0;
 	}
 
@@ -559,14 +495,7 @@ static cell AMX_NATIVE_CALL get_user_rank(AMX *amx, cell *params) /* 1 param */
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->rank)
-	{
-		return 0;
-	}
-
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank) {
 		return 0;
 	}
 
@@ -581,14 +510,7 @@ static cell AMX_NATIVE_CALL get_user_score(AMX *amx, cell *params)  /*3 param */
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
-		return 0;
-	}
-
-	if (!pPlayer->pEdict || pPlayer->pEdict->pvPrivateData == NULL)
-	{
+	if (!pPlayer->rank || !pPlayer->pEdict || pPlayer->pEdict->pvPrivateData == NULL) {
 		return 0;
 	}
 
@@ -628,8 +550,7 @@ static cell AMX_NATIVE_CALL set_stats(AMX *amx, cell *params) /* 3 param */
 		
 		if (cpStats[6] >= 0) (*a).damage = cpStats[6];
 		
-		for (int i = 1; i < BODY_HITS_MAX; ++i)
-		{
+		for (int i = 1; i < BODY_HITS_MAX; ++i) {
 			if (cpBodyHits[i] >= 0) (*a).bodyHits[i] = cpBodyHits[i];
 		}
 
@@ -677,14 +598,7 @@ static cell AMX_NATIVE_CALL set_user_stats(AMX *amx, cell *params) /* 3 param */
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->rank)
-	{
-		return 0;
-	}
-
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank) {
 		return 0;
 	}
 
@@ -705,8 +619,7 @@ static cell AMX_NATIVE_CALL set_user_stats(AMX *amx, cell *params) /* 3 param */
 		
 	if (cpStats[6] >= 0) pPlayer->rank->damage = cpStats[6];
 		
-	for (int i = 1; i < BODY_HITS_MAX; ++i)
-	{
+	for (int i = 1; i < BODY_HITS_MAX; ++i) {
 		if (cpBodyHits[i] >= 0) pPlayer->rank->bodyHits[i] = cpBodyHits[i];
 	}
 
@@ -723,14 +636,7 @@ static cell AMX_NATIVE_CALL set_user_stats2(AMX *amx, cell *params) /* 2 param *
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->rank)
-	{
-		return 0;
-	}
-
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank) {
 		return 0;
 	}
 
@@ -757,9 +663,7 @@ static cell AMX_NATIVE_CALL set_user_score(AMX *amx, cell *params)  /*3 param */
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank) {
 		return 0;
 	}
 
@@ -767,7 +671,9 @@ static cell AMX_NATIVE_CALL set_user_score(AMX *amx, cell *params)  /*3 param */
 
 	bool reset = params[4] ? true : false;
 
-	if (reset) pPlayer->restartStats();
+	if (reset) {
+		pPlayer->restartStats();
+	}
 
 	return 1;
 }
@@ -780,14 +686,7 @@ static cell AMX_NATIVE_CALL reset_user_stats(AMX *amx, cell *params)  /*1 param 
 
 	CPlayer* pPlayer = GET_PLAYER_POINTER_I(index);
 
-	if (!pPlayer->rank)
-	{
-		return 0;
-	}
-
-	if (!pPlayer->m_bIngame)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid player %d (not in-game)", index);
+	if (!pPlayer->rank) {
 		return 0;
 	}
 
@@ -807,6 +706,7 @@ static cell AMX_NATIVE_CALL reset_user_stats(AMX *amx, cell *params)  /*1 param 
 	pPlayer->rank->bExplosions = 0;
 	memset(pPlayer->rank->bodyHits, 0, sizeof(pPlayer->rank->bodyHits));
 #endif
+
 	pPlayer->rank->updatePosition(&null);
 
 	return pPlayer->rank->getPosition();
@@ -854,16 +754,14 @@ static cell AMX_NATIVE_CALL push_stats(AMX *amx, cell *params) /* 5 param */
 	
 	RankSystem::RankStats* temp = g_rank.findEntryInRank(Unique, Name, (params[5] > 0) ? true : false);
 	
-	if (temp)
-	{
+	if (temp) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Stats already exists");
 		return 0;
 	}
 
 	temp = g_rank.newEntryInRank(Unique, Name);
 
-	if (!temp)
-	{
+	if (!temp) {
 		return 0;
 	}
 
@@ -884,8 +782,7 @@ static cell AMX_NATIVE_CALL push_stats(AMX *amx, cell *params) /* 5 param */
 
 	if (cpStats[6] >= 0) temp->damage = cpStats[6];
 	
-	for (int i = 1; i < BODY_HITS_MAX; ++i)
-	{
+	for (int i = 1; i < BODY_HITS_MAX; ++i) {
 		if (cpBodyHits[i] >= 0) temp->bodyHits[i] = cpBodyHits[i];
 	}
 
@@ -937,13 +834,11 @@ static cell AMX_NATIVE_CALL force_load_stats(AMX *amx, cell *params) /* no param
 
 	for (int i = 1; i <= gpGlobals->maxClients; i++)
 	{
-		if (!MF_IsPlayerIngame(i))
-		{
+		if (!MF_IsPlayerIngame(i)) {
 			continue;
 		}
 
-		if (!FNullEnt(MF_GetPlayerEdict(i)))
-		{
+		if (!FNullEnt(MF_GetPlayerEdict(i))) {
 			players[i].PutInServer();
 		}
 	}

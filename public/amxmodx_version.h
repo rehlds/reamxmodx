@@ -18,7 +18,7 @@
 	#endif
 #else
 	#define AMXX_BUILD_TAG        "Re"
-	#define AMXX_BUILD_LOCAL_REV  "6"
+	#define AMXX_BUILD_LOCAL_REV  "7"
 	#define AMXX_BUILD_CSET       "0"
 	#define AMXX_BUILD_MAJOR      "1"
 	#define AMXX_BUILD_MINOR      "8"

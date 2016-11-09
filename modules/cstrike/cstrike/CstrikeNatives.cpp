@@ -90,8 +90,7 @@ static cell AMX_NATIVE_CALL cs_set_user_deaths(AMX *amx, cell *params)
 
 	bool updateScoreboard = true;
 
-	if (*params / sizeof(cell) >= 3)
-	{
+	if (*params / sizeof(cell) >= 3) {
 		updateScoreboard = params[3] != 0;
 	}
 
@@ -143,15 +142,13 @@ static cell AMX_NATIVE_CALL cs_get_weapon_silenced(AMX *amx, cell *params)
 	{
 		case CSW_M4A1:
 		{
-			if (get_pdata<int>(pWeapon, m_iWeaponState) & WPNSTATE_M4A1_SILENCED)
-			{
+			if (get_pdata<int>(pWeapon, m_iWeaponState) & WPNSTATE_M4A1_SILENCED) {
 				return 1;
 			}
 		}
 		case CSW_USP:
 		{
-			if (get_pdata<int>(pWeapon, m_iWeaponState) & WPNSTATE_USP_SILENCED)
-			{
+			if (get_pdata<int>(pWeapon, m_iWeaponState) & WPNSTATE_USP_SILENCED) {
 				return 1;
 			}
 		}
@@ -189,8 +186,7 @@ static cell AMX_NATIVE_CALL cs_set_weapon_silenced(AMX *amx, cell *params)
 
 	int draw_animation = 1;
 
-	if ((params[0] / sizeof(cell)) >= 3)
-	{
+	if ((params[0] / sizeof(cell)) >= 3) {
 		draw_animation = params[3];
 	}
 
@@ -241,8 +237,7 @@ static cell AMX_NATIVE_CALL cs_set_weapon_silenced(AMX *amx, cell *params)
 		{
 			int currentWeapon = *static_cast<int *>(MF_PlayerPropAddr(TypeConversion.edict_to_id(pPlayer), Player_CurrentWeapon));
 
-			if (currentWeapon != weaponType)
-			{
+			if (currentWeapon != weaponType) {
 				return 1;
 			}
 
@@ -318,8 +313,7 @@ static cell AMX_NATIVE_CALL cs_get_weapon_burstmode(AMX *amx, cell *params)
 		case CSW_FAMAS:   flag = WPNSTATE_FAMAS_BURST_MODE;   break;
 	}
 
-	if (flag && get_pdata<int>(pWeapon, m_iWeaponState) & flag)
-	{
+	if (flag && get_pdata<int>(pWeapon, m_iWeaponState) & flag) {
 		return 1;
 	}
 
@@ -374,8 +368,7 @@ static cell AMX_NATIVE_CALL cs_set_weapon_burstmode(AMX *amx, cell *params)
 	{
 		set_pdata<int>(pWeapon, m_iWeaponState, weaponNewState);
 
-		if (UTIL_IsPlayer(pWeapon->v.owner))
-		{
+		if (UTIL_IsPlayer(pWeapon->v.owner)) {
 			UTIL_TextMsg_Generic(pWeapon->v.owner, burst ? "#Switch_To_BurstFire" : "#Switch_To_FullAuto");
 		}
 
@@ -439,8 +432,7 @@ static cell AMX_NATIVE_CALL cs_get_user_vip(AMX *amx, cell *params)
 
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	if (get_pdata<bool>(pPlayer, m_bIsVIP))
-	{
+	if (get_pdata<bool>(pPlayer, m_bIsVIP)) {
 		return 1;
 	}
 
@@ -479,8 +471,7 @@ static cell AMX_NATIVE_CALL cs_set_user_vip(AMX *amx, cell *params)
 	{
 		CS_Internal_Models modelName = CS_CT_VIP;
 
-		if (!vip)
-		{
+		if (!vip) {
 			CS_Internal_Models CTmodels[5] = { CS_CT_URBAN, CS_CT_GSG9, CS_CT_GIGN, CS_CT_SAS, CZ_CT_SPETSNAZ };
 			modelName = CTmodels[RANDOM_LONG(0, 4)];
 		}
@@ -493,8 +484,7 @@ static cell AMX_NATIVE_CALL cs_set_user_vip(AMX *amx, cell *params)
 	{
 		int scoreattrib = SCOREATTRIB_VIP;
 
-		if (!vip)
-		{
+		if (!vip) {
 			scoreattrib = (pPlayer->v.deadflag == DEAD_NO && pPlayer->v.health > 0) ? SCOREATTRIB_NOTHING : SCOREATTRIB_DEAD;
 		}
 
@@ -519,8 +509,7 @@ static cell AMX_NATIVE_CALL cs_get_user_team(AMX *amx, cell *params)
 
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	if ((params[0] / sizeof(cell)) >= 2)
-	{
+	if ((params[0] / sizeof(cell)) >= 2) {
 		cell *modelByRef = MF_GetAmxAddr(amx, params[2]);
 		*modelByRef = get_pdata<int>(pPlayer, m_iModelName);
 	}
@@ -544,20 +533,17 @@ static cell AMX_NATIVE_CALL cs_set_user_team(AMX *amx, cell *params)
 
 	set_pdata<int>(pPlayer, m_iTeam, team);
 
-	if (model > 0)
-	{
+	if (model > 0) {
 		set_pdata<int>(pPlayer, m_iModelName, model);
 	}
 
-	if (model >= 0)
-	{
+	if (model >= 0) {
 		Players[index].ResetModel(pPlayer);
 	}
 
 	bool sendTeamInfo = true;
 
-	if (*params / sizeof(cell) >= 4)
-	{
+	if (*params / sizeof(cell) >= 4) {
 		sendTeamInfo = params[4] != 0;
 	}
 
@@ -596,8 +582,7 @@ static cell AMX_NATIVE_CALL cs_get_user_inside_buyzone(AMX *amx, cell *params)
 
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	if (get_pdata<CUnifiedSignals_AMX>(pPlayer, m_signals).GetState() & SIGNAL_BUY)
-	{
+	if (get_pdata<CUnifiedSignals_AMX>(pPlayer, m_signals).GetState() & SIGNAL_BUY) {
 		return 1;
 	}
 
@@ -629,8 +614,7 @@ static cell AMX_NATIVE_CALL cs_get_user_plant(AMX *amx, cell *params)
 
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	if (get_pdata<bool>(pPlayer, m_bHasC4))
-	{
+	if (get_pdata<bool>(pPlayer, m_bHasC4)) {
 		return 1;
 	}
 
@@ -687,8 +671,7 @@ static cell AMX_NATIVE_CALL cs_get_user_defusekit(AMX *amx, cell *params)
 
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	if (get_pdata<bool>(pPlayer, m_bHasDefuser))
-	{
+	if (get_pdata<bool>(pPlayer, m_bHasDefuser)) {
 		return 1;
 	}
 
@@ -716,16 +699,14 @@ static cell AMX_NATIVE_CALL cs_set_user_defusekit(AMX *amx, cell *params)
 
 		for (int i = 0; i < 3; i++)
 		{
-			if (params[i + 3] != -1)
-			{
+			if (params[i + 3] != -1) {
 				colour[i] = params[i + 3];
 			}
 		}
 
 		const char* icon = "defuser";
 
-		if (params[6] != -1)
-		{
+		if (params[6] != -1) {
 			int length;
 			icon = MF_GetAmxString(amx, params[6], 1, &length);
 		}
@@ -761,8 +742,7 @@ static cell AMX_NATIVE_CALL cs_get_user_backpackammo(AMX *amx, cell *params)
 
 	int ammoIndex;
 
-	if (weaponId <= CSW_NONE || weaponId >= MAX_WEAPONS || (ammoIndex = WeaponsList[weaponId].ammoIndex1) < 0)
-	{
+	if (weaponId <= CSW_NONE || weaponId >= MAX_WEAPONS || (ammoIndex = WeaponsList[weaponId].ammoIndex1) < 0) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", weaponId);
 		return 0;
 	}
@@ -783,8 +763,7 @@ static cell AMX_NATIVE_CALL cs_set_user_backpackammo(AMX *amx, cell *params)
 
 	int ammoIndex;
 
-	if (weaponId <= CSW_NONE || weaponId >= MAX_WEAPONS || (ammoIndex = WeaponsList[weaponId].ammoIndex1) < 0)
-	{
+	if (weaponId <= CSW_NONE || weaponId >= MAX_WEAPONS || (ammoIndex = WeaponsList[weaponId].ammoIndex1) < 0) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", weaponId);
 		return 0;
 	}
@@ -805,8 +784,7 @@ static cell AMX_NATIVE_CALL cs_get_user_nvg(AMX *amx, cell *params)
 
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	if (get_pdata<bool>(pPlayer, m_bHasNightVision))
-	{
+	if (get_pdata<bool>(pPlayer, m_bHasNightVision)) {
 		return 1;
 	}
 
@@ -859,8 +837,7 @@ static cell AMX_NATIVE_CALL cs_set_user_model(AMX *amx, cell *params)
 
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	if (model == -1)
-	{
+	if (model == -1) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid model %d", params[2]);
 		return 0;
 	}
@@ -868,8 +845,7 @@ static cell AMX_NATIVE_CALL cs_set_user_model(AMX *amx, cell *params)
 	int length;
 	const char *newModel = MF_GetAmxString(amx, params[2], 0, &length);
 
-	if (!*newModel)
-	{
+	if (!*newModel) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Model can not be empty");
 		return 0;
 	}
@@ -930,8 +906,7 @@ static cell AMX_NATIVE_CALL cs_get_hostage_follow(AMX *amx, cell *params)
 		GET_OFFSET("SimpleStateMachine", m_state); // +4 for virtual table pointer of IImprovEvent.
 		GET_OFFSET("HostageFollowState", m_leader);
 
-		if (get_pdata<void*>(pImprov, m_behavior + 4 + m_state) == reinterpret_cast<int8*>(pImprov) + m_followState)
-		{
+		if (get_pdata<void*>(pImprov, m_behavior + 4 + m_state) == reinterpret_cast<int8*>(pImprov) + m_followState) {
 			pEntity = get_pdata<EHANDLE>(pImprov, m_followState + m_leader).Get();
 		}
 	}
@@ -956,8 +931,7 @@ static cell AMX_NATIVE_CALL cs_set_hostage_follow(AMX *amx, cell *params)
 
 	edict_t* pHostage = TypeConversion.id_to_edict(index);
 
-	if (target != 0)
-	{
+	if (target != 0) {
 		CHECK_ENTITY(target);
 	}
 
@@ -1039,8 +1013,7 @@ static cell AMX_NATIVE_CALL cs_get_user_hasprimary(AMX *amx, cell *params)
 
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	if (get_pdata<bool>(pPlayer, m_bHasPrimary))
-	{
+	if (get_pdata<bool>(pPlayer, m_bHasPrimary)) {
 		return 1;
 	}
 
@@ -1056,8 +1029,7 @@ static cell AMX_NATIVE_CALL cs_get_no_knives(AMX *amx, cell *params)
 // native cs_set_no_knives(noknives = 0);
 static cell AMX_NATIVE_CALL cs_set_no_knives(AMX *amx, cell *params)
 {
-	if (!Active_cs_set_no_knives)
-	{
+	if (!Active_cs_set_no_knives) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Native cs_set_no_knives() is disabled. Check your amxx logs.");
 		return 0;
 	}
@@ -1097,8 +1069,7 @@ static cell AMX_NATIVE_CALL cs_get_user_tked(AMX *amx, cell *params)
 
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	if (get_pdata<bool>(pPlayer, m_bJustKilledTeammate))
-	{
+	if (get_pdata<bool>(pPlayer, m_bJustKilledTeammate)) {
 		return 1;
 	}
 
@@ -1177,8 +1148,7 @@ static cell AMX_NATIVE_CALL cs_get_user_shield(AMX *amx, cell *params)
 
 	edict_t *pPlayer = MF_GetPlayerEdict(index);
 
-	if (get_pdata<bool>(pPlayer, m_bOwnsShield))
-	{
+	if (get_pdata<bool>(pPlayer, m_bOwnsShield)) {
 		return 1;
 	}
 
@@ -1197,8 +1167,7 @@ static cell AMX_NATIVE_CALL cs_user_spawn(AMX *amx, cell *params)
 	pPlayer->v.deadflag = DEAD_RESPAWNABLE;
 	MDLL_Think(pPlayer);
 
-	if (MF_IsPlayerBot(index) && pPlayer->v.deadflag == DEAD_RESPAWNABLE)
-	{
+	if (MF_IsPlayerBot(index) && pPlayer->v.deadflag == DEAD_RESPAWNABLE) {
 		MDLL_Spawn(pPlayer);
 	}
 
@@ -1216,8 +1185,7 @@ static cell AMX_NATIVE_CALL cs_get_armoury_type(AMX *amx, cell *params)
 
 	edict_t *pArmoury = TypeConversion.id_to_edict(index);
 
-	if (strcmp(STRING(pArmoury->v.classname), "armoury_entity"))
-	{
+	if (strcmp(STRING(pArmoury->v.classname), "armoury_entity")) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Not an armoury_entity! (%d)", index);
 		return 0;
 	}
@@ -1253,8 +1221,7 @@ static cell AMX_NATIVE_CALL cs_get_armoury_type(AMX *amx, cell *params)
 		}
 	}
 
-	if (*params / sizeof(cell) >= 2)
-	{
+	if (*params / sizeof(cell) >= 2) {
 		GET_OFFSET("CArmoury", m_iCount);
 
 		*MF_GetAmxAddr(amx, params[2]) = get_pdata<int>(pArmoury, m_iCount);
@@ -1275,8 +1242,7 @@ static cell AMX_NATIVE_CALL cs_set_armoury_type(AMX *amx, cell *params)
 
 	edict_t *pArmoury = TypeConversion.id_to_edict(index);
 
-	if (strcmp(STRING(pArmoury->v.classname), "armoury_entity"))
-	{
+	if (strcmp(STRING(pArmoury->v.classname), "armoury_entity")) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Not an armoury_entity! (%d)", index);
 		return 0;
 	}
@@ -1356,14 +1322,12 @@ static cell AMX_NATIVE_CALL cs_set_user_zoom(AMX *amx, cell *params)
 
 	CPlayer& player = Players[index];
 
-	if (player.GetZoom())
-	{
+	if (player.GetZoom()) {
 		DisableMessageHooks();
 		player.ResetZoom();
 	}
 
-	if (type == CS_RESET_ZOOM)
-	{
+	if (type == CS_RESET_ZOOM) {
 		set_pdata<int>(pPlayer, m_iFOV, CS_NO_ZOOM);
 		return 1;
 	}
@@ -1406,8 +1370,7 @@ static cell AMX_NATIVE_CALL cs_set_user_zoom(AMX *amx, cell *params)
 		}
 	}
 
-	if (!mode)
-	{
+	if (!mode) {
 		player.SetZoom(value);
 		EnableMessageHooks();
 	}
@@ -1640,8 +1603,7 @@ static cell AMX_NATIVE_CALL cs_get_c4_explode_time(AMX* amx, cell* params)
 
 	edict_t *pC4 = TypeConversion.id_to_edict(index);
 
-	if (strcmp(STRING(pC4->v.classname), "grenade") != 0)
-	{
+	if (strcmp(STRING(pC4->v.classname), "grenade") != 0) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Entity %d (\"%s\") is not C4!", index, STRING(pC4->v.classname));
 		return 0;
 	}
@@ -1660,8 +1622,7 @@ static cell AMX_NATIVE_CALL cs_set_c4_explode_time(AMX* amx, cell* params)
 
 	edict_t *pC4 = TypeConversion.id_to_edict(index);
 
-	if (strcmp(STRING(pC4->v.classname), "grenade") != 0)
-	{
+	if (strcmp(STRING(pC4->v.classname), "grenade") != 0) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Entity %d (\"%s\") is not C4!", index, STRING(pC4->v.classname));
 		return 0;
 	}
@@ -1682,8 +1643,7 @@ static cell AMX_NATIVE_CALL cs_get_c4_defusing(AMX* amx, cell* params)
 
 	edict_t *pC4 = TypeConversion.id_to_edict(index);
 
-	if (strcmp(STRING(pC4->v.classname), "grenade") != 0)
-	{
+	if (strcmp(STRING(pC4->v.classname), "grenade") != 0) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Entity %d (\"%s\") is not C4!", index, STRING(pC4->v.classname));
 		return 0;
 	}
@@ -1702,8 +1662,7 @@ static cell AMX_NATIVE_CALL cs_set_c4_defusing(AMX* amx, cell* params)
 
 	edict_t *pC4 = TypeConversion.id_to_edict(index);
 
-	if (strcmp(STRING(pC4->v.classname), "grenade") != 0)
-	{
+	if (strcmp(STRING(pC4->v.classname), "grenade") != 0) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Entity %d (\"%s\") is not C4!", index, STRING(pC4->v.classname));
 		return 0;
 	}
@@ -1716,8 +1675,7 @@ static cell AMX_NATIVE_CALL cs_set_c4_defusing(AMX* amx, cell* params)
 // cs_create_entity(const classname[])
 static cell AMX_NATIVE_CALL cs_create_entity(AMX* amx, cell* params)
 {
-	if (!Active_cs_create_entity)
-	{
+	if (!Active_cs_create_entity) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Native cs_create_entity() is disabled. Check your amxx logs.");
 		return 0;
 	}
@@ -1736,8 +1694,7 @@ static cell AMX_NATIVE_CALL cs_create_entity(AMX* amx, cell* params)
 		pEnt = CS_CreateNamedEntity(iszClass);
 	}
 
-	if (!FNullEnt(pEnt))
-	{
+	if (!FNullEnt(pEnt)) {
 		return TypeConversion.edict_to_id(pEnt);
 	}
 
@@ -1747,8 +1704,7 @@ static cell AMX_NATIVE_CALL cs_create_entity(AMX* amx, cell* params)
 // cs_find_ent_by_class(start_index, const classname[])
 static cell AMX_NATIVE_CALL cs_find_ent_by_class(AMX* amx, cell* params)
 {
-	if (!Active_cs_find_ent)
-	{
+	if (!Active_cs_find_ent) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Native cs_find_ent_by_class() is disabled. Check your amxx logs.");
 		return 0;
 	}
@@ -1762,8 +1718,7 @@ static cell AMX_NATIVE_CALL cs_find_ent_by_class(AMX* amx, cell* params)
 
 	int index = TypeConversion.cbase_to_id(FindEntityByString(pEntity, "classname", value));
 
-	if (index != -1)
-	{
+	if (index != -1) {
 		return index;
 	}
 
@@ -1773,8 +1728,7 @@ static cell AMX_NATIVE_CALL cs_find_ent_by_class(AMX* amx, cell* params)
 // cs_find_ent_by_owner(start_index, const classname[], owner)
 static cell AMX_NATIVE_CALL cs_find_ent_by_owner(AMX* amx, cell* params)
 {
-	if (!Active_cs_find_ent)
-	{
+	if (!Active_cs_find_ent) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Native cs_find_ent_by_owner() is disabled. Check your amxx logs.");
 		return 0;
 	}
@@ -1796,12 +1750,11 @@ static cell AMX_NATIVE_CALL cs_find_ent_by_owner(AMX* amx, cell* params)
 	{
 		edict_t *pev = TypeConversion.cbase_to_edict(pEntity);
 
-		if (!FNullEnt(pev) && pev->v.owner == pOwner)
-		{
+		if (!FNullEnt(pev) && pev->v.owner == pOwner) {
+
 			int index = TypeConversion.edict_to_id(pev);
 
-			if (index != -1)
-			{
+			if (index != -1) {
 				return index;
 			}
 		}
@@ -1813,8 +1766,7 @@ static cell AMX_NATIVE_CALL cs_find_ent_by_owner(AMX* amx, cell* params)
 // cs_set_ent_class(index, const classname[])
 static cell AMX_NATIVE_CALL cs_set_ent_class(AMX* amx, cell* params)
 {
-	if (!Active_set_ent_class)
-	{
+	if (!Active_set_ent_class) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Native cs_set_ent_class() is disabled. Check your amxx logs.");
 		return 0;
 	}
@@ -1857,8 +1809,7 @@ static cell AMX_NATIVE_CALL cs_set_ent_class(AMX* amx, cell* params)
 // native any:cs_get_item_id(const name[], &CsWeaponClassType:classid = CS_WEAPONCLASS_NONE);
 static cell AMX_NATIVE_CALL cs_get_item_id(AMX* amx, cell* params)
 {
-	if (ItemsManager.HasConfigError())
-	{
+	if (ItemsManager.HasConfigError()) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Native cs_get_item_id() is disabled because of corrupted or missing gamedata");
 		return 0;
 	}
@@ -1871,8 +1822,7 @@ static cell AMX_NATIVE_CALL cs_get_item_id(AMX* amx, cell* params)
 	{
 		AliasInfo info;
 
-		if (ItemsManager.GetAliasInfosFromName(name, &info))
-		{
+		if (ItemsManager.GetAliasInfosFromName(name, &info)) {
 			*classid = info.classid;
 			return info.itemid;
 		}
@@ -1884,8 +1834,7 @@ static cell AMX_NATIVE_CALL cs_get_item_id(AMX* amx, cell* params)
 // native bool:cs_get_item_alias(itemid, name[], name_maxlen, altname[] = "", altname_maxlen = 0); 
 static cell AMX_NATIVE_CALL cs_get_item_alias(AMX* amx, cell* params)
 {
-	if (ItemsManager.HasConfigError())
-	{
+	if (ItemsManager.HasConfigError()) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Native cs_get_item_alias() is disabled because of corrupted or missing gamedata");
 		return 0;
 	}
@@ -1918,8 +1867,7 @@ static cell AMX_NATIVE_CALL cs_get_item_alias(AMX* amx, cell* params)
 // native bool:cs_get_translated_item_alias(const alias[], itemname[], maxlength);
 static cell AMX_NATIVE_CALL cs_get_translated_item_alias(AMX* amx, cell* params)
 {
-	if (ItemsManager.HasConfigError())
-	{
+	if (ItemsManager.HasConfigError()) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Native cs_get_translated_item_alias() is disabled because of corrupted or missing gamedata");
 		return 0;
 	}
@@ -1961,8 +1909,7 @@ static cell AMX_NATIVE_CALL cs_get_translated_item_alias(AMX* amx, cell* params)
 // native cs_get_weapon_info(weapon_id, CsWeaponInfo:type);
 static cell AMX_NATIVE_CALL cs_get_weapon_info(AMX* amx, cell* params)
 {
-	if (!Active_cs_get_weapon_info)
-	{
+	if (!Active_cs_get_weapon_info) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Native cs_get_weapon_info() is disabled. Check your amxx logs.");
 		return 0;
 	}

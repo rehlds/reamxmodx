@@ -182,7 +182,7 @@ void AddString(U **buf_p, size_t &maxlen, const S *string, int width, int prec)
 				break;
 		}
 	} else {
-		while (string[size++]) ;
+		while (string[size++]);
 		size--;
 	}
 

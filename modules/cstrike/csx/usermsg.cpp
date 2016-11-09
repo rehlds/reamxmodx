@@ -28,10 +28,11 @@ void Client_ResetHUD(void* mValue)
 		|| !mPlayer->m_bIngame
 		|| !mPlayer->rank
 		|| mPlayer->m_bIsBot && g_rankBots == false
-		|| !isModuleActive())
-	{
+		|| !isModuleActive()) {
+
 		return;
 	}
+
 	mPlayer->rank->updatePosition(&mPlayer->life);
 	mPlayer->restartStats(false);
 }
@@ -41,6 +42,7 @@ void Client_DeathMsg(void *mValue)
 	static int killer_id;
 	static int is_headshot;
 	const char *name;
+
 	switch (mState++)
 	{
 		case 0:
@@ -55,11 +57,11 @@ void Client_DeathMsg(void *mValue)
 		}
 		case 3:
 		{
-			  if (killer_id)
-			  {
+			  if (killer_id) {
+
 				  name = (const char *)mValue;
-				  if (!strcmp(name, "knife"))
-				  {
+
+				  if (!strcmp(name, "knife")) {
 					  CPlayer *pPlayer = GET_PLAYER_POINTER_I(killer_id);
 					  pPlayer->aiming = is_headshot ? 1 : 0;
 				  }
@@ -133,8 +135,7 @@ void Client_Damage(void* mValue)
 
 	case 3:
 	{
-		if (!mPlayer || !mPlayer->m_bIngame || !damage || bits)
-		{
+		if (!mPlayer || !mPlayer->m_bIngame || !damage || bits) {
 			ignore = true;
 			break;
 		}
@@ -142,8 +143,7 @@ void Client_Damage(void* mValue)
 		edict_t *enemy;
 		enemy = mPlayer->pEdict->v.dmg_inflictor;
 
-		if (FNullEnt(enemy))
-		{
+		if (FNullEnt(enemy)) {
 			ignore = true;
 			break;
 		}
@@ -152,8 +152,7 @@ void Client_Damage(void* mValue)
 		weapon = 0;
 		pAttacker = NULL;
 
-		if (enemy->v.flags & (FL_CLIENT | FL_FAKECLIENT))
-		{
+		if (enemy->v.flags & (FL_CLIENT | FL_FAKECLIENT)) {
 			pAttacker = GET_PLAYER_POINTER(enemy);
 			aim = pAttacker->aiming;
 			weapon = pAttacker->current;
@@ -182,8 +181,7 @@ void Client_Damage_End(void* mValue)
 
 	if (!pAttacker->m_bIngame) return;
 	
-	static int TA;
-	TA = 0;
+	int TA = 0;
 
 	if (mPlayer->teamId == pAttacker->teamId && mPlayer != pAttacker)
 		TA = 1;
@@ -191,10 +189,9 @@ void Client_Damage_End(void* mValue)
 	MF_ExecuteForward(iFDamage, static_cast<cell>(pAttacker->index), static_cast<cell>(mPlayer->index) ,
 		static_cast<cell>(damage), static_cast<cell>(weapon), static_cast<cell>(aim), static_cast<cell>(TA));
 	 
-	if (!mPlayer->IsAlive())
-	{
-		if (weapon != CSW_C4)
-		{
+	if (!mPlayer->IsAlive()) {
+
+		if (weapon != CSW_C4) {
 			pAttacker->saveKill(mPlayer, weapon, (aim == 1) ? 1 : 0, TA);
 		}
 
@@ -300,8 +297,7 @@ void Client_ScoreInfo(void* mValue)
 		break;
 
 	case 4:
-		if (index > 0 && index <= gpGlobals->maxClients)
-		{
+		if (index > 0 && index <= gpGlobals->maxClients) {
 			GET_PLAYER_POINTER_I(index)->teamId = *(int*)mValue;
 		}
 		break;
@@ -315,19 +311,17 @@ void Client_SendAudio(void* mValue)
 {
 	static const char* szText;
 
-	if (!mPlayer && mState == 1)
-	{
+	if (!mPlayer && mState == 1) {
+
 		szText = (const char*)mValue;
 
-		if (szText[7] == 'B')
-		{
-			if (szText[11] == 'P' && g_Planter)
-			{
+		if (szText[7] == 'B') {
+
+			if (szText[11] == 'P' && g_Planter) {
 				GET_PLAYER_POINTER_I(g_Planter)->saveBPlant();
 				g_bombAnnounce = BOMB_PLANTED;
-			}
-			else if (szText[11] == 'D' && g_Defuser)
-			{
+
+			} else if (szText[11] == 'D' && g_Defuser) {
 				GET_PLAYER_POINTER_I(g_Defuser)->saveBDefused();
 				g_bombAnnounce = BOMB_DEFUSED;
 			}
@@ -341,12 +335,12 @@ void Client_TextMsg(void* mValue)
 {
 	static const char* szText;
 
-	if (!mPlayer && mState == 1 && g_Planter)
-	{
+	if (!mPlayer && mState == 1 && g_Planter) {
+
 		szText = (const char*)mValue;
 
-		if (szText[1] == 'T' && szText[8] == 'B')
-		{
+		if (szText[1] == 'T' && szText[8] == 'B') {
+
 			GET_PLAYER_POINTER_I(g_Planter)->saveBExplode();
 			g_bombAnnounce = BOMB_EXPLODE;
 		}
@@ -361,8 +355,7 @@ void Client_BarTime(void* mValue)
 
 	if (!iTime || !mPlayer->IsAlive()) return;
 
-	if (iTime == 3)
-	{
+	if (iTime == 3) {
 		g_Planter = mPlayerIndex;
 		g_bombAnnounce = BOMB_PLANTING;
 		g_Defuser = 0;

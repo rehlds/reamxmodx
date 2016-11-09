@@ -154,15 +154,13 @@ void ClientKill_Post(edict_t *pEntity)
 
 void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
 {
-	if (g_bReHLDS == false)
-	{
+	if (g_bReHLDS == false) {
 		return;
 	}
 
 	g_rankBots = (int)csstats_rankbots->value ? true:false;
 
-	for (int i = 1; i <= gpGlobals->maxClients; i++)
-	{
+	for (int i = 1; i <= gpGlobals->maxClients; i++) {
 		GET_PLAYER_POINTER_I(i)->Init(i, pEdictList + i);
 	}
 
@@ -173,15 +171,14 @@ void ServerDeactivate()
 {
 	int i;
 
-	for(i = 1; i <= gpGlobals->maxClients; i++)
-	{
+	for(i = 1; i <= gpGlobals->maxClients; i++) {
 		GET_PLAYER_POINTER_I(i)->Disconnect();
 	}
 
 	if (!(int)csstats_maxsize->value
 		|| (int)csstats_maxsize->value > 0 && g_rank.getRankNum() >= (int)csstats_maxsize->value
-		|| (int)csstats_reset->value != 0)
-	{
+		|| (int)csstats_reset->value != 0) {
+
 		CVAR_SET_FLOAT("csstats_reset", 0.0);
 		g_rank.clear(); // clear before save to file
 	}
@@ -189,8 +186,7 @@ void ServerDeactivate()
 	g_rank.saveRank(MF_BuildPathname("%s", get_localinfo("csstats")));	
 
 	// clear custom weapons info
-	for (i = MAX_WEAPONS; i < MAX_WEAPONS + MAX_CWEAPONS; i++)
-	{
+	for (i = MAX_WEAPONS; i < MAX_WEAPONS + MAX_CWEAPONS; i++) {
 		weaponData[i].used = false;
 	}
 
@@ -217,8 +213,7 @@ void ClientPutInServer(edict_t *pEntity)
 {
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
 
-	if (pPlayer->m_bInit)
-	{
+	if (pPlayer->m_bInit) {
 		pPlayer->PutInServer();
 	}
 
@@ -229,45 +224,48 @@ void ClientUserInfoChanged_Post(edict_t *pEntity, char *infobuffer)
 {
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
 
-	if (!pPlayer->m_bInit)
-	{
+	if (!pPlayer->m_bInit) {
+
 		g_rankBots = (int)csstats_rankbots->value ? true : false;
 
-		if (g_rankBots == true)
-		{
+		if (g_rankBots == true) {
+
 			pPlayer->m_bIsBot = pPlayer->IsBot();
 
-			if (pPlayer->m_bIsBot)
-			{
+			if (pPlayer->m_bIsBot) {
+
 				pPlayer->Connect("127.0.0.1");
 				pPlayer->PutInServer();
 			}
 		}
 
-		if (!pPlayer->m_bInit)
-		{
+		if (!pPlayer->m_bInit) {
 			RETURN_META(MRES_IGNORED);
 		}
 	}
 
-	const char* name = INFOKEY_VALUE(infobuffer, "name");
-	const char* oldname = STRING(pEntity->v.netname);
-	const char* authid = GETPLAYERAUTHID(pPlayer->pEdict);
+	if (pPlayer->rank) {
 
-	if (pPlayer->rank)
-	{
-		if (strcmp(oldname, name) != 0)
-		{
-			if ((int)csstats_rank->value == 0 || ((int)csstats_rank->value == 1 && (!authid || !IsValidAuth(authid))))
-			{
+		const char* name = INFOKEY_VALUE(infobuffer, "name");
+		const char* oldname = STRING(pEntity->v.netname);
+		const char* authid = GETPLAYERAUTHID(pPlayer->pEdict);
+
+		if (strcmp(oldname, name) != 0) {
+
+			int RankType = (int)csstats_rank->value;
+
+			if (RankType == 0 || (RankType == 1 && (!authid || !IsValidAuth(authid)))) {
+
 				pPlayer->rank = g_rank.findEntryInRank(name, name);
 
-				if (!pPlayer->rank)
-				{
+				if (!pPlayer->rank) {
+
 					pPlayer->rank = g_rank.newEntryInRank(name, name);
 
-					if (pPlayer->rank) pPlayer->rank->updatePosition(&null);
+					if (pPlayer->rank)
+						pPlayer->rank->updatePosition(&null);
 				}
+
 			} else {
 				pPlayer->rank->setName(name);
 			}
@@ -279,8 +277,7 @@ void ClientUserInfoChanged_Post(edict_t *pEntity, char *infobuffer)
 
 void MessageBegin_Post(int msg_dest, int msg_type, const float *pOrigin, edict_t *ed)
 {
-	if (ed)
-	{
+	if (ed) {
 		mPlayerIndex = ENTINDEX(ed);
 		mPlayer = GET_PLAYER_POINTER_I(mPlayerIndex);
 	} else {
@@ -291,8 +288,7 @@ void MessageBegin_Post(int msg_dest, int msg_type, const float *pOrigin, edict_t
 	mState = 0;
 	g_CurrentMsg = msg_type;
 
-	if (g_CurrentMsg < 0 || g_CurrentMsg >= MAX_REG_MSGS)
-	{
+	if (g_CurrentMsg < 0 || g_CurrentMsg >= MAX_REG_MSGS) {
 		g_CurrentMsg = 0;
 	}
 
@@ -394,47 +390,47 @@ void StartFrame_Post()
 
 void SetModel_Post(edict_t *e, const char *m)
 {
-	if (m[7] != 'w' || m[8] != '_' || !isModuleActive())
-	{
+	if (m[7] != 'w' || m[8] != '_' || !e || !e->v.owner || !isModuleActive()) {
 		RETURN_META(MRES_IGNORED);
 	}
 
-	if (e->v.owner)
+	CPlayer *pPlayer = GET_PLAYER_POINTER(e->v.owner);
+
+	if (!pPlayer->m_bIngame) {
+		RETURN_META(MRES_IGNORED);
+	}
+
+	int w_id = 0;
+
+	switch(m[9])
 	{
-		CPlayer *pPlayer = GET_PLAYER_POINTER(e->v.owner);
+		case 'h':
+			w_id = CSW_HEGRENADE;
+			g_grenades.put(e, 2.0, 4, pPlayer);
+			pPlayer->saveShot(CSW_HEGRENADE);
 
-		if (!pPlayer->m_bIngame)
-		{
-			RETURN_META(MRES_IGNORED);
-		}
+			break;
 
-		int w_id = 0;
+		case 'f':
+			if (m[10] == 'l')
+				w_id = CSW_FLASHBANG;
 
-		switch(m[9])
-		{
-			case 'h':
-				w_id = CSW_HEGRENADE;
-				g_grenades.put(e, 2.0, 4, pPlayer);
-				pPlayer->saveShot(CSW_HEGRENADE);
-				break;
+			break;
 
-			case 'f':
-				if (m[10] == 'l') w_id = CSW_FLASHBANG;
-				break;
+		case 's':
+			if (m[10] == 'm')
+				w_id = CSW_SMOKEGRENADE;
 
-			case 's':
-				if (m[10] == 'm') w_id = CSW_SMOKEGRENADE;
-				break;
+			break;
 
-			default:
-				break;
-		}
+		default:
+			break;
+	}
 
-		if (w_id)
-		{
-			MF_ExecuteForward(iFGrenade, static_cast<cell>(pPlayer->index),
-				static_cast<cell>(ENTINDEX(e)), static_cast<cell>(w_id));
-		}
+	if (w_id) {
+
+		MF_ExecuteForward(iFGrenade, static_cast<cell>(pPlayer->index),
+			static_cast<cell>(ENTINDEX(e)), static_cast<cell>(w_id));
 	}
 	
 	RETURN_META(MRES_IGNORED);
@@ -458,18 +454,17 @@ void EmitSound_Post(edict_t *entity, int channel, const char *sample, float volu
 
 void TraceLine_Post(const float *v1, const float *v2, int fNoMonsters, edict_t *e, TraceResult *ptr)
 {
-	if (!e || !ptr->pHit || !ptr->iHitgroup)
-	{
+	if (!e || !ptr->pHit || !ptr->iHitgroup) {
 		RETURN_META(MRES_IGNORED);
 	}
 
-	if (ptr->pHit->v.flags & (FL_CLIENT | FL_FAKECLIENT))
-	{
-		if (e->v.flags & (FL_CLIENT | FL_FAKECLIENT))
-		{
+	if (ptr->pHit->v.flags & (FL_CLIENT | FL_FAKECLIENT)) {
+
+		if (e->v.flags & (FL_CLIENT | FL_FAKECLIENT)) {
+
 			CPlayer *pPlayer = GET_PLAYER_POINTER(e);
-			if (pPlayer->current != CSW_KNIFE)
-			{
+
+			if (pPlayer->current != CSW_KNIFE) {
 				pPlayer->aiming = ptr->iHitgroup;
 			}
 		}
@@ -497,8 +492,7 @@ void OnMetaAttach()
 
 int AmxxCheckGame(const char *game)
 {
-	if (strcasecmp(game, "cstrike") == 0 || strcasecmp(game, "czero") == 0)
-	{
+	if (strcasecmp(game, "cstrike") == 0 || strcasecmp(game, "czero") == 0) {
 		return AMXX_GAME_OK;
 	}
 	return AMXX_GAME_BAD;
@@ -508,8 +502,7 @@ void OnAmxxAttach()
 {
 	g_bReHLDS = RehldsApi_Init();
 
-	if (g_bReHLDS == false)
-	{
+	if (g_bReHLDS == false) {
 		MF_Log("Error load ReHLDS");
 		return;
 	}
@@ -518,14 +511,12 @@ void OnAmxxAttach()
 
 	const char* path = get_localinfo("csstats_score");
 
-	if (path && *path)
-	{
+	if (path && *path) {
 		char error[128];
 		g_rank.loadCalc(MF_BuildPathname("%s", path), error);
 	}
 	
-	if (!g_rank.begin())
-	{		
+	if (!g_rank.begin()) {		
 		g_rank.loadRank(MF_BuildPathname("%s", get_localinfo("csstats")));
 	}
 }
@@ -539,8 +530,7 @@ void OnAmxxDetach()
 
 void OnPluginsLoaded()
 {
-	if (g_bReHLDS == false)
-	{
+	if (g_bReHLDS == false) {
 		return;
 	}
 
@@ -556,14 +546,14 @@ void OnPluginsLoaded()
 
 bool IsValidAuth(const char* authid)
 {
-	static int i;
-	i = -1;
+	int i = -1;
+
 	while (authid[++i])
 	{
-		if (isdigit(authid[i]))
-		{
+		if (isdigit(authid[i])) {
 			return 1;
 		}
 	}
+
 	return 0;
 }

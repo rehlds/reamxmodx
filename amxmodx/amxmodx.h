@@ -146,6 +146,7 @@ unsigned int UTIL_ReplaceAll(char *subject, size_t maxlength, const char *search
 char *UTIL_ReplaceEx(char *subject, size_t maxLen, const char *search, size_t searchLen, const char *replace, size_t replaceLen, bool caseSensitive);
 void UTIL_TrimLeft(char *buffer);
 void UTIL_TrimRight(char *buffer);
+size_t localize_string(const char *OldMsg, char *NewMsg, size_t MaxLen);
 
 #define GET_PLAYER_POINTER(e)   (&g_players[ENTINDEX(e)])
 //#define GET_PLAYER_POINTER(e)   (&g_players[(((int)e-g_edict_point)/sizeof(edict_t))])

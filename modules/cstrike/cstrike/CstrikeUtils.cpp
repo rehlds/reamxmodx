@@ -40,8 +40,7 @@ bool UTIL_CheckForPublic(const char *publicname)
 
 	while ((amx = MF_GetScriptAmx(i++)))
 	{
-		if (MF_AmxFindPublic(amx, blah, &iFunctionIndex) == AMX_ERR_NONE)
-		{
+		if (MF_AmxFindPublic(amx, blah, &iFunctionIndex) == AMX_ERR_NONE) {
 			return true;
 		}
 	}

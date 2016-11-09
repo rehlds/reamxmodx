@@ -29,8 +29,7 @@ HLTypeConversion TypeConversion;
 
 int AmxxCheckGame(const char *game)
 {
-	if (strcasecmp(game, "cstrike") == 0 || strcasecmp(game, "czero") == 0)
-	{
+	if (strcasecmp(game, "cstrike") == 0 || strcasecmp(game, "czero") == 0) {
 		return AMXX_GAME_OK;
 	}
 	return AMXX_GAME_BAD;
@@ -40,8 +39,7 @@ void OnAmxxAttach()
 {
 	g_bReHLDS = RehldsApi_Init();
 
-	if (g_bReHLDS == false)
-	{
+	if (g_bReHLDS == false) {
 		MF_Log("Error load ReHLDS.");
 		return;
 	}
@@ -55,16 +53,14 @@ void OnAmxxAttach()
 	char error[256] = "";
 	ConfigManager->AddUserConfigHook("ItemInfos", &ItemsManager);
 
-	if (!ConfigManager->LoadGameConfigFile("modules.games", &MainConfig, error, sizeof(error)) && *error)
-	{
+	if (!ConfigManager->LoadGameConfigFile("modules.games", &MainConfig, error, sizeof(error)) && *error) {
 		MF_Log("Could not read module.games gamedata: %s", error);
 		return;
 	}
 
 	*error = '\0';
 
-	if (!ConfigManager->LoadGameConfigFile("common.games", &CommonConfig, error, sizeof(error)) && *error)
-	{
+	if (!ConfigManager->LoadGameConfigFile("common.games", &CommonConfig, error, sizeof(error)) && *error) {
 		MF_Log("Could not read common.games gamedata: %s", error);
 		return;
 	}
@@ -74,8 +70,7 @@ void OnAmxxAttach()
 
 void OnPluginsLoaded()
 {
-	if (g_bReHLDS == false)
-	{
+	if (g_bReHLDS == false) {
 		return;
 	}
 
@@ -84,8 +79,7 @@ void OnPluginsLoaded()
 
 void OnServerActivate(edict_t *pEdictList, int edictCount, int clientMax)
 {
-	if (g_bReHLDS == false)
-	{
+	if (g_bReHLDS == false) {
 		return;
 	}
 
@@ -111,8 +105,7 @@ void OnPluginsUnloaded()
 	// Force to disable all event hooks at map change.
 	DisableMessageHooks(true);
 
-	if (g_bReGame && NoKnivesMode)
-	{
+	if (g_bReGame && NoKnivesMode) {
 		g_ReGameHookchains->CBasePlayer_GiveDefaultItems()->unregisterHook(&CBasePlayer_GiveDefaultItems);
 	}
 }

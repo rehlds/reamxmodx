@@ -28,8 +28,7 @@ void ClientDisconnect(edict_t *pEntity)
 
 void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer)
 {
-	if (pEntity->pvPrivateData)
-	{
+	if (pEntity && pEntity->pvPrivateData) {
 		Players[TypeConversion.edict_to_id(pEntity)].UpdateModel(pEntity);
 	}
 

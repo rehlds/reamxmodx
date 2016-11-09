@@ -19,67 +19,68 @@
 // *****************************************************
 void Grenades::put(edict_t* grenade, float time, int type, CPlayer* player)
 {
-  Obj* a = new Obj;
+	Obj* a = new Obj;
 
-  if (a == 0) return;
+	if (a == 0) return;
 
-  a->player = player;
-  a->grenade = grenade;
-  a->time = gpGlobals->time + time;
-  a->type = type;
-  a->prev = 0;
-  a->next = head;
+	a->player = player;
+	a->grenade = grenade;
+	a->time = gpGlobals->time + time;
+	a->type = type;
+	a->prev = 0;
+	a->next = head;
 
-  if (head) head->prev = a;
+	if (head) head->prev = a;
 
-  head = a;
+	head = a;
 }
 
 bool Grenades::find(edict_t* enemy, CPlayer** p, int* type)
 {
-  bool found = false;
-  Obj* a = head;
+	bool found = false;
+	Obj* a = head;
 
-  while (a) {
-    if (a->time > gpGlobals->time && !found)
+	while (a)
 	{
-      if (a->grenade == enemy)
-	  {
-        found = true;
-        *p = a->player;
-        *type = a->type;
-      }
-    }
-    else
-	{
-      Obj* next = a->next;
+		if (a->time > gpGlobals->time && !found) {
 
-      if (a->prev)
-		  a->prev->next = next;
-      else
-		  head = next;
+			if (a->grenade == enemy) {
 
-      if (next) next->prev = a->prev;
+				found = true;
+				*p = a->player;
+				*type = a->type;
+			}
 
-      delete a;
-      a = next;
+		} else {
 
-      continue;
-    }
+			Obj* next = a->next;
 
-    a = a->next;
-  }
+			if (a->prev)
+				a->prev->next = next;
+			else
+				head = next;
 
-  return found;
+			if (next) next->prev = a->prev;
+
+			delete a;
+			a = next;
+
+			continue;
+		}
+
+		a = a->next;
+	}
+
+	return found;
 }
 
 void Grenades::clear()
 {
-  while(head) {
-    Obj* a = head->next;
-    delete head;
-    head = a;
-  }
+	while(head) {
+		Obj* a = head->next;
+		delete head;
+		head = a;
+	}
 }
 
 // *****************************************************
@@ -97,8 +98,7 @@ void CPlayer::Connect(const char* address)
 	// Strip the port from the ip
 	for (size_t i = 0; i < sizeof(ip); i++)
 	{
-		if (ip[i] == ':')
-		{
+		if (ip[i] == ':') {
 			ip[i] = '\0';
 			break;
 		}
@@ -117,8 +117,7 @@ void CPlayer::PutInServer()
 
 	const char* name = STRING(pEdict->v.netname);
 
-	if (name == NULL)
-	{
+	if (name == NULL) {
 		return;
 	}
 
@@ -129,8 +128,7 @@ void CPlayer::PutInServer()
 	{
 		case 1: 
 			unique = GETPLAYERAUTHID(pEdict);
-			if (!unique || !IsValidAuth(unique))
-			{
+			if (!unique || !IsValidAuth(unique)) {
 				unique = name;
 			}
 			break;
@@ -146,12 +144,11 @@ void CPlayer::PutInServer()
 
 	rank = g_rank.findEntryInRank(unique, name, isip);
 
-	if (!rank)
-	{
+	if (!rank) {
+
 		rank = g_rank.newEntryInRank(unique, name);
 
-		if (rank)
-		{
+		if (rank) {
 			rank->updatePosition(&null);
 		}
 	}
@@ -162,8 +159,7 @@ void CPlayer::Disconnect()
 	m_bInit = false;
 	m_bIngame = false;
 
-	if (m_bIsBot && g_rankBots == false)
-	{
+	if (m_bIsBot && g_rankBots == false) {
 		m_bIsBot = false;
 		rank = 0;
 		return;
@@ -334,18 +330,15 @@ void CPlayer::saveBDefused()
 
 bool ignoreBots(edict_t *pEnt, edict_t *pOther)
 {
-	if (g_rankBots == false && (pEnt->v.flags & FL_FAKECLIENT || (pOther && pOther->v.flags & FL_FAKECLIENT)))
-	{
+	if (g_rankBots == false && (pEnt->v.flags & FL_FAKECLIENT || (pOther && pOther->v.flags & FL_FAKECLIENT))) {
 		return true;
 	}
-
 	return false;
 }
 
 bool isModuleActive()
 {
-	if (!(int)csstats_pause->value)
-	{
+	if (!(int)csstats_pause->value) {
 		return true;
 	}
 	return false;
@@ -353,18 +346,15 @@ bool isModuleActive()
 
 void CPlayer::setScore(int a, int b)
 {
-	if (!pEdict || pEdict->pvPrivateData == NULL)
-	{
+	if (!pEdict || pEdict->pvPrivateData == NULL) {
 		return;
 	}
 
-	if (a >= 0)
-	{
+	if (a >= 0) {
 		pEdict->v.frags = a;
 	}
 
-	if (b >= 0)
-	{
+	if (b >= 0) {
 		*((int *)pEdict->pvPrivateData + OFFSET_CSDEATHS) = b;
 	}
 
