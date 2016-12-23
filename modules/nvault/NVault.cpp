@@ -17,6 +17,8 @@
 #include "Binary.h"
 #include <amtl/am-string.h>
 
+#pragma warning (disable: 4267)
+
 /** 
  * :TODO: This beast calls strcpy()/new() way too much by creating new strings on the stack.
  *		  That's easily remedied and it should be fixed?

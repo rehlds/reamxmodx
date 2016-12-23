@@ -954,7 +954,23 @@ void C_ClientUserInfoChanged_Post(edict_t *pEntity, char *infobuffer)
 
 void C_ClientCommand(edict_t *pEntity)
 {
+	const char *cmd = CMD_ARGV(0);
+
 	CPlayer *pPlayer = GET_PLAYER_POINTER(pEntity);
+
+	if (!strcmp(cmd, "say") || !strcmp(cmd, "say_team")) {
+
+		auto Buf = CMD_ARGS();
+
+		if (Buf && *Buf) {
+
+			char safeMsg[190];
+
+			auto len = localize_string(Buf, safeMsg, sizeof(safeMsg));
+
+			memcpy(const_cast<char*>(Buf), safeMsg, len + 1);
+		}
+	}
 
 	/*
 	// Handle "amxx" if not on listenserver
@@ -996,7 +1012,6 @@ void C_ClientCommand(edict_t *pEntity)
 	META_RES result = MRES_IGNORED;
 	cell ret = 0;
 
-	const char* cmd = CMD_ARGV(0);
 	const char* arg = CMD_ARGV(1);
 
 	/* check for command and if needed also for first argument and call proper function */
@@ -1498,16 +1513,14 @@ static META_FUNCTIONS gMetaFunctionTable;
 
 C_DLLEXPORT	int	Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, meta_globals_t *pMGlobals, gamedll_funcs_t *pGamedllFuncs)
 {
-	if (now > Plugin_info.loadable)
-	{
+	if (now > Plugin_info.loadable) {
 		LOG_ERROR(PLID,	"Can't load	plugin right now");
 		return (FALSE);
 	}
 
 	g_bReHLDS = RehldsApi_Init();
 
-	if (g_bReHLDS == false)
-	{
+	if (g_bReHLDS == false) {
 		LOG_ERROR(PLID, "Can't load	ReHLDS");
 		return (FALSE);
 	}

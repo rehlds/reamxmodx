@@ -30,8 +30,7 @@ void OnAmxxAttach()
 {
 	g_bReHLDS = RehldsApi_Init();
 
-	if (g_bReHLDS == false)
-	{
+	if (g_bReHLDS == false) {
 		MF_Log("Error load ReHLDS");
 		return;
 	}

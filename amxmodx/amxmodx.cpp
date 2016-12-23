@@ -19,6 +19,8 @@
 #include "nongpl_matches.h"
 #include "format.h"
 
+#include "mod_gamedll_api.h"
+
 extern CFlagManager FlagMan;
 ke::Vector<CAdminData *> DynamicAdmins;
 
@@ -243,7 +245,6 @@ static cell AMX_NATIVE_CALL client_print(AMX *amx, cell *params) /* 3 param */
 {
 	int len = 0;
 	char *msg;
-	char safeMsg[126];
 
 	if (params[1] == 0)	// 0 = All players
 	{
@@ -270,11 +271,7 @@ static cell AMX_NATIVE_CALL client_print(AMX *amx, cell *params) /* 3 param */
 				msg[len++] = '\n';	// Client expects newline from the server
 				msg[len] = 0;
 
-				auto len = localize_string(msg, safeMsg, sizeof(safeMsg));
-
-				memcpy(const_cast<char*>(msg), safeMsg, len + 1);
-
-				UTIL_ClientPrint(pPlayer->pEdict, params[2], safeMsg);
+				UTIL_ClientPrint(pPlayer->pEdict, params[2], msg);
 			}
 		}
 	}
@@ -310,11 +307,7 @@ static cell AMX_NATIVE_CALL client_print(AMX *amx, cell *params) /* 3 param */
 			msg[len++] = '\n';	// Client expects newline from the server
 			msg[len] = 0;
 
-			auto len = localize_string(msg, safeMsg, sizeof(safeMsg));
-
-			memcpy(const_cast<char*>(msg), safeMsg, len + 1);
-
-			UTIL_ClientPrint(pPlayer->pEdict, params[2], safeMsg);
+			UTIL_ClientPrint(pPlayer->pEdict, params[2], msg);
 		}
 	}
 
@@ -325,7 +318,6 @@ static cell AMX_NATIVE_CALL client_print_color(AMX *amx, cell *params) /* 3 para
 {
 	int len = 0;
 	char *msg;
-	char safeMsg[190];
 	int index = params[1];
 	int sender = params[2];
 
@@ -368,11 +360,7 @@ static cell AMX_NATIVE_CALL client_print_color(AMX *amx, cell *params) /* 3 para
 				msg[len++] = '\n';
 				msg[len] = 0;
 
-				auto len = localize_string(msg, safeMsg, sizeof(safeMsg));
-
-				memcpy(const_cast<char*>(msg), safeMsg, len + 1);
-
-				UTIL_ClientSayText(pPlayer->pEdict, sender ? sender : i, safeMsg);
+				UTIL_ClientSayText(pPlayer->pEdict, sender ? sender : i, msg);
 			}
 		}
 	} 
@@ -411,11 +399,7 @@ static cell AMX_NATIVE_CALL client_print_color(AMX *amx, cell *params) /* 3 para
 			msg[len++] = '\n';
 			msg[len] = 0;
 
-			auto len = localize_string(msg, safeMsg, sizeof(safeMsg));
-
-			memcpy(const_cast<char*>(msg), safeMsg, len + 1);
-
-			UTIL_ClientSayText(pPlayer->pEdict, sender ? sender : index, safeMsg);
+			UTIL_ClientSayText(pPlayer->pEdict, sender ? sender : index, msg);
 		}
 	}
 
@@ -479,7 +463,7 @@ static cell AMX_NATIVE_CALL next_hudchannel(AMX *amx, cell *params)
 	int index = params[1];
 	if (index < 1 || index > gpGlobals->maxClients)
 	{
-		LogError(amx, AMX_ERR_NATIVE, "Invalid player %d");
+		LogError(amx, AMX_ERR_NATIVE, "Invalid player %d", index);
 		return 0;
 	}
 
@@ -2435,14 +2419,14 @@ static cell AMX_NATIVE_CALL set_user_info(AMX *amx, cell *params) /* 3 param */
 
 static cell AMX_NATIVE_CALL read_argc(AMX *amx, cell *params)
 {
-	return g_fakecmd.notify ? g_fakecmd.argc : CMD_ARGC();
+	return g_fakecmd.notify ? (g_bReGame ? g_ReGameFuncs->Cmd_Argc() : g_fakecmd.argc) : CMD_ARGC();
 }
 
 static cell AMX_NATIVE_CALL read_argv(AMX *amx, cell *params) /* 3 param */
 {
 	int argc = params[1];
 
-	const char *value = g_fakecmd.notify ? (argc >= 0 && argc < 3 ? g_fakecmd.argv[argc] : "") : CMD_ARGV(argc);
+	const char *value = g_fakecmd.notify ? (argc >= 0 && argc < 3 ? (g_bReGame ? g_ReGameFuncs->Cmd_Argv(argc) : g_fakecmd.argv[argc]) : "") : CMD_ARGV(argc);
 	return set_amxstring_utf8(amx, params[2], value, strlen(value), params[3]);
 }
 

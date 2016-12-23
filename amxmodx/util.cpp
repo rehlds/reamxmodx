@@ -275,7 +275,7 @@ void UTIL_ClientPrint(edict_t *pEntity, int msg_dest, char *msg)
 	if (pEntity)
 		MESSAGE_BEGIN(MSG_ONE, gmsgTextMsg, NULL, pEntity);
 	else
-		MESSAGE_BEGIN(MSG_ALL, gmsgTextMsg);
+		MESSAGE_BEGIN(MSG_BROADCAST, gmsgTextMsg);
 	
 	WRITE_BYTE(msg_dest);
 	WRITE_STRING(msg);
@@ -394,22 +394,20 @@ void UTIL_FakeClientCommand(edict_t *pEdict, const char *cmd, const char *arg1, 
 
 	// tell the GameDLL that the client sent a command
 	
-#if 0
 	if (g_bReGame)
 	{
-		CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(GET_PLAYER_POINTER(pEdict)->index);
+		auto pPlayer = UTIL_PlayerByIndex(ENTINDEX(pEdict));
 
-		if (pPlayer != nullptr && pPlayer->has_disconnected) {
+		if (pPlayer) {
 			pPlayer->CSPlayer()->ClientCommand(cmd, arg1, arg2);
 		}
 	}
 	else
 	{
-#endif
+
 		MDLL_ClientCommand(pEdict);
-#if 0
+
 	}
-#endif
 
 	// unset the global "fake" flag
 	g_fakecmd.fake = false;

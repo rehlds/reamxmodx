@@ -22,3 +22,7 @@ plugins/compiled/
 
 **/*.log
 _bin
+/modules/mysqlx/mysql_win
+/modules/mysqlx/mysql_lin
+/amxmodx/msvc12/amxmodx_mm.VC.db
+/amxmodx/msvc12/.vs
